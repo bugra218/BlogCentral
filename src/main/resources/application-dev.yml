@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/blogcentral
+    username: postgres
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: 'true'
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      show-sql: 'true'
+      ddl-auto: update
