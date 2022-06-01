@@ -6,7 +6,11 @@
 </head>
 <body>
     <div th:each="author:${authors}">
-        <p th:text="${author.firstName}"></p>
+        <p style="display: inline-block">First name: </p>
+        <p style="display: inline-block" th:text="${author.firstName}"></p> <br/>
+        <p style="display: inline-block" >Last name:</p>
+        <p style="display: inline-block" th:text="${author.lastName}"></p> <br/>
+        <hr>
     </div>
 </body>
 </html>
