@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
-
+@Table
 @Entity
 @Getter
 @Setter
@@ -29,7 +29,7 @@ public class BlogPost {
     private String body;
 
     @CreationTimestamp
-    @Column(name="timestamp_created")
+
     private Date timestampCreated;
 
 //    @OneToMany

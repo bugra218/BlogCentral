@@ -6,7 +6,7 @@ import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 import java.sql.Date;
-
+@Table
 @Entity
 @Getter
 @Setter
