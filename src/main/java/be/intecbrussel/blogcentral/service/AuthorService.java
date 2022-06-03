@@ -10,4 +10,8 @@ public interface AuthorService {
     void deleteAuthor(Author author);
     Author getAuthor(Author author);
     List<Author> getAllAuthors();
+
+    // added to allow finding Author per id
+    Author getAuthorById(Integer id);
+    void deleteAuthorById(Integer id);
 }

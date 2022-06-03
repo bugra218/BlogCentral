@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// TODO: avoid NPE with getAuthor / getAuthorById methods
 @Service
 public class AuthorServiceImpl implements AuthorService {
     private AuthorRepository authorRepository;
@@ -41,4 +42,16 @@ public class AuthorServiceImpl implements AuthorService {
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();
     }
+
+    // added to enable find by id in Controller
+    @Override
+    public Author getAuthorById(Integer id) {
+        return authorRepository.findById(id).get();
+    }
+
+    @Override
+    public void deleteAuthorById(Integer id) {
+        this.authorRepository.deleteById(id);
+    }
+
 }
