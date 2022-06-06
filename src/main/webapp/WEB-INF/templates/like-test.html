@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--    <form action="" method="post">-->
+        <h1 style="display: inline-block" th:text="${blogPost.title}"></h1>
+        <p style="display: inline-block; float: right">Author: </p>
+        <b><p style="display: inline-block; float: right" th:text="${blogPost.author.userName}"></p></b> <br/>
+        <p th:text="${blogPost.body}"></p>
+        <p style="display: inline-block">Like button: </p>
+        <input type="checkbox" th:onclick="|window.location.href='likePost'|">
+<!--    </form>-->
+</body>
+</html>
