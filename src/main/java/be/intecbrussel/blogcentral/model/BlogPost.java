@@ -11,7 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor // gives an issue as this requires id should be
+//// provided
 @ToString
 public class BlogPost {
 

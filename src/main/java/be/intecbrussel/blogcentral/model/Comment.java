@@ -11,7 +11,8 @@ import java.sql.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor // gives an issue as this requires id should be
+//// provided
 @ToString
 public class Comment {
 

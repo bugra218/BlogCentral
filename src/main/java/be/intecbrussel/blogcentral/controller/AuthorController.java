@@ -41,7 +41,7 @@ public class AuthorController {
     @PostMapping("/save")
     public String saveAuthor(@ModelAttribute("author") Author author) {
         authorService.createAuthor(author);
-        return "redirect:all-authors"; // placeholder
+        return "redirect:/authors/"; // placeholder
         // TODO: redirect to page where 'create Author' was initiated
     }
 
