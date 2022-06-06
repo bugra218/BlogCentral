@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -31,7 +30,6 @@ public class AuthorController {
     }
 
     // get register-form new Author
-    // is it needed to bind this to a new Author? if not, why not?
     @GetMapping("/register")
     public String registerAuthor() {
         return "author-profile-form"; // placeholder
@@ -47,13 +45,13 @@ public class AuthorController {
 
     // get an Author based on id - return Author home page
     // TODO: consider to give username as parameter and use that as URL for
-    //  Author homepage
+    //  Author homepage. Also, try-catch to avoid NPE / wrong format
     @GetMapping("/{id}")
     public String showAuthorPage(@PathVariable String id, Model model) {
         Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(idInt);
         model.addAttribute(author);
-        return "authorPage"; // placeholder
+        return "author-page"; // placeholder
     }
 
     // update Author - get author based on id - return author profile form
@@ -74,7 +72,7 @@ public class AuthorController {
     public String deleteAuthor(@PathVariable String id) {
         Integer idInt = Integer.parseInt(id);
         this.authorService.deleteAuthorById(idInt);
-        return "redirect:/"; // placeholder
+        return "redirect:/authors/"; // placeholder
     }
 
 }
