@@ -31,6 +31,7 @@ public class AuthorController {
     }
 
     // get register-form new Author
+    // is it needed to bind this to a new Author? if not, why not?
     @GetMapping("/register")
     public String registerAuthor() {
         return "author-profile-form"; // placeholder
@@ -40,7 +41,7 @@ public class AuthorController {
     @PostMapping("/save")
     public String saveAuthor(@ModelAttribute("author") Author author) {
         authorService.createAuthor(author);
-        return "redirect:/"; // placeholder
+        return "redirect:all-authors"; // placeholder
         // TODO: redirect to page where 'create Author' was initiated
     }
 
