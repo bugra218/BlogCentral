@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -26,13 +27,13 @@ public class AuthorController {
     public String getAllAuthors(Model model){
         List<Author> authorsFromDb = authorService.getAllAuthors();
         model.addAttribute("authors", authorsFromDb);
-        return "all-authors";
+        return "all-authors"; // placeholder
     }
 
     // get register-form new Author
     @GetMapping("/register")
     public String registerAuthor() {
-        return "author-profile-form"; // placeholder
+        return "register-form"; // placeholder
     }
 
     // save new Author
@@ -44,7 +45,7 @@ public class AuthorController {
     }
 
     // get an Author based on id - return Author home page
-    // TODO: consider to give username as parameter and use that as URL for
+    // TODO: consider username as parameter and use that as URL for
     //  Author homepage. Also, try-catch to avoid NPE / wrong format
     @GetMapping("/{id}")
     public String showAuthorPage(@PathVariable String id, Model model) {
@@ -55,16 +56,14 @@ public class AuthorController {
     }
 
     // update Author - get author based on id - return author profile form
-    // prefilled with author details - TODO: not sure if this way works, how
-    //  will the fields be pre-filled?
     @GetMapping("/update/{id}")
     public String showAuthorProfileForm(@PathVariable String id,
                                               Model model) {
         Integer idInt = Integer.parseInt(id);
-//        ModelAndView mav = new ModelAndView("author-profile-form");
         Author author = authorService.getAuthorById(idInt);
-        model.addAttribute(author); // placeholder
-        return "author-profile-form";
+        System.out.println(author);
+        model.addAttribute("author", author);
+        return "update-form";
     }
 
     // delete Author
