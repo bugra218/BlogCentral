@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Home</title>
+</head>
+<body>
+
+<p style="display: inline-block">ID: </p>
+<p style="display: inline-block" th:text="${author.id}"></p><br>
+<p style="display: inline-block">First name: </p>
+<p style="display: inline-block" th:text="${author.firstName}"></p><br>
+<p style="display: inline-block" >Last name:</p>
+<p style="display: inline-block" th:text="${author.lastName}"></p><br>
+<p style="display: inline-block" >Username:</p>
+<p style="display: inline-block" th:text="${author.userName}"></p><br>
+<p style="display: inline-block" >Email:</p>
+<p style="display: inline-block" th:text="${author.email}"></p><br>
+<p style="display: inline-block" >Street:</p>
+<p style="display: inline-block" th:text="${author.street}"></p><br>
+<p style="display: inline-block" >House number:</p>
+<p style="display: inline-block" th:text="${author.houseNr}"></p><br>
+<p style="display: inline-block" >Zipcode:</p>
+<p style="display: inline-block" th:text="${author.zip}"></p><br>
+
+<br>
+
+<a th:href="@{/authors/update(id=${author.id})}">Update</a>
+
+<hr>
+
+</body>
+</html>

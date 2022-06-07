@@ -9,8 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-//@AllArgsConstructor // gives an issue as this requires id should be
-// provided
+//@AllArgsConstructor
 @ToString
 public class Author {
 

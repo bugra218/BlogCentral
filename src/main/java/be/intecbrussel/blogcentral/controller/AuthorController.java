@@ -27,14 +27,13 @@ public class AuthorController {
     public String getAllAuthors(Model model){
         List<Author> authorsFromDb = authorService.getAllAuthors();
         model.addAttribute("authors", authorsFromDb);
-        return "all-authors";
+        return "all-authors"; // placeholder
     }
 
     // get register-form new Author
-    // is it needed to bind this to a new Author? if not, why not?
     @GetMapping("/register")
     public String registerAuthor() {
-        return "author-profile-form"; // placeholder
+        return "register-form"; // placeholder
     }
 
     // save new Author
@@ -46,27 +45,25 @@ public class AuthorController {
     }
 
     // get an Author based on id - return Author home page
-    // TODO: consider to give username as parameter and use that as URL for
-    //  Author homepage
+    // TODO: consider username as parameter and use that as URL for
+    //  Author homepage. Also, try-catch to avoid NPE / wrong format
     @GetMapping("/{id}")
     public String showAuthorPage(@PathVariable String id, Model model) {
         Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(idInt);
         model.addAttribute(author);
-        return "authorPage"; // placeholder
+        return "author-page"; // placeholder
     }
 
     // update Author - get author based on id - return author profile form
-    // prefilled with author details - TODO: not sure if this way works, how
-    //  will the fields be pre-filled?
-    @GetMapping("/update/{id}")
-    public String showAuthorProfileForm(@PathVariable String id,
+    @GetMapping("/update")
+    public String showAuthorProfileForm(@RequestParam int id,
                                               Model model) {
-        Integer idInt = Integer.parseInt(id);
-//        ModelAndView mav = new ModelAndView("author-profile-form");
-        Author author = authorService.getAuthorById(idInt);
-        model.addAttribute(author); // placeholder
-        return "author-profile-form";
+//        Integer idInt = Integer.parseInt(id);
+        Author author = authorService.getAuthorById(id);
+        System.out.println(author);
+        model.addAttribute("author", author);
+        return "update-form";
     }
 
     // delete Author
@@ -74,7 +71,7 @@ public class AuthorController {
     public String deleteAuthor(@PathVariable String id) {
         Integer idInt = Integer.parseInt(id);
         this.authorService.deleteAuthorById(idInt);
-        return "redirect:/"; // placeholder
+        return "redirect:/authors/"; // placeholder
     }
 
 }

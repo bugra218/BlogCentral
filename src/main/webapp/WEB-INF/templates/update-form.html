@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Profile Form</title>
+</head>
+<body>
+
+<form th:action="@{/authors/save}" method="post">
+    First name: <input th:value="${author.firstName}" type="text" name="firstName"><br><br>
+    Last name: <input th:value="${author.lastName}" type="text" name="lastName"><br><br>
+    Email: <input th:value="${author.email}" type="text" name="email"> <br><br>
+    Street: <input th:value="${author.street}"type="text" name="street"><br><br>
+    House number: <input th:value="${author.houseNr}" type="text" name="houseNr"> <br><br>
+    City: <input th:value="${author.city}" type="text" name="city"> <br><br>
+    Zipcode: <input th:value="${author.zip}" type="text" name="zip"> <br><br>
+    Username: <input th:value="${author.userName}" type="text" name="userName"><br><br>
+    Password: <input th:value="${author.password}" type="text" name="password"><br><br>
+    <input type="hidden" th:field="${author.id}"/>
+    <input type="submit" value="Save profile"> <br><br>
+</form>
+
+</body>
+</html>
