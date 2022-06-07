@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{createPost}" method="post">
+        Author:
+        <select name="author">
+            <option th:each="author:${authors}" th:value="${author.id}" th:text="${author.firstName}"></option>
+        </select> <br/>
+        Title: <input type="text" name="title"> <br><br>
+        Body: <input type="textarea" name="body"> <br><br>
+        <input type="submit" value="Save post"> <br><br>
+    </form>
+</body>
+</html>
