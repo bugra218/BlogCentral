@@ -39,6 +39,11 @@ public class BlogpostServiceImpl implements BlogpostService {
     }
 
     @Override
+    public BlogPost getBlogPostById(int id) {
+        return blogpostRepository.findById(id).get();
+    }
+
+    @Override
     public List<BlogPost> getAllBlogPosts() {
         return blogpostRepository.findAll();
     }

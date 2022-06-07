@@ -10,6 +10,7 @@ public interface BlogpostService {
     void updateBlogPost(BlogPost blogPost);
     void deleteBlogPost(BlogPost blogPost);
     BlogPost getBlogPostById(BlogPost blogPost);
+    BlogPost getBlogPostById(int id);
     List<BlogPost> getAllBlogPosts();
     List<BlogPost> getAllBlogPostFromAuthor(Author author);
 }

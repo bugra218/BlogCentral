@@ -10,8 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-// TODO: test
-
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
