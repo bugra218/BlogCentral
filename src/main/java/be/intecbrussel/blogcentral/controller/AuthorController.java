@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class AuthorController {
     // TODO: consider username as parameter and use that as URL for
     //  Author homepage. Also, try-catch to avoid NPE / wrong format
     @GetMapping("/{id}")
-    public String showAuthorPage(@PathVariable String id, Model model) {
+    public String getAuthorById(@PathVariable String id, Model model) {
         Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(idInt);
         model.addAttribute(author);
@@ -57,11 +56,12 @@ public class AuthorController {
     @GetMapping("/update")
     public String showAuthorProfileForm(@RequestParam int id,
                                               Model model) {
-//        Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(id);
+        // diagnostic println
         System.out.println(author);
+
         model.addAttribute("author", author);
-        return "update-form";
+        return "update-author-form";
     }
 
     // delete Author

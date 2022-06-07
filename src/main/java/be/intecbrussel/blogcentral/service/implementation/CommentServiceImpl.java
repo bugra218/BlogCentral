@@ -38,4 +38,9 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getAllCommentsForBlogPost(BlogPost blogPost) {
         return commentRepository.findByBlogPost(blogPost);
     }
+
+    @Override
+    public Comment getCommentById(int commentId) {
+        return commentRepository.findById(commentId).get();
+    }
 }

@@ -2,8 +2,10 @@ package be.intecbrussel.blogcentral.controller;
 
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
+import be.intecbrussel.blogcentral.model.Comment;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import be.intecbrussel.blogcentral.service.BlogpostService;
+import be.intecbrussel.blogcentral.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +18,15 @@ import java.util.List;
 public class BlogPostController {
     private BlogpostService blogpostService;
     private AuthorService authorService;
+    private CommentService commentService;
 
     @Autowired
-    public BlogPostController(BlogpostService blogpostService, AuthorService authorService) {
+    public BlogPostController(BlogpostService blogpostService,
+                              AuthorService authorService,
+                              CommentService commentService) {
         this.blogpostService = blogpostService;
         this.authorService = authorService;
+        this.commentService = commentService;
     }
 
     @GetMapping("")
@@ -32,7 +38,10 @@ public class BlogPostController {
     @GetMapping("/{postId}")
     public String getFullPost(@PathVariable int postId, Model model) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
+        List<Comment> commentsBlogPost =
+                commentService.getAllCommentsForBlogPost(blogPost);
         model.addAttribute(blogPost);
+        model.addAttribute(commentsBlogPost);
         return "full-blog-post";
     }
 
