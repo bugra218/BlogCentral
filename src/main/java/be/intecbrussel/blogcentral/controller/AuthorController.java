@@ -56,11 +56,11 @@ public class AuthorController {
     }
 
     // update Author - get author based on id - return author profile form
-    @GetMapping("/update/{id}")
-    public String showAuthorProfileForm(@PathVariable String id,
+    @GetMapping("/update")
+    public String showAuthorProfileForm(@RequestParam int id,
                                               Model model) {
-        Integer idInt = Integer.parseInt(id);
-        Author author = authorService.getAuthorById(idInt);
+//        Integer idInt = Integer.parseInt(id);
+        Author author = authorService.getAuthorById(id);
         System.out.println(author);
         model.addAttribute("author", author);
         return "update-form";
