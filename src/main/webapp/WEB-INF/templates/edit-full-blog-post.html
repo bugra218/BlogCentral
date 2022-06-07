@@ -10,6 +10,7 @@
         Body: <input type="text" th:value="${blogPost.body}" name="body">
         <input type="hidden" th:value="${blogPost.author.id}" name="author">
         <input type="hidden" th:value="${blogPost.id}" name="id">
+        <input type="hidden" th:value="${blogPost.timestampCreated}" name="timestampCreated">
         <input type="submit" value="Edit">
     </form>
 </body>

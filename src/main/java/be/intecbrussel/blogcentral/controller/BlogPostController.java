@@ -64,8 +64,6 @@ public class BlogPostController {
         return "edit-full-blog-post";
     }
 
-    // TODO: 06/06/2022
-    // saving changes still doesn't work
     @PostMapping("/{postId}/saveChanges")
     public String saveBlogPostChanges(@ModelAttribute("blogpost") BlogPost blogPost) {
         blogpostService.updateBlogPost(blogPost);
