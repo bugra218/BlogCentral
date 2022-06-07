@@ -5,13 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-    <form th:action="@{{postId}/editPost(postId = ${blogPost.id})}">
+    <form th:action="@{{postId}/delete(postId = ${blogPost.id})}" th:method="post">
         <h1 style="display: inline-block" th:text="${blogPost.title}"></h1>
         <p style="display: inline-block; float: right">Author: </p>
         <b><p style="display: inline-block; float: right" th:text="${blogPost.author.userName}"></p></b> <br/>
         <p th:text="${blogPost.body}"></p>
-<!--        <input type="submit" value="Delete">-->
-        <input type="submit" value="Edit">
+        <input type="submit" value="Delete">
+<!--        <input type="submit" value="Edit">-->
     </form>
 </body>
 </html>

@@ -6,7 +6,7 @@
 </head>
 <body>
     <div th:each="post:${blogPosts}">
-        <a style="display: inline-block" th:text="${post.title}" th:href="@{{postId}(postId = ${post.id})}"></a> <br/>
+        <a style="display: inline-block" th:text="${post.title}" th:href="@{blogpost/{postId}(postId = ${post.id})}"></a> <br/>
         <p th:text="${post.author.userName}"></p>
         <hr>
     </div>

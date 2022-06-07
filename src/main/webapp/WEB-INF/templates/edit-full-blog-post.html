@@ -5,9 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-    <form th:action="@{{postId}/saveChanges(postId = ${blogPost.id})}" method="post">
-        Title: <input type="text" th:value="${blogPost.title}" name="title">
+    <form th:action="@{saveChanges}" method="post">
+        Title: <input type="text" th:value="${blogPost.title}" name="title"> <br/>
         Body: <input type="text" th:value="${blogPost.body}" name="body">
+        <input type="hidden" th:value="${blogPost.author.id}" name="author">
+        <input type="hidden" th:value="${blogPost.id}" name="id">
         <input type="submit" value="Edit">
     </form>
 </body>

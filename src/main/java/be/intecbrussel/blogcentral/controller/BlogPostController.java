@@ -67,10 +67,9 @@ public class BlogPostController {
     // TODO: 06/06/2022
     // saving changes still doesn't work
     @PostMapping("/{postId}/saveChanges")
-    public String saveBlogPostChanges(@PathVariable int postId) {
-        BlogPost blogPost = blogpostService.getBlogPostById(postId);
+    public String saveBlogPostChanges(@ModelAttribute("blogpost") BlogPost blogPost) {
         blogpostService.updateBlogPost(blogPost);
-        return "redirect:../";
+        return "redirect:./";
     }
 
     @PostMapping("/{postId}/delete")
