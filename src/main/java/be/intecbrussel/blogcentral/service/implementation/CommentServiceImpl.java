@@ -7,6 +7,7 @@ import be.intecbrussel.blogcentral.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -18,9 +19,11 @@ public class CommentServiceImpl implements CommentService {
         this.commentRepository = commentRepository;
     }
 
-
     @Override
     public void createComment(Comment comment) {
+        java.util.Date date = new java.util.Date();
+        Date now = new Date(date.getTime());
+        comment.setTimestampCreated(now);
         commentRepository.save(comment);
     }
 

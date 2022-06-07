@@ -38,6 +38,7 @@ public class BlogPostController {
     @GetMapping("/{postId}")
     public String getFullPost(@PathVariable int postId, Model model) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
+        // added list of comments in here
         List<Comment> commentsBlogPost =
                 commentService.getAllCommentsForBlogPost(blogPost);
         model.addAttribute(blogPost);
