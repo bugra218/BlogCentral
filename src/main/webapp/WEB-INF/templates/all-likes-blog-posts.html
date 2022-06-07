@@ -5,8 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-    <div th:each="post:${blogPosts}">
+    <div th:each="post:${blogPosts}" >
         <a style="display: inline-block" th:text="${post.title}" th:href="@{like/{postId}(postId = ${post.id})}"></a> <br/>
+        <p th:text="${post.author.userName}"></p>
+<!--        Likes: <p th:text="${likes}"></p>-->
         <hr>
     </div>
 </body>
