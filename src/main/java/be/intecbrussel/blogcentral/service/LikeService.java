@@ -1,10 +1,11 @@
 package be.intecbrussel.blogcentral.service;
 
+import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
-import be.intecbrussel.blogcentral.model.Like;
 
 public interface LikeService {
-    Like getLikesForPost(BlogPost blogPost);
-    void likePost(BlogPost blogPost);
-    void removeLike(Like like);
+    void likePost(BlogPost blogPost, Author author);
+    void removeLike(BlogPost blogPost, Author author);
+    int countLikeByBlogPost_Id(int id);
+    Boolean UserLikedPost(BlogPost blogPost, Author author);
 }

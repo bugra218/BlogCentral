@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{{postId}/likePost(postId = ${blogPost.id})}" th:object="${likeForm}" method="post">
+        Liker: <p th:name="liker" th:value="${author.id}" th:text="${author.firstName}"></p>
+        <h1 style="display: inline-block" th:text="${blogPost.title}"></h1>
+        <p style="display: inline-block; float: right">Author: </p>
+        <b><p style="display: inline-block; float: right" th:text="${blogPost.author.userName}"></p></b> <br/>
+        <p th:text="${blogPost.body}"></p>
+        <p style="display: inline-block">Like button: </p>
+        <p th:text="${likes}"></p>
+        <input id="likedThisPost" type="checkbox" name="likeButton" th:checked="${userLikedThisPost}">
+        <input id="likeStatus" type="hidden" name="likeButtonStatus" th:value="${userLikedThisPost}">
+        <p th:text="${likedPost}"></p>
+        <input type="submit">
+    </form>
+</body>
+</html>
