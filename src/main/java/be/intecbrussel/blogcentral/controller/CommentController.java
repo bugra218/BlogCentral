@@ -1,5 +1,6 @@
 package be.intecbrussel.blogcentral.controller;
 
+import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.model.Comment;
 import be.intecbrussel.blogcentral.service.AuthorService;
@@ -30,26 +31,27 @@ public class CommentController {
 
     // method to create a new comment - 'add comment' @BlogPost id ->
     // BlogPostService needed - comment bound to Author -> AuthorService needed
-    @GetMapping("/blogpost/createComment") // placeholder
-    public String addComment(@RequestParam int postId, Model model) {
+    @GetMapping("/blogpost/{postId}/writeComment") // placeholder
+    public String addComment(@PathVariable int postId, Model model) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
+        List<Author> authors = authorService.getAllAuthors();
 
         Comment comment = new Comment();
-        comment.setAuthor(blogPost.getAuthor());
         comment.setBlogPost(blogPost);
 
-        // diagnostic println
-        System.out.println(comment);
-
+        model.addAttribute("authors", authors);
         model.addAttribute("comment", comment);
         return "create-comment";
     }
 
     // method to save a comment
-    @PostMapping("/blogpost/saveComment")
-    public String saveComment(@ModelAttribute Comment comment) {
+    @PostMapping("/saveComment")
+    public String saveComment(@ModelAttribute("comment") Comment comment) {
+//        BlogPost blogPost = comment.getBlogPost();
+//        int postId = blogPost.getId();
         commentService.createComment(comment);
-        return "redirect:/full-blog-post";
+//        return "redirect:/home-blogpost/" + postId;
+        return "home-blogcentral"; // placeholder
     }
 
     // method to collect an individual comment by id, to update / delete

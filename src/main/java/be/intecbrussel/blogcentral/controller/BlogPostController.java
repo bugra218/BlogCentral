@@ -32,7 +32,7 @@ public class BlogPostController {
     @GetMapping("")
     public String getAllBlogPosts(Model model) {
         model.addAttribute("blogPosts", blogpostService.getAllBlogPosts());
-        return "all-blog-posts";
+        return "home-blogcentral";
     }
 
     @GetMapping("/{postId}")
@@ -43,26 +43,27 @@ public class BlogPostController {
                 commentService.getAllCommentsForBlogPost(blogPost);
         model.addAttribute(blogPost);
         model.addAttribute(commentsBlogPost);
-        return "full-blog-post";
+        return "home-blogpost";
     }
 
-    @GetMapping("/{authorId}/posts")
-    public String getAllPostsFromUser(@PathVariable int authorId, Model model) {
-        Author author = authorService.getAuthorById(authorId);
-        List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
-        model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
-        return "all-blog-posts-from-author";
-    }
+    // getting all posts from Author is taken care of in AuthorController
+//    @GetMapping("/{authorId}/posts")
+//    public String getAllPostsFromUser(@PathVariable int authorId, Model model) {
+//        Author author = authorService.getAuthorById(authorId);
+//        List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
+//        model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
+//        return "all-blog-posts-from-author";
+//    }
 
     @GetMapping("/writePost")
     public String createBlogPost(Model model) {
         List<Author> authors = authorService.getAllAuthors();
         model.addAttribute("authors", authors);
-        return "create-blog-post";
+        return "create-blogpost";
     }
 
     @PostMapping("/createPost")
-    public String saveBlogPost(@ModelAttribute("blogpost")BlogPost blogPost) {
+    public String saveBlogPost(@ModelAttribute("blogpost") BlogPost blogPost) {
         blogpostService.createBlogPost(blogPost);
         return "redirect:";
     }
@@ -71,7 +72,7 @@ public class BlogPostController {
     public String editBlogPost(@PathVariable int postId, Model model) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         model.addAttribute(blogPost);
-        return "edit-full-blog-post";
+        return "update-blogpost";
     }
 
     @PostMapping("/{postId}/saveChanges")

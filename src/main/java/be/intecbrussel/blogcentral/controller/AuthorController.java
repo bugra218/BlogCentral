@@ -35,7 +35,8 @@ public class AuthorController {
     // get register-form new Author
     @GetMapping("/register")
     public String registerAuthor() {
-        return "register-author"; // placeholder
+
+        return "create-author"; // placeholder
     }
 
     // save new Author
@@ -55,7 +56,7 @@ public class AuthorController {
         List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
         model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
         model.addAttribute(author);
-        return "author-page"; // placeholder
+        return "home-author"; // placeholder
     }
 
     // update Author - get author based on id - return author profile form
