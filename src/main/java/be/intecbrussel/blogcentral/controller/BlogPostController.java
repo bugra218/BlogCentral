@@ -46,15 +46,6 @@ public class BlogPostController {
         return "home-blogpost";
     }
 
-    // getting all posts from Author is taken care of in AuthorController
-//    @GetMapping("/{authorId}/posts")
-//    public String getAllPostsFromUser(@PathVariable int authorId, Model model) {
-//        Author author = authorService.getAuthorById(authorId);
-//        List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
-//        model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
-//        return "all-blog-posts-from-author";
-//    }
-
     @GetMapping("/writePost")
     public String createBlogPost(Model model) {
         List<Author> authors = authorService.getAllAuthors();
