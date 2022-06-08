@@ -3,7 +3,6 @@ package be.intecbrussel.blogcentral.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +23,7 @@ public class Author {
     private String lastName;
 
     @Column(name="user_name")
-    private String userName;
+    private String username;
 
     private String password;
 

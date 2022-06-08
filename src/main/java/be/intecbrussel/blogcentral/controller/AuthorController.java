@@ -3,11 +3,15 @@ package be.intecbrussel.blogcentral.controller;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 // TODO: test
@@ -28,6 +32,13 @@ public class AuthorController {
         List<Author> authorsFromDb = authorService.getAllAuthors();
         model.addAttribute("authors", authorsFromDb);
         return "all-authors"; // placeholder
+    }
+    @GetMapping("/login")
+    public String login(HttpServletRequest request, HttpSession session) {
+        session.setAttribute(
+                "error", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION")
+        );
+        return "login";
     }
 
     // get register-form new Author
@@ -72,6 +83,18 @@ public class AuthorController {
         Integer idInt = Integer.parseInt(id);
         this.authorService.deleteAuthorById(idInt);
         return "redirect:/authors/"; // placeholder
+    }
+    private String getErrorMessage(HttpServletRequest request, String key) {
+        Exception exception = (Exception) request.getSession().getAttribute(key);
+        String error = "";
+        if (exception instanceof BadCredentialsException) {
+            error = "Invalid username and password!";
+        } else if (exception instanceof LockedException) {
+            error = exception.getMessage();
+        } else {
+            error = "Invalid username and password!";
+        }
+        return error;
     }
 
 }
