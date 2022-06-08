@@ -5,11 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-<!-- i think we need to split up this page in sections:
-1 reflect the blogpost
-2 have a reference to update the post
-3 have a reference to add a comment
--->
 
 <h1 style="display: inline-block" th:text="${blogPost.title}"></h1>
 <p style="display: inline-block; float: right">Author: </p>
@@ -18,12 +13,18 @@
 
 <!--edit button     add comment button    delete post button -->
     <form th:action="@{{postId}/editPost(postId = ${blogPost.id})}">
-<!--        <h1 style="display: inline-block" th:text="${blogPost.title}"></h1>-->
-<!--        <p style="display: inline-block; float: right">Author: </p>-->
-<!--        <b><p style="display: inline-block; float: right" th:text="${blogPost.author.userName}"></p></b> <br/>-->
-<!--        <p th:text="${blogPost.body}"></p>-->
-<!--        <input type="submit" value="Delete">-->
         <input type="submit" value="Edit">
     </form>
+<hr>
+
+<div th:each="comment:${commentsBlogPost}">
+    <p style="display: inline-block" th:text="${comment.body}"></p><br>
+    <p style="display: inline-block" th:text="${comment.author.userName}">&emsp;</p>
+    <p style="display: inline-block" th:text="${comment.timestampCreated}"></p>
+
+    <hr>
+</div>
+
+
 </body>
 </html>

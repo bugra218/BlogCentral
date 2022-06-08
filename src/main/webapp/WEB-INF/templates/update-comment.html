@@ -6,5 +6,15 @@
 </head>
 <body>
 
+<form th:action="@{saveUpdatedComment}" method="post">
+<!--    /blogpost/{postId}/saveComment-->
+    Your comment: <input th:value="${comment.body}" type="text" name="body"><br><br>
+    <input type="hidden" th:field="${comment.id}"/>
+    <input type="hidden" th:field="${comment.blogPost}"/>
+    <input type="hidden" th:field="${comment.author}"/>
+    <input type="hidden" th:field="${comment.timestampCreated}"/>
+    <input type="submit" value="Update"> <br><br>
+</form>
+
 </body>
 </html>

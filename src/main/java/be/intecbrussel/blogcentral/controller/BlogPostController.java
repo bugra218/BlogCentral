@@ -41,8 +41,8 @@ public class BlogPostController {
         // added list of comments
         List<Comment> commentsBlogPost =
                 commentService.getAllCommentsForBlogPost(blogPost);
-        model.addAttribute(blogPost);
-        model.addAttribute(commentsBlogPost);
+        model.addAttribute("blogPost", blogPost);
+        model.addAttribute("commentsBlogPost", commentsBlogPost);
         return "home-blogpost";
     }
 

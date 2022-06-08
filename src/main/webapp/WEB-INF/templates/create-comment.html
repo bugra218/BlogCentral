@@ -6,18 +6,18 @@
 </head>
 <body>
 
-<h3 style="display: inline-block" th:text="${comment.blogPost.title}"></h3><br>
-<p style="display: inline-block" th:text="${comment.blogPost.body}"></p><br>
+<h3 style="display: inline-block" th:text="${blogPost.title}"></h3><br>
+<p style="display: inline-block" th:text="${blogPost.body}"></p><br>
 <p style="display: inline-block;font-size: 0.8em"
-   th:text="${comment.blogPost.author.userName}">&emsp</p>
+   th:text="${blogPost.author.userName}">&emsp</p>
 <p style="display: inline-block;font-size: 0.8em"
-   th:text="${comment.blogPost.timestampCreated}"></p>
+   th:text="${blogPost.timestampCreated}"></p>
 
 <hr>
 
 <p style="display: inline-block">Leave a comment</p>
 
-<form th:action="@{/saveComment}" method="post">
+<form th:action="@{saveComment}" method="post">
 
     Author:
     <select name="author">
