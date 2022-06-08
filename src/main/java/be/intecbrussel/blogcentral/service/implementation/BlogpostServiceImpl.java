@@ -7,6 +7,8 @@ import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -20,6 +22,9 @@ public class BlogpostServiceImpl implements BlogpostService {
 
     @Override
     public void createBlogPost(BlogPost blogPost) {
+        java.util.Date date = new java.util.Date();
+        Date now = new Date(date.getTime());
+        blogPost.setTimestampCreated(now);
         blogpostRepository.save(blogPost);
     }
 

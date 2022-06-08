@@ -1,0 +1,27 @@
+<!-- author profile page with a link to update. Called in AuthorController.
+This should be the home page of the author, so integration with
+all-blog-posts-from-author (triggered in BLogPostController is needed >>> Moved
+getAllPostsFromUser to AuthorController -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Home</title>
+</head>
+<body>
+
+<p th:text="${author.firstName}"></p>
+<p th:text="${author.userName}"></p>
+
+<a th:href="@{/authors/update(authorId=${author.id})}">Update profile</a>
+
+<hr>
+
+<div th:each="post:${postsFromAuthor}">
+    <a style="display: inline-block" th:text="${post.title}" th:href="@{/blogpost/{postId}(postId = ${post.id})}"></a> <br/>
+    <p th:text="${post.timestampCreated}"></p>
+    <hr>
+</div>
+
+</body>
+</html>

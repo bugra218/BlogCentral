@@ -1,3 +1,5 @@
+<!-- called in AuthorController, returns pre-filled author-profile-form
+for Author to update and save -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -10,7 +12,7 @@
     First name: <input th:value="${author.firstName}" type="text" name="firstName"><br><br>
     Last name: <input th:value="${author.lastName}" type="text" name="lastName"><br><br>
     Email: <input th:value="${author.email}" type="text" name="email"> <br><br>
-    Street: <input th:value="${author.street}"type="text" name="street"><br><br>
+    Street: <input th:value="${author.street}" type="text" name="street"><br><br>
     House number: <input th:value="${author.houseNr}" type="text" name="houseNr"> <br><br>
     City: <input th:value="${author.city}" type="text" name="city"> <br><br>
     Zipcode: <input th:value="${author.zip}" type="text" name="zip"> <br><br>

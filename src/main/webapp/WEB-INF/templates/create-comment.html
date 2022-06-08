@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create comment</title>
+</head>
+<body>
+
+<h3 style="display: inline-block" th:text="${comment.blogPost.title}"></h3><br>
+<p style="display: inline-block" th:text="${comment.blogPost.body}"></p><br>
+<p style="display: inline-block;font-size: 0.8em"
+   th:text="${comment.blogPost.author.userName}">&emsp</p>
+<p style="display: inline-block;font-size: 0.8em"
+   th:text="${comment.blogPost.timestampCreated}"></p>
+
+<hr>
+
+<p style="display: inline-block">Leave a comment</p>
+
+<form th:action="@{/saveComment}" method="post">
+
+    Author:
+    <select name="author">
+        <option th:each="author:${authors}" th:value="${author.id}"
+                th:text="${author.firstName}"></option>
+    </select> <br><br>
+
+    Type your comment: <input type="text" name="body"><br><br>
+    <input type="submit" value="Save comment"> <br>
+
+</form>
+
+</body>
+</html>

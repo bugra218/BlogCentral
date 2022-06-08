@@ -1,29 +1,31 @@
 package be.intecbrussel.blogcentral.controller;
 
 import be.intecbrussel.blogcentral.model.Author;
+import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.service.AuthorService;
+import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-
-// TODO: test
 
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
     private AuthorService authorService;
+    private BlogpostService blogpostService;
 
     @Autowired
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(AuthorService authorService,
+                            BlogpostService blogpostService) {
         this.authorService = authorService;
+        this.blogpostService = blogpostService;
     }
 
     // get all Authors
-    @GetMapping("/")
+    @GetMapping("")
     public String getAllAuthors(Model model){
         List<Author> authorsFromDb = authorService.getAllAuthors();
         model.addAttribute("authors", authorsFromDb);
@@ -33,7 +35,8 @@ public class AuthorController {
     // get register-form new Author
     @GetMapping("/register")
     public String registerAuthor() {
-        return "register-form"; // placeholder
+
+        return "create-author"; // placeholder
     }
 
     // save new Author
@@ -47,31 +50,33 @@ public class AuthorController {
     // get an Author based on id - return Author home page
     // TODO: consider username as parameter and use that as URL for
     //  Author homepage. Also, try-catch to avoid NPE / wrong format
-    @GetMapping("/{id}")
-    public String showAuthorPage(@PathVariable String id, Model model) {
-        Integer idInt = Integer.parseInt(id);
-        Author author = authorService.getAuthorById(idInt);
+    @GetMapping("/home")
+    public String getAuthorById(@RequestParam int authorId, Model model) {
+        Author author = authorService.getAuthorById(authorId);
+        List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
+        model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
         model.addAttribute(author);
-        return "author-page"; // placeholder
+        return "home-author"; // placeholder
     }
 
     // update Author - get author based on id - return author profile form
     @GetMapping("/update")
-    public String showAuthorProfileForm(@RequestParam int id,
+    public String showAuthorProfileForm(@RequestParam int authorId,
                                               Model model) {
-//        Integer idInt = Integer.parseInt(id);
-        Author author = authorService.getAuthorById(id);
+        Author author = authorService.getAuthorById(authorId);
+        // diagnostic println
         System.out.println(author);
+
         model.addAttribute("author", author);
-        return "update-form";
+        return "update-author";
     }
 
     // delete Author
-    @GetMapping("/delete/{id}")
-    public String deleteAuthor(@PathVariable String id) {
-        Integer idInt = Integer.parseInt(id);
-        this.authorService.deleteAuthorById(idInt);
+    @GetMapping("/delete")
+    public String deleteAuthor(@RequestParam int authorId) {
+        this.authorService.deleteAuthorById(authorId);
         return "redirect:/authors/"; // placeholder
+//        return "all-authors"; // placeholder
     }
 
 }

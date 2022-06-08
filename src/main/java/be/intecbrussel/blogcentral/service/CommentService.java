@@ -10,4 +10,6 @@ public interface CommentService {
     void updateComment(Comment comment);
     void deleteComment(Comment comment);
     List<Comment> getAllCommentsForBlogPost(BlogPost blogPost);
+
+    Comment getCommentById(int commentId);
 }
