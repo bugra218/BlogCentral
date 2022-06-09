@@ -3,11 +3,14 @@ package be.intecbrussel.blogcentral.controller;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 // TODO: test
@@ -38,9 +41,19 @@ public class AuthorController {
 
     // save new Author
     @PostMapping("/save")
-    public String saveAuthor(@ModelAttribute("author") Author author) {
-        authorService.createAuthor(author);
-        return "redirect:/authors/"; // placeholder
+    public String saveAuthor(@ModelAttribute("author") Author author, RedirectAttributes attributes) {
+        try {
+            authorService.createAuthor(author);
+            return "redirect:/authors/"; // placeholder
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            attributes.addFlashAttribute( "errorMessage", "Username already in use! please try another username.");
+            return "redirect:register";
+        } catch (Exception e) {
+            e.printStackTrace();
+            attributes.addFlashAttribute( "errorMessage", "An unknown error occurred.");
+            return "redirect:register";
+        }
         // TODO: redirect to page where 'create Author' was initiated
     }
 

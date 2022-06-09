@@ -4,6 +4,7 @@ import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.repository.AuthorRepository;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void createAuthor(Author author) {
+    public void createAuthor(Author author) throws DataIntegrityViolationException {
         authorRepository.save(author);
     }
 

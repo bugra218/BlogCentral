@@ -7,6 +7,7 @@
 <body>
 
 <form th:action="@{save}" method="post">
+    <b><p style="color: red" th:text="${errorMessage}"></p></b>
     First name: <input type="text" name="firstName"><br><br>
     Last name: <input type="text" name="lastName"><br><br>
     Email: <input type="text" name="email"> <br><br>

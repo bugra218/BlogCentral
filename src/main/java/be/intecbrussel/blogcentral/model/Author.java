@@ -23,7 +23,7 @@ public class Author {
     @Column(name="last_name")
     private String lastName;
 
-    @Column(name="user_name")
+    @Column(name="user_name", unique = true)
     private String userName;
 
     private String password;
