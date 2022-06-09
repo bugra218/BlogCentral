@@ -24,7 +24,8 @@ public class CommentController {
     private BlogpostService blogpostService;
     private AuthorService authorService;
 
-    private BlogPost blogPost;
+    private BlogPost blogPost; // it would be great to set the specific
+    // blogpost when CommentController is created. but how?
 
     @Autowired
     public CommentController(CommentService commentService,
@@ -35,12 +36,13 @@ public class CommentController {
         this.authorService = authorService;
     }
 
-    // method to create a new comment - 'add comment' @BlogPost id ->
-    // BlogPostService needed - comment bound to Author -> AuthorService needed
+    // method to create a new comment
     @GetMapping(value = "/blogpost/{postId}/writeComment") // placeholder
     public String addComment(@PathVariable int postId, Model model) {
 
-        List<Author> authors = authorService.getAllAuthors();
+        List<Author> authors = authorService.getAllAuthors(); // temporary,
+        // to allow selecting author for a comment. When security is
+        // implemented, we should get the logged user automatically
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
 
         model.addAttribute("authors", authors);
@@ -50,13 +52,13 @@ public class CommentController {
     }
 
     // method to save a new comment
-//    @PostMapping(value = "/blogpost/{postId}/saveComment")
     @PostMapping(value = "/blogpost/{postId}/saveComment")
     public String saveComment(@PathVariable int postId,
                               @ModelAttribute("comment") Comment comment) {
 
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         comment.setBlogPost(blogPost);
+
         commentService.createComment(comment);
 
         return "redirect:/blogpost/" + postId;
@@ -76,34 +78,26 @@ public class CommentController {
         return "update-comment";
     }
 
+    // method to save updated comment
     @PostMapping(value = "/saveUpdatedComment")
     public String saveUpdatedComment(@ModelAttribute("comment") Comment comment) {
 
         int postId = comment.getBlogPost().getId();
 
         commentService.updateComment(comment);
+
         return "redirect:/blogpost/" + postId;
     }
 
-//    @RequestMapping(value
-//    = "/blogpost/{postId}/saveUpdatedComment/{commentId}")
-//    public String saveUpdatedComment(@PathVariable int commentId,
-//                                     @ModelAttribute("comment") Comment comment) {
-//
-//        BlogPost blogPost = comment.getBlogPost();
-//        int postId = blogPost.getId();
-//
-//        commentService.updateComment(comment);
-//        return "redirect:/blogpost/" + postId;
-//    }
-
-    // method to delete a comment - navigate to specific comment
-    // with id - bound to user -> AuthorService needed
+    // method to delete a comment
     @GetMapping(value = "/deleteComment/{commentId}")
     public String deleteComment(@PathVariable int commentId, Model model) {
+
         Comment comment = commentService.getCommentById(commentId);
+        int postId = comment.getBlogPost().getId();
+
         commentService.deleteComment(comment);
-//        System.out.println("comment deleted");
-        return "redirect:/authors"; // placeholder, needs redirect to blogpost
+
+        return "redirect:/blogpost/" + postId; // placeholder, needs redirect to blogpost
     }
 }

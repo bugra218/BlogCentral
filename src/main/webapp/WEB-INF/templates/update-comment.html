@@ -6,8 +6,7 @@
 </head>
 <body>
 
-<form th:action="@{saveUpdatedComment}" method="post">
-<!--    /blogpost/{postId}/saveComment-->
+<form th:action="@{/saveUpdatedComment}" method="post">
     Your comment: <input th:value="${comment.body}" type="text" name="body"><br><br>
     <input type="hidden" th:field="${comment.id}"/>
     <input type="hidden" th:field="${comment.blogPost}"/>
