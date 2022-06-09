@@ -97,7 +97,6 @@ public class CommentController {
         int postId = comment.getBlogPost().getId();
 
         commentService.deleteComment(comment);
-
-        return "redirect:/blogpost/" + postId; // placeholder, needs redirect to blogpost
+        return "redirect:/blogpost/" + postId;
     }
 }

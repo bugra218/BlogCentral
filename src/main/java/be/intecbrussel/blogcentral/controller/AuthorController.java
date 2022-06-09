@@ -27,8 +27,11 @@ public class AuthorController {
     // get all Authors
     @GetMapping("")
     public String getAllAuthors(Model model){
+
         List<Author> authorsFromDb = authorService.getAllAuthors();
+
         model.addAttribute("authors", authorsFromDb);
+
         return "all-authors"; // placeholder
     }
 
@@ -42,7 +45,9 @@ public class AuthorController {
     // save new Author
     @PostMapping("/save")
     public String saveAuthor(@ModelAttribute("author") Author author) {
+
         authorService.createAuthor(author);
+
         return "redirect:/authors/"; // placeholder
         // TODO: redirect to page where 'create Author' was initiated
     }
@@ -52,10 +57,13 @@ public class AuthorController {
     //  Author homepage. Also, try-catch to avoid NPE / wrong format
     @GetMapping("/home")
     public String getAuthorById(@RequestParam int authorId, Model model) {
+
         Author author = authorService.getAuthorById(authorId);
         List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
+
         model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
         model.addAttribute(author);
+
         return "home-author"; // placeholder
     }
 
@@ -63,20 +71,21 @@ public class AuthorController {
     @GetMapping("/update")
     public String showAuthorProfileForm(@RequestParam int authorId,
                                               Model model) {
+
         Author author = authorService.getAuthorById(authorId);
-        // diagnostic println
-        System.out.println(author);
 
         model.addAttribute("author", author);
+
         return "update-author";
     }
 
     // delete Author
     @GetMapping("/delete")
     public String deleteAuthor(@RequestParam int authorId) {
+
         this.authorService.deleteAuthorById(authorId);
+
         return "redirect:/authors/"; // placeholder
-//        return "all-authors"; // placeholder
     }
 
 }
