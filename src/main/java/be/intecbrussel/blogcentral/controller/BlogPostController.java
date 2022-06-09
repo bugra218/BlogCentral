@@ -29,9 +29,23 @@ public class BlogPostController {
         this.commentService = commentService;
     }
 
+    // this sorts ascending by date by providing a '?field=timestampCreated'
+    // parameter in the url (any property can be given as param)
     @GetMapping("")
-    public String getAllBlogPosts(Model model) {
-        model.addAttribute("blogPosts", blogpostService.getAllBlogPosts());
+    public String getAllBlogPosts(@RequestParam String field, Model model) {
+        model.addAttribute("blogPosts", blogpostService.getAllBlogPosts(field));
+        return "home-blogcentral";
+    }
+
+    // this sorts descending by date by providing a '?field=timestampCreated'
+    // parameter in the url (any property can be given as param)
+    @GetMapping("/descending")
+    public String getAllBlogPostsSorted(@RequestParam String field,
+                                        Model model) {
+
+        model.addAttribute("blogPosts",
+                           blogpostService.getAllBlogPostsDescending(field));
+
         return "home-blogcentral";
     }
 

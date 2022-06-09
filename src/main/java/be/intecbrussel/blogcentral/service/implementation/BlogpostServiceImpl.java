@@ -5,6 +5,7 @@ import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.repository.BlogpostRepository;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -53,8 +54,13 @@ public class BlogpostServiceImpl implements BlogpostService {
     }
 
     @Override
-    public List<BlogPost> getAllBlogPosts() {
-        return blogpostRepository.findAll();
+    public List<BlogPost> getAllBlogPosts(String field) {
+        return blogpostRepository.findAll(Sort.by(Sort.Direction.DESC, field));
+    }
+
+    @Override
+    public List<BlogPost> getAllBlogPostsDescending(String field) {
+        return blogpostRepository.findAll(Sort.by(Sort.Direction.DESC, field));
     }
 
     @Override
