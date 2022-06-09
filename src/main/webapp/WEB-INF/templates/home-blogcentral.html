@@ -10,7 +10,7 @@ BlogPostController getAllBlogPost method -->
     <div th:each="post:${blogPosts}">
         <a style="display: inline-block" th:text="${post.title}" th:href="@{/blogpost/{postId}(postId = ${post.id})}"></a> <br/>
         <p th:text="${post.author.userName}"></p>
-        <p th:text="${post.timestampCreated}"></p>
+        <p th:text="${post.timestampCreatedDisplay}"></p>
         <hr>
     </div>
 </body>

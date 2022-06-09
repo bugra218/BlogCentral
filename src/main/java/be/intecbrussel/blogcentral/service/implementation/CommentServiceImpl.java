@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -21,14 +23,19 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void createComment(Comment comment) {
-        java.util.Date date = new java.util.Date();
-        Date now = new Date(date.getTime());
-        comment.setTimestampCreated(now);
+        Timestamp ts = Timestamp.from(Instant.now());
+        String ts_created = String.format("%1$Td %1$Tb %1$Ty, %1$TR", ts);
+        comment.setTimestampCreatedDisplay(ts_created);
+        comment.setTimestampUpdatedDisplay(ts_created);
         commentRepository.save(comment);
     }
 
     @Override
     public void updateComment(Comment comment) {
+        Timestamp ts = Timestamp.from(Instant.now());
+        comment.setTimestampUpdated(ts);
+        String ts_updated = String.format("%1$Td %1$Tb %1$Ty, %1$TR", ts);
+        comment.setTimestampUpdatedDisplay(ts_updated);
         commentRepository.save(comment);
     }
 
