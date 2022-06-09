@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:each="tag:${tags}" method="post">
+        <a th:href="@{{tagId}/(tagId = ${tag.id})}">Tagname: <b><p th:text="${tag.tagName}"></p></b></a>
+        <hr>
+    </div>
+</body>
+</html>

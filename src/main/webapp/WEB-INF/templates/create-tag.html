@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{save}" method="post">
+        Tagname: <input type="text" name="tagName">
+        <input type="submit" value="Create new tag">
+    </form>
+</body>
+</html>

@@ -23,7 +23,7 @@ public class BlogPostController {
         this.authorService = authorService;
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public String getAllBlogPosts(Model model) {
         model.addAttribute("blogPosts", blogpostService.getAllBlogPosts());
         return "all-blog-posts";
@@ -52,7 +52,7 @@ public class BlogPostController {
     }
 
     @PostMapping("/createPost")
-    public String saveBlogPost(@ModelAttribute("blogpost")BlogPost blogPost) {
+    public String saveBlogPost(@ModelAttribute("blogpost") BlogPost blogPost) {
         blogpostService.createBlogPost(blogPost);
         return "redirect:";
     }

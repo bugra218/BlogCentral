@@ -33,6 +33,11 @@ public class BlogPost {
     @Column(name="timestamp_created")
     private Date timestampCreated;
 
+    @ManyToMany
+    @JoinColumn(name="tag_id") // this way the id from author is taken
+    // over in a column in BlogPost table as foreign key
+    private List<Tag> tags;
+
 //    @OneToMany
 //    @Column(name="comment_list")
 //    private List<Comment> commentList;

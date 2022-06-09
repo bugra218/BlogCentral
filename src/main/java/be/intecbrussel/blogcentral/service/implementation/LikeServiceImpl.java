@@ -3,7 +3,6 @@ package be.intecbrussel.blogcentral.service.implementation;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.model.Like;
-import be.intecbrussel.blogcentral.repository.BlogpostRepository;
 import be.intecbrussel.blogcentral.repository.LikeRepository;
 import be.intecbrussel.blogcentral.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class LikeServiceImpl implements LikeService {
     private LikeRepository likeRepository;
-    private BlogpostRepository blogpostRepository;
 
     @Autowired
-    public LikeServiceImpl(LikeRepository likeRepository, BlogpostRepository blogpostRepository) {
+    public LikeServiceImpl(LikeRepository likeRepository) {
         this.likeRepository = likeRepository;
-        this.blogpostRepository = blogpostRepository;
     }
 
     @Override

@@ -27,7 +27,7 @@ public class LikeController {
         this.likeService = likeService;
         this.blogpostService = blogpostService;
         this.authorService = authorService;
-        this.loggedUser = authorService.getAuthorById(2);
+        this.loggedUser = authorService.getAuthorById(1);
     }
 
     @GetMapping("")
