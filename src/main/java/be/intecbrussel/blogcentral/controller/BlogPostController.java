@@ -32,8 +32,12 @@ public class BlogPostController {
     // this sorts ascending by date by providing a '?field=timestampCreated'
     // parameter in the url (any property can be given as param)
     @GetMapping("")
-    public String getAllBlogPosts(@RequestParam String field, Model model) {
-        model.addAttribute("blogPosts", blogpostService.getAllBlogPosts(field));
+    public String getAllBlogPosts(@RequestParam (name="field",
+            required = false, defaultValue = "timestampCreated")String field,
+                                  Model model) {
+        System.out.println(field);
+        model.addAttribute("blogPosts",
+                           blogpostService.getAllBlogPosts(field));
         return "home-blogcentral";
     }
 

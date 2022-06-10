@@ -55,7 +55,7 @@ public class BlogpostServiceImpl implements BlogpostService {
 
     @Override
     public List<BlogPost> getAllBlogPosts(String field) {
-        return blogpostRepository.findAll(Sort.by(Sort.Direction.DESC, field));
+        return blogpostRepository.findAll(Sort.by(Sort.Direction.ASC, field));
     }
 
     @Override
