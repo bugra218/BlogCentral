@@ -11,7 +11,7 @@
 <p style="display: inline-block;font-size: 0.8em"
    th:text="${blogPost.author.userName}">&emsp</p>
 <p style="display: inline-block;font-size: 0.8em"
-   th:text="${blogPost.timestampCreated}"></p>
+   th:text="${blogPost.timestampCreatedDisplay}"></p>
 
 <hr>
 
@@ -23,6 +23,7 @@
     <input type="hidden" th:field="${comment.blogPost}"/>
     <input type="hidden" th:field="${comment.author}"/>
     <input type="hidden" th:field="${comment.timestampCreated}"/>
+    <input type="hidden" th:field="${comment.timestampCreatedDisplay}"/>
     <input type="submit" value="Update"> <br><br>
 </form>
 

@@ -10,6 +10,7 @@
 <p style="display: inline-block; float: right">Author: </p>
 <b><p style="display: inline-block; float: right" th:text="${blogPost.author.userName}"></p></b> <br/>
 <p th:text="${blogPost.body}"></p>
+<p th:text="${blogPost.timestampCreatedDisplay}"></p>
 
 <!--edit button     add comment button    delete post button -->
     <form th:action="@{{postId}/editPost(postId = ${blogPost.id})}">
@@ -20,7 +21,7 @@
 <div th:each="comment:${commentsBlogPost}">
     <p style="display: inline-block" th:text="${comment.body}"></p><br>
     <p style="display: inline-block" th:text="${comment.author.userName}">&emsp;</p>
-    <p style="display: inline-block" th:text="${comment.timestampCreated}"></p>
+    <p style="display: inline-block" th:text="${comment.timestampCreatedDisplay}"></p>
 
     <hr>
 </div>

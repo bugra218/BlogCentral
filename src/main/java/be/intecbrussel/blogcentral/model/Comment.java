@@ -2,17 +2,15 @@ package be.intecbrussel.blogcentral.model;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.mapping.ToOne;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-//@AllArgsConstructor // gives an issue as this requires id should be
-//// provided
 @ToString
 public class Comment {
 
@@ -33,6 +31,16 @@ public class Comment {
 
     @CreationTimestamp
     @Column(name="timestamp_created")
-    private Date timestampCreated;
+    private Timestamp timestampCreated;
+
+    @Column(name ="timestamp_created_display")
+    private String timestampCreatedDisplay;
+
+    @CreationTimestamp
+    @Column(name="timestamp_updated")
+    private Timestamp timestampUpdated;
+
+    @Column(name ="timestamp_updated_display")
+    private String timestampUpdatedDisplay;
 
 }

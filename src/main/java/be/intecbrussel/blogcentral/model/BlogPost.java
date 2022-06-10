@@ -4,15 +4,12 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.List;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-//@AllArgsConstructor // gives an issue as this requires id should be
-//// provided
 @ToString
 public class BlogPost {
 
@@ -20,9 +17,8 @@ public class BlogPost {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne // is this the indication to indicate a foreign key?
-    @JoinColumn(name="author_id") // this way the id from author is taken
-    // over in a column in BlogPost table as foreign key
+    @ManyToOne
+    @JoinColumn(name="author_id")
     private Author author;
 
     private String title;
@@ -31,15 +27,16 @@ public class BlogPost {
 
     @CreationTimestamp
     @Column(name="timestamp_created")
-    private Date timestampCreated;
+    private Timestamp timestampCreated;
 
-    @ManyToMany
-    @JoinColumn(name="tag_id") // this way the id from author is taken
-    // over in a column in BlogPost table as foreign key
-    private List<Tag> tags;
+    @Column(name ="timestamp_created_display")
+    private String timestampCreatedDisplay;
 
-//    @OneToMany
-//    @Column(name="comment_list")
-//    private List<Comment> commentList;
+    @CreationTimestamp
+    @Column(name="timestamp_updated")
+    private Timestamp timestampUpdated;
+
+    @Column(name ="timestamp_updated_display")
+    private String timestampUpdatedDisplay;
 
 }

@@ -24,9 +24,6 @@ public class CommentController {
     private BlogpostService blogpostService;
     private AuthorService authorService;
 
-    private BlogPost blogPost; // it would be great to set the specific
-    // blogpost when CommentController is created. but how?
-
     @Autowired
     public CommentController(CommentService commentService,
                              BlogpostService blogpostService,
