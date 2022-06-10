@@ -29,7 +29,7 @@ public class BlogPostController {
         this.commentService = commentService;
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public String getAllBlogPosts(Model model) {
         model.addAttribute("blogPosts", blogpostService.getAllBlogPosts());
         return "home-blogcentral";

@@ -1,91 +1,130 @@
 package be.intecbrussel.blogcentral.controller;
 
+import be.intecbrussel.blogcentral.Exceptions.EmailFormatException;
+import be.intecbrussel.blogcentral.Exceptions.RequiredFieldsException;
+import be.intecbrussel.blogcentral.Exceptions.UsernameNotAvailableException;
+import be.intecbrussel.blogcentral.Exceptions.ZipcodeException;
 import be.intecbrussel.blogcentral.model.Author;
-import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.service.AuthorService;
-import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+// TODO: test
 
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
     private AuthorService authorService;
-    private BlogpostService blogpostService;
 
     @Autowired
-    public AuthorController(AuthorService authorService,
-                            BlogpostService blogpostService) {
+    public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
-        this.blogpostService = blogpostService;
     }
 
     // get all Authors
-    @GetMapping("")
+    @GetMapping("/")
     public String getAllAuthors(Model model){
-
         List<Author> authorsFromDb = authorService.getAllAuthors();
-
         model.addAttribute("authors", authorsFromDb);
-
         return "all-authors"; // placeholder
     }
 
     // get register-form new Author
     @GetMapping("/register")
     public String registerAuthor() {
-
-        return "create-author"; // placeholder
+        return "register-form"; // placeholder
     }
 
     // save new Author
     @PostMapping("/save")
-    public String saveAuthor(@ModelAttribute("author") Author author) {
+    public String saveAuthor(@ModelAttribute("author") Author author, BindingResult result, RedirectAttributes attributes) {
+        try {
+            // check if all required fields are filled
+            List<String> requiredFields = new ArrayList<>();
+            String authorEmail = author.getEmail();
+            requiredFields.add(author.getUserName());
+            requiredFields.add(author.getPassword());
+            requiredFields.add(author.getFirstName());
+            requiredFields.add(authorEmail);
+            if (requiredFields.contains("")) {
+                throw new RequiredFieldsException();
+            }
 
-        authorService.createAuthor(author);
+            // check if email format is correct
+            String[] splitedEmail;
+            if (authorEmail.contains("@")) {
+                splitedEmail = authorEmail.split("@");
+                if (!splitedEmail[1].contains(".")) {
+                    throw new EmailFormatException();
+                }
+            } else {
+                throw new EmailFormatException();
+            }
 
-        return "redirect:/authors/"; // placeholder
+            // check if zipcode is an actual number (value will default to 0 if a string was inputted instead)
+            if (Objects.equals(result.getRawFieldValue("zip"), 0)) {
+                throw new ZipcodeException();
+            }
+
+            // checks if inputted username is still available
+            List<Author> takenUsernames = authorService.getAllAuthors();
+            for (Author username : takenUsernames) {
+                if (username.getUserName().equals(author.getUserName())) {
+                    throw new UsernameNotAvailableException();
+                }
+            }
+
+            authorService.createAuthor(author);
+            return "redirect:/authors/"; // placeholder
+        } catch (RequiredFieldsException | UsernameNotAvailableException | ZipcodeException | EmailFormatException e) {
+            e.printStackTrace();
+            attributes.addFlashAttribute( "errorMessage", e.getMessage());
+            return "redirect:register";
+        } catch (Exception e) {
+            e.printStackTrace();
+            attributes.addFlashAttribute( "errorMessage", "An unknown error occurred.");
+            return "redirect:register";
+        }
         // TODO: redirect to page where 'create Author' was initiated
     }
 
     // get an Author based on id - return Author home page
     // TODO: consider username as parameter and use that as URL for
     //  Author homepage. Also, try-catch to avoid NPE / wrong format
-    @GetMapping("/home")
-    public String getAuthorById(@RequestParam int authorId, Model model) {
-
-        Author author = authorService.getAuthorById(authorId);
-        List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
-
-        model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
+    @GetMapping("/{id}")
+    public String showAuthorPage(@PathVariable String id, Model model) {
+        Integer idInt = Integer.parseInt(id);
+        Author author = authorService.getAuthorById(idInt);
         model.addAttribute(author);
-
-        return "home-author"; // placeholder
+        return "author-page"; // placeholder
     }
 
     // update Author - get author based on id - return author profile form
     @GetMapping("/update")
-    public String showAuthorProfileForm(@RequestParam int authorId,
-                                              Model model) {
-
-        Author author = authorService.getAuthorById(authorId);
-
+    public String showAuthorProfileForm(@RequestParam int id, Model model) {
+//        Integer idInt = Integer.parseInt(id);
+        Author author = authorService.getAuthorById(id);
+        System.out.println(author);
         model.addAttribute("author", author);
-
-        return "update-author";
+        return "update-form";
     }
 
     // delete Author
-    @GetMapping("/delete")
-    public String deleteAuthor(@RequestParam int authorId) {
-
-        this.authorService.deleteAuthorById(authorId);
-
+    @GetMapping("/delete/{id}")
+    public String deleteAuthor(@PathVariable String id) {
+        Integer idInt = Integer.parseInt(id);
+        this.authorService.deleteAuthorById(idInt);
         return "redirect:/authors/"; // placeholder
     }
-
 }

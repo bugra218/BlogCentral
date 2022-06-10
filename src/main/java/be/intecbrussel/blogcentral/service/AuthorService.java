@@ -1,11 +1,12 @@
 package be.intecbrussel.blogcentral.service;
 
 import be.intecbrussel.blogcentral.model.Author;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
 public interface AuthorService {
-    void createAuthor(Author author);
+    void createAuthor(Author author) throws DataIntegrityViolationException;
     void updateAuthor(Author author);
     void deleteAuthor(Author author);
     Author getAuthor(Author author);
