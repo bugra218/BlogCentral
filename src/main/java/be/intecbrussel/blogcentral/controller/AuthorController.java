@@ -48,6 +48,9 @@ public class AuthorController {
 
     // save new Author
     // BindingResult result in arguments is NEEDED
+    // TODO: update author profile makes use of this save as well - update
+    //  should however exclude the check on username exists (separate save
+    //  for update?)
     @PostMapping("/save")
     public String saveAuthor(@ModelAttribute("author") Author author, BindingResult result, RedirectAttributes attributes, HttpServletRequest request) {
         try {
@@ -97,7 +100,8 @@ public class AuthorController {
     }
 
     // get an Author based on id - return Author home page
-    //  TODO Author homepage. Also, try-catch to avoid NPE / wrong format
+    //  TODO: strange NrFormatException when creating new Author.
+    //   PathVariable is 'null'
     @GetMapping("/{id}")
     public String showAuthorPage(@PathVariable String id, Model model) {
         Integer idInt = Integer.parseInt(id);

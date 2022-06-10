@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -55,12 +52,12 @@ public class BlogpostServiceImpl implements BlogpostService {
 
     @Override
     public List<BlogPost> getAllBlogPosts(String field) {
-        return blogpostRepository.findAll(Sort.by(Sort.Direction.ASC, field));
+        return blogpostRepository.findAll(Sort.by(Sort.Direction.DESC, field));
     }
 
     @Override
     public List<BlogPost> getAllBlogPostsDescending(String field) {
-        return blogpostRepository.findAll(Sort.by(Sort.Direction.DESC, field));
+        return blogpostRepository.findAll(Sort.by(Sort.Direction.ASC, field));
     }
 
     @Override
@@ -72,11 +69,4 @@ public class BlogpostServiceImpl implements BlogpostService {
     public List<BlogPost> getAllBlogpostsByTitleContaining(String title) {
         return blogpostRepository.findAllByTitleContaining(title);
     }
-
-//    private BlogPost timestampConverter(BlogPost blogPost) {
-//        Timestamp timestampDB = blogPost.getTimestampCreated();
-//
-//
-//        return null; // placeholder
-//    }
 }
