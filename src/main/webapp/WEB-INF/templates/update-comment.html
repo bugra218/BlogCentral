@@ -6,8 +6,19 @@
 </head>
 <body>
 
+<h3 style="display: inline-block" th:text="${blogPost.title}"></h3><br>
+<p style="display: inline-block" th:text="${blogPost.body}"></p><br>
+<p style="display: inline-block;font-size: 0.8em"
+   th:text="${blogPost.author.userName}">&emsp</p>
+<p style="display: inline-block;font-size: 0.8em"
+   th:text="${blogPost.timestampCreated}"></p>
+
+<hr>
+
+<p style="display: inline-block">Update your comment</p><br>
+
 <form th:action="@{/saveUpdatedComment}" method="post">
-    Your comment: <input th:value="${comment.body}" type="text" name="body"><br><br>
+    Comment: <input th:value="${comment.body}" type="text" name="body"><br><br>
     <input type="hidden" th:field="${comment.id}"/>
     <input type="hidden" th:field="${comment.blogPost}"/>
     <input type="hidden" th:field="${comment.author}"/>

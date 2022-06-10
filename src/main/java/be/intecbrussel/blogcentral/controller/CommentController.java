@@ -69,11 +69,14 @@ public class CommentController {
     public String showComment(@PathVariable int commentId,
                               Model model) {
         Comment comment = commentService.getCommentById(commentId);
+        int postId = comment.getBlogPost().getId();
+        BlogPost blogPost = blogpostService.getBlogPostById(postId);
 
         // diagnostic println
         System.out.println(comment);
 
         model.addAttribute("comment", comment);
+        model.addAttribute("blogPost", blogPost);
 
         return "update-comment";
     }
@@ -91,7 +94,7 @@ public class CommentController {
 
     // method to delete a comment
     @GetMapping(value = "/deleteComment/{commentId}")
-    public String deleteComment(@PathVariable int commentId, Model model) {
+    public String deleteComment(@PathVariable int commentId) {
 
         Comment comment = commentService.getCommentById(commentId);
         int postId = comment.getBlogPost().getId();
