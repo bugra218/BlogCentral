@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:each="blogpost:${postResult}">
+        <h1 style="display: inline-block" th:text="${blogpost.title}"></h1>
+        <p style="display: inline-block; float: right">Author: </p>
+        <b><p style="display: inline-block; float: right" th:text="${blogpost.author.userName}"></p></b> <br/>
+        <p th:text="${blogpost.body}"></p>
+        <p th:text="${blogpost.timestampCreatedDisplay}"></p>
+        <hr>
+    </div>
+</body>
+</html>

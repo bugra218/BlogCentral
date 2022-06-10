@@ -13,4 +13,5 @@ public interface BlogpostService {
     List<BlogPost> getAllBlogPosts(String field);
     List<BlogPost> getAllBlogPostsDescending(String field);
     List<BlogPost> getAllBlogPostFromAuthor(Author author);
+    List<BlogPost> getAllBlogpostsByTitleLike(String title);
 }

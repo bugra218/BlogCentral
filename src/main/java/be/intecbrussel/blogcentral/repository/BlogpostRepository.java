@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface BlogpostRepository extends JpaRepository<BlogPost, Integer> {
     List<BlogPost> findByAuthor(Author author);
+    List<BlogPost> findAllByTitleLike(String title);
 }

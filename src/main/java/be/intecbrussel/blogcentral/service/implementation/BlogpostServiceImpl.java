@@ -68,6 +68,11 @@ public class BlogpostServiceImpl implements BlogpostService {
         return blogpostRepository.findByAuthor(author);
     }
 
+    @Override
+    public List<BlogPost> getAllBlogpostsByTitleLike(String title) {
+        return blogpostRepository.findAllByTitleLike(title);
+    }
+
 //    private BlogPost timestampConverter(BlogPost blogPost) {
 //        Timestamp timestampDB = blogPost.getTimestampCreated();
 //
