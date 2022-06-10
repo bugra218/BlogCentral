@@ -1,17 +1,24 @@
 package be.intecbrussel.blogcentral.controller;
 
+import be.intecbrussel.blogcentral.Exceptions.EmailFormatException;
+import be.intecbrussel.blogcentral.Exceptions.RequiredFieldsException;
+import be.intecbrussel.blogcentral.Exceptions.UsernameNotAvailableException;
+import be.intecbrussel.blogcentral.Exceptions.ZipcodeException;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // TODO: test
 
@@ -41,13 +48,48 @@ public class AuthorController {
 
     // save new Author
     @PostMapping("/save")
-    public String saveAuthor(@ModelAttribute("author") Author author, RedirectAttributes attributes) {
+    public String saveAuthor(@ModelAttribute("author") Author author, BindingResult result, RedirectAttributes attributes) {
         try {
+            // check if all required fields are filled
+            List<String> requiredFields = new ArrayList<>();
+            String authorEmail = author.getEmail();
+            requiredFields.add(author.getUserName());
+            requiredFields.add(author.getPassword());
+            requiredFields.add(author.getFirstName());
+            requiredFields.add(authorEmail);
+            if (requiredFields.contains("")) {
+                throw new RequiredFieldsException();
+            }
+
+            // check if email format is correct
+            String[] splitedEmail;
+            if (authorEmail.contains("@")) {
+                splitedEmail = authorEmail.split("@");
+                if (!splitedEmail[1].contains(".")) {
+                    throw new EmailFormatException();
+                }
+            } else {
+                throw new EmailFormatException();
+            }
+
+            // check if zipcode is an actual number (value will default to 0 if a string was inputted instead)
+            if (Objects.equals(result.getRawFieldValue("zip"), 0)) {
+                throw new ZipcodeException();
+            }
+
+            // checks if inputted username is still available
+            List<Author> takenUsernames = authorService.getAllAuthors();
+            for (Author username : takenUsernames) {
+                if (username.getUserName().equals(author.getUserName())) {
+                    throw new UsernameNotAvailableException();
+                }
+            }
+
             authorService.createAuthor(author);
             return "redirect:/authors/"; // placeholder
-        } catch (DataIntegrityViolationException e) {
+        } catch (RequiredFieldsException | UsernameNotAvailableException | ZipcodeException | EmailFormatException e) {
             e.printStackTrace();
-            attributes.addFlashAttribute( "errorMessage", "Username already in use! please try another username.");
+            attributes.addFlashAttribute( "errorMessage", e.getMessage());
             return "redirect:register";
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,8 +112,7 @@ public class AuthorController {
 
     // update Author - get author based on id - return author profile form
     @GetMapping("/update")
-    public String showAuthorProfileForm(@RequestParam int id,
-                                              Model model) {
+    public String showAuthorProfileForm(@RequestParam int id, Model model) {
 //        Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(id);
         System.out.println(author);
@@ -86,5 +127,4 @@ public class AuthorController {
         this.authorService.deleteAuthorById(idInt);
         return "redirect:/authors/"; // placeholder
     }
-
 }
