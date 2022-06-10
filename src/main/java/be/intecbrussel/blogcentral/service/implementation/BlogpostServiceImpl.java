@@ -69,8 +69,8 @@ public class BlogpostServiceImpl implements BlogpostService {
     }
 
     @Override
-    public List<BlogPost> getAllBlogpostsByTitleLike(String title) {
-        return blogpostRepository.findAllByTitleLike(title);
+    public List<BlogPost> getAllBlogpostsByTitleContaining(String title) {
+        return blogpostRepository.findAllByTitleContaining(title);
     }
 
 //    private BlogPost timestampConverter(BlogPost blogPost) {

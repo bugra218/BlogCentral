@@ -1,6 +1,7 @@
 package be.intecbrussel.blogcentral.service;
 
 import be.intecbrussel.blogcentral.model.Author;
+import be.intecbrussel.blogcentral.model.BlogPost;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
@@ -11,8 +12,7 @@ public interface AuthorService {
     void deleteAuthor(Author author);
     Author getAuthor(Author author);
     List<Author> getAllAuthors();
-
-    // added to allow finding Author per id
+    List<Author> getAllAuthorsByUsernameContaining(String title);
     Author getAuthorById(Integer id);
     void deleteAuthorById(Integer id);
     Boolean usernameExists(String username);

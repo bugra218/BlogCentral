@@ -13,5 +13,18 @@
         <p th:text="${blogpost.timestampCreatedDisplay}"></p>
         <hr>
     </div>
+
+    <div th:each="author:${authorResult}">
+        <h1 style="display: inline-block" th:text="${author.userName}"></h1>
+        <p th:text="${author.firstName}"></p>
+        <hr>
+    </div>
+
+    <div th:each="tag:${tagResult}">
+        <h1 style="display: inline-block" th:text="${tag.tagName}"></h1>
+<!--        <p th:text="${author.firstName}"></p>-->
+        <hr>
+    </div>
+
 </body>
 </html>

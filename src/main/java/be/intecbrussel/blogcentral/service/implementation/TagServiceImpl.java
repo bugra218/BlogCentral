@@ -51,4 +51,9 @@ public class TagServiceImpl implements TagService {
     public List<Tag> getAllTags() {
         return tagRepository.findAll();
     }
+
+    @Override
+    public List<Tag> getAllTagsByTagNameContaining(String tagName) {
+        return tagRepository.findAllByTagNameContaining(tagName);
+    }
 }

@@ -12,4 +12,5 @@ public interface TagService {
     Tag getTagById(int tagId);
     List<Tag> getAllTagsFromPost(BlogPost blogPost);
     List<Tag> getAllTags();
+    List<Tag> getAllTagsByTagNameContaining(String tagName);
 }

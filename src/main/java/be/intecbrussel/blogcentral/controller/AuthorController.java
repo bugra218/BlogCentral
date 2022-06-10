@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-// TODO: test
-
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
@@ -34,7 +32,7 @@ public class AuthorController {
     }
 
     // get all Authors
-    @GetMapping("/")
+    @GetMapping("")
     public String getAllAuthors(Model model){
         List<Author> authorsFromDb = authorService.getAllAuthors();
         model.addAttribute("authors", authorsFromDb);
