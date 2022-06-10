@@ -5,12 +5,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@ToString
+@Data
 public class BlogPost {
 
     @Id
@@ -39,4 +37,7 @@ public class BlogPost {
     @Column(name ="timestamp_updated_display")
     private String timestampUpdatedDisplay;
 
+    @ManyToMany()
+    @JoinColumn(name="tag_id")
+    private List<Tag> tags;
 }

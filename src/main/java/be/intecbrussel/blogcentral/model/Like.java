@@ -1,18 +1,12 @@
 package be.intecbrussel.blogcentral.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Likes")
-@Getter
-@Setter
-@NoArgsConstructor
-@ToString
+@Data
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

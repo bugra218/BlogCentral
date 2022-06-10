@@ -15,4 +15,5 @@ public interface AuthorService {
     // added to allow finding Author per id
     Author getAuthorById(Integer id);
     void deleteAuthorById(Integer id);
+    Boolean usernameExists(String username);
 }

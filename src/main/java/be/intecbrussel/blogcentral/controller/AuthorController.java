@@ -26,6 +26,7 @@ import java.util.Objects;
 @RequestMapping("/authors")
 public class AuthorController {
     private AuthorService authorService;
+    private String commingFrom = "";
 
     @Autowired
     public AuthorController(AuthorService authorService) {
@@ -42,13 +43,15 @@ public class AuthorController {
 
     // get register-form new Author
     @GetMapping("/register")
-    public String registerAuthor() {
-        return "register-form"; // placeholder
+    public String registerAuthor(HttpServletRequest request) {
+        commingFrom = request.getHeader("Referer");
+        return "create-author"; // placeholder
     }
 
     // save new Author
+    // BindingResult result in arguments is NEEDED
     @PostMapping("/save")
-    public String saveAuthor(@ModelAttribute("author") Author author, BindingResult result, RedirectAttributes attributes) {
+    public String saveAuthor(@ModelAttribute("author") Author author, BindingResult result, RedirectAttributes attributes, HttpServletRequest request) {
         try {
             // check if all required fields are filled
             List<String> requiredFields = new ArrayList<>();
@@ -73,51 +76,46 @@ public class AuthorController {
             }
 
             // check if zipcode is an actual number (value will default to 0 if a string was inputted instead)
-            if (Objects.equals(result.getRawFieldValue("zip"), 0)) {
+            if (Objects.equals(author.getZip(), 0)) {
                 throw new ZipcodeException();
             }
 
-            // checks if inputted username is still available
-            List<Author> takenUsernames = authorService.getAllAuthors();
-            for (Author username : takenUsernames) {
-                if (username.getUserName().equals(author.getUserName())) {
-                    throw new UsernameNotAvailableException();
-                }
+//             checks if inputted username is still available
+            if (authorService.usernameExists(author.getUserName())) {
+                throw new UsernameNotAvailableException();
             }
 
             authorService.createAuthor(author);
-            return "redirect:/authors/"; // placeholder
+            return "redirect:" + commingFrom; // placeholder
         } catch (RequiredFieldsException | UsernameNotAvailableException | ZipcodeException | EmailFormatException e) {
             e.printStackTrace();
             attributes.addFlashAttribute( "errorMessage", e.getMessage());
-            return "redirect:register";
+            return "redirect:" + request.getHeader("Referer");
         } catch (Exception e) {
             e.printStackTrace();
             attributes.addFlashAttribute( "errorMessage", "An unknown error occurred.");
-            return "redirect:register";
+            return "redirect:" + request.getHeader("Referer");
         }
-        // TODO: redirect to page where 'create Author' was initiated
     }
 
     // get an Author based on id - return Author home page
-    // TODO: consider username as parameter and use that as URL for
-    //  Author homepage. Also, try-catch to avoid NPE / wrong format
+    //  TODO Author homepage. Also, try-catch to avoid NPE / wrong format
     @GetMapping("/{id}")
     public String showAuthorPage(@PathVariable String id, Model model) {
         Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(idInt);
         model.addAttribute(author);
-        return "author-page"; // placeholder
+        return "home-author"; // placeholder
     }
 
     // update Author - get author based on id - return author profile form
-    @GetMapping("/update")
-    public String showAuthorProfileForm(@RequestParam int id, Model model) {
+    @GetMapping("/update/{id}")
+    public String showAuthorProfileForm(@PathVariable int id, Model model) {
 //        Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(id);
         System.out.println(author);
         model.addAttribute("author", author);
-        return "update-form";
+        return "update-author";
     }
 
     // delete Author
