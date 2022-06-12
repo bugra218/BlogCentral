@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-// TODO: improve exception handling, avoid duplicate code with help methods
+// TODO: exception handling, avoid duplicate code with help methods
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
