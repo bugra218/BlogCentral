@@ -7,11 +7,13 @@ BlogPostController getAllBlogPost method -->
     <title>Title</title>
 </head>
 <body>
-    <div th:each="post:${blogPosts}">
-        <a style="display: inline-block" th:text="${post.title}" th:href="@{/blogpost/{postId}(postId = ${post.id})}"></a> <br/>
-        <p th:text="${post.author.userName}"></p>
-        <p th:text="${post.timestampCreatedDisplay}"></p>
-        <hr>
-    </div>
+<a th:href="@{/authors/register}">Register</a><br>
+<div th:each="post:${blogPosts}">
+    <a style="display: inline-block" th:text="${post.title}"
+       th:href="@{/blogpost/{postId}(postId = ${post.id})}"></a> <br/>
+    <p th:text="${post.author.userName}"></p>
+    <p th:text="${post.timestampCreatedDisplay}"></p>
+    <hr>
+</div>
 </body>
 </html>

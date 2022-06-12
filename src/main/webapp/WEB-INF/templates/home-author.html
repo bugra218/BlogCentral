@@ -10,6 +10,10 @@ getAllPostsFromUser to AuthorController -->
 </head>
 <body>
 
+<a th:href="@{/authors/register}">Register</a>
+
+<hr>
+
 <p th:text="${author.firstName}"></p>
 <p th:text="${author.userName}"></p>
 
@@ -22,6 +26,6 @@ getAllPostsFromUser to AuthorController -->
     <p th:text="${post.timestampCreatedDisplay}"></p>
     <hr>
 </div>
-<a th:href="@{/authors/register}">gjhkghjgjhjkggkjg</a>
+
 </body>
 </html>

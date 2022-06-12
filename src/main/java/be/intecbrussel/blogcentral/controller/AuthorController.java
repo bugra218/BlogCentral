@@ -5,17 +5,17 @@ import be.intecbrussel.blogcentral.Exceptions.RequiredFieldsException;
 import be.intecbrussel.blogcentral.Exceptions.UsernameNotAvailableException;
 import be.intecbrussel.blogcentral.Exceptions.ZipcodeException;
 import be.intecbrussel.blogcentral.model.Author;
+import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.service.AuthorService;
+import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,11 +24,13 @@ import java.util.Objects;
 @RequestMapping("/authors")
 public class AuthorController {
     private AuthorService authorService;
-    private String commingFrom = "";
+    private BlogpostService blogpostService;
+    private String comingFrom = "";
 
     @Autowired
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(AuthorService authorService, BlogpostService blogpostService) {
         this.authorService = authorService;
+        this.blogpostService = blogpostService;
     }
 
     // get all Authors
@@ -42,7 +44,8 @@ public class AuthorController {
     // get register-form new Author
     @GetMapping("/register")
     public String registerAuthor(HttpServletRequest request) {
-        commingFrom = request.getHeader("Referer");
+        comingFrom = request.getHeader("Referer");
+        System.out.println(comingFrom);
         return "create-author"; // placeholder
     }
 
@@ -87,7 +90,11 @@ public class AuthorController {
             }
 
             authorService.createAuthor(author);
-            return "redirect:" + commingFrom; // placeholder
+
+            if (comingFrom != null) {
+                return "redirect:" + comingFrom;
+            } else return "redirect:"; // placeholder
+
         } catch (RequiredFieldsException | UsernameNotAvailableException | ZipcodeException | EmailFormatException e) {
             e.printStackTrace();
             attributes.addFlashAttribute( "errorMessage", e.getMessage());
@@ -100,13 +107,15 @@ public class AuthorController {
     }
 
     // get an Author based on id - return Author home page
-    //  TODO: strange NrFormatException when creating new Author.
-    //   PathVariable is 'null'
     @GetMapping("/{id}")
     public String showAuthorPage(@PathVariable String id, Model model) {
         Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(idInt);
+        List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
+
         model.addAttribute(author);
+        model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
+
         return "home-author"; // placeholder
     }
 
