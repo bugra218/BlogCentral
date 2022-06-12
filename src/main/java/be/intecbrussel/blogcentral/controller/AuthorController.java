@@ -3,8 +3,13 @@ package be.intecbrussel.blogcentral.controller;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +18,24 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 // TODO: test
 
 @Controller
-@RequestMapping("/authors")
 public class AuthorController {
     private AuthorService authorService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
+    }
+    @GetMapping("/index")
+    public String index() {
+
+        return "index.html";
     }
 
     // get all Authors
@@ -38,8 +50,13 @@ public class AuthorController {
         session.setAttribute(
                 "error", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION")
         );
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "login";
+        }
         return "login";
     }
+
 
     // get register-form new Author
     @GetMapping("/register")
@@ -48,11 +65,24 @@ public class AuthorController {
     }
 
     // save new Author
-    @PostMapping("/save")
-    public String saveAuthor(@ModelAttribute("author") Author author) {
+    @PostMapping(
+            value = "/register",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = {
+            MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
+    )
+    public void addUser(@RequestParam Map<String, String> body) {
+        Author author = new Author();
+        author.setUsername(body.get("userName"));
+        author.setPassword(bCryptPasswordEncoder.encode(body.get("password")));
+        author.setFirstName(body.get("firstName"));
+        author.setLastName(body.get("lastName"));
+        author.setEmail(body.get("email"));
+        author.setStreet(body.get("street"));
+        author.setHouseNr(body.get("houseNr"));
+        author.setCity(body.get("city"));
+        author.setZip(Integer.parseInt(body.get("zip")));
         authorService.createAuthor(author);
-        return "redirect:/authors/"; // placeholder
-        // TODO: redirect to page where 'create Author' was initiated
+
     }
 
     // get an Author based on id - return Author home page
@@ -88,7 +118,7 @@ public class AuthorController {
         Exception exception = (Exception) request.getSession().getAttribute(key);
         String error = "";
         if (exception instanceof BadCredentialsException) {
-            error = "Invalid username and password!";
+            error = "Invalid username!";
         } else if (exception instanceof LockedException) {
             error = exception.getMessage();
         } else {
