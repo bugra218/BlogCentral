@@ -8,11 +8,20 @@ BlogPostController getAllBlogPost method -->
 </head>
 <body>
 <a th:href="@{/authors/register}">Register</a><br>
+
+<hr>
+
 <div th:each="post:${blogPosts}">
     <a style="display: inline-block" th:text="${post.title}"
-       th:href="@{/blogpost/{postId}(postId = ${post.id})}"></a> <br/>
-    <p th:text="${post.author.userName}"></p>
-    <p th:text="${post.timestampCreatedDisplay}"></p>
+       th:href="@{/blogpost/{postId}(postId = ${post.id})}"></a>
+    <br>
+<!-- TODO: REFER HERE TO EXCERPT POST-->
+    <p> EXCERPT POST SHOULD GO HERE</p>
+    <p
+            th:text="${post.timestampCreatedDisplay} + '          by ' + ${post.author.userName}"></p>
+<!--    <a style="display: inline-block" th:text="${post.author.userName}"-->
+<!--       th:href="@{/authors/{authorId}(authorId = ${post.author.id})}"></a>-->
+
     <hr>
 </div>
 </body>

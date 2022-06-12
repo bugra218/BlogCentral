@@ -1,9 +1,6 @@
 package be.intecbrussel.blogcentral.controller;
 
-import be.intecbrussel.blogcentral.Exceptions.EmailFormatException;
-import be.intecbrussel.blogcentral.Exceptions.RequiredFieldsException;
-import be.intecbrussel.blogcentral.Exceptions.UsernameNotAvailableException;
-import be.intecbrussel.blogcentral.Exceptions.ZipcodeException;
+import be.intecbrussel.blogcentral.Exceptions.*;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.service.AuthorService;
@@ -18,8 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
+// TODO: improve exception handling, avoid duplicate code with help methods
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
@@ -37,6 +36,12 @@ public class AuthorController {
     @GetMapping("")
     public String getAllAuthors(Model model){
         List<Author> authorsFromDb = authorService.getAllAuthors();
+
+        if (authorsFromDb == null) {
+            model.addAttribute("error", "no authors found");
+            return "error-page";
+        }
+
         model.addAttribute("authors", authorsFromDb);
         return "all-authors"; // placeholder
     }
@@ -45,7 +50,9 @@ public class AuthorController {
     @GetMapping("/register")
     public String registerAuthor(HttpServletRequest request) {
         comingFrom = request.getHeader("Referer");
+
         System.out.println(comingFrom);
+
         return "create-author"; // placeholder
     }
 
@@ -109,22 +116,61 @@ public class AuthorController {
     // get an Author based on id - return Author home page
     @GetMapping("/{id}")
     public String showAuthorPage(@PathVariable String id, Model model) {
-        Integer idInt = Integer.parseInt(id);
-        Author author = authorService.getAuthorById(idInt);
+
+        int idInt;
+
+        try {
+            idInt = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            String noNumber = id + " is not a numeric format";
+            model.addAttribute("error", noNumber);
+            return "error-page";
+        }
+
+        Author author;
+        try {
+            author = authorService.getAuthorById(idInt);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            String idNotExist = "no author with id: " + idInt;
+            model.addAttribute("error", idNotExist);
+            return "error-page";
+        }
+
         List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
 
         model.addAttribute(author);
         model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
 
-        return "home-author"; // placeholder
+        return "home-author";
     }
 
     // update Author - get author based on id - return author profile form
     @GetMapping("/update/{id}")
-    public String showAuthorProfileForm(@PathVariable int id, Model model) {
-//        Integer idInt = Integer.parseInt(id);
-        Author author = authorService.getAuthorById(id);
-        System.out.println(author);
+    public String showAuthorProfileForm(@PathVariable String id, Model model) {
+
+        int idInt;
+
+        try {
+            idInt = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            String noNumber = id + " is not a numeric format";
+            model.addAttribute("error", noNumber);
+            return "error-page";
+        }
+
+        Author author;
+        try {
+            author = authorService.getAuthorById(idInt);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            String idNotExist = "no author with id: " + idInt;
+            model.addAttribute("error", idNotExist);
+            return "error-page";
+        }
+
         model.addAttribute("author", author);
         return "update-author";
     }
@@ -132,8 +178,23 @@ public class AuthorController {
     // delete Author
     @GetMapping("/delete/{id}")
     public String deleteAuthor(@PathVariable String id) {
+
         Integer idInt = Integer.parseInt(id);
         this.authorService.deleteAuthorById(idInt);
         return "redirect:/authors/"; // placeholder
     }
+
+    // help methods exception handling
+//    private String convertStringIdToInt(String id, Model model) {
+//        Integer idInt;
+//
+//        try {
+//            idInt = Integer.parseInt(id);
+//        } catch (NumberFormatException e) {
+//            e.printStackTrace();
+//            String noNumber = id + " is not in numeric format";
+//            model.addAttribute("error", noNumber);
+//            return "error-page";
+//        }
+//    }
 }
