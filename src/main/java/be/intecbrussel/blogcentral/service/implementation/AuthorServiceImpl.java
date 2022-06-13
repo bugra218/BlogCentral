@@ -44,7 +44,6 @@ public class AuthorServiceImpl implements AuthorService {
         return (List<Author>) authorRepository.findAll();
     }
 
-    // added to enable find by id in Controller
     @Override
     public Author getAuthorById(Integer id) {
         return authorRepository.findById(id).get();
@@ -53,6 +52,16 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteAuthorById(Integer id) {
         this.authorRepository.deleteById(id);
+    }
+
+    @Override
+    public Boolean usernameExists(String username) {
+        return authorRepository.existsAuthorByUserName(username);
+    }
+
+    @Override
+    public List<Author> getAllAuthorsByUsernameContaining(String username) {
+        return authorRepository.findAllByUserNameContaining(username);
     }
 
 }

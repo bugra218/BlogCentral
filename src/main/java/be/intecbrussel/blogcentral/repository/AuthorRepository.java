@@ -2,12 +2,12 @@ package be.intecbrussel.blogcentral.repository;
 
 import be.intecbrussel.blogcentral.model.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 
+@Repository
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
-
-    @Query("SELECT u FROM Author u WHERE u.username = :username")
-    public Author getUserByname(@Param("username") String username);
+    Boolean existsAuthorByUserName(String username);
+    List<Author> findAllByUserNameContaining(String username);
 }

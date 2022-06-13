@@ -19,7 +19,6 @@ public class LikeController {
     private LikeService likeService;
     private BlogpostService blogpostService;
     private AuthorService authorService;
-
     private Author loggedUser;
 
     @Autowired
@@ -31,8 +30,8 @@ public class LikeController {
     }
 
     @GetMapping("")
-    public String getPosts(Model model) {
-        List<BlogPost> allBlogPosts = blogpostService.getAllBlogPosts();
+    public String getPosts(@RequestParam(name = "field", required = false, defaultValue = "timestampCreated") String field, Model model) {
+        List<BlogPost> allBlogPosts = blogpostService.getAllBlogPosts(field);
         model.addAttribute("blogPosts", allBlogPosts);
         return "all-likes-blog-posts";
     }
@@ -44,7 +43,6 @@ public class LikeController {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         int likesReceived = likeService.countLikeByBlogPost_Id(postId);
         Boolean likedPost = likeService.UserLikedPost(blogPost, author);
-
         model.addAttribute(author);
         model.addAttribute(blogPost);
         model.addAttribute("likes", likesReceived);
@@ -56,8 +54,7 @@ public class LikeController {
     public String likePost(@PathVariable int postId, @RequestParam(value = "likeButton", required = false) String likedThisPost, @RequestParam(value = "likeButtonStatus", required = false) String likeStatus) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         Author liker = loggedUser;
-
-         // likes post if detecting changes from "noLike" to "Like"
+        // likes post if detecting changes from "noLike" to "Like"
         if (Objects.equals(likeStatus, "false") && Objects.equals(likedThisPost, "on")) {
             likeService.likePost(blogPost, liker);
         }

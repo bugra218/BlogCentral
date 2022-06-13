@@ -58,8 +58,8 @@ public class TagController {
     }
 
     @GetMapping("/allPosts")
-    public String getAllBlogPosts(Model model) {
-        model.addAttribute("blogPosts", blogpostService.getAllBlogPosts());
+    public String getAllBlogPosts(@RequestParam(name="field", required = false, defaultValue = "timestampCreated")String field, Model model) {
+        model.addAttribute("blogPosts", blogpostService.getAllBlogPosts(field));
         return "all-blog-posts-addtags";
     }
 
