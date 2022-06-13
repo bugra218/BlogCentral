@@ -117,30 +117,30 @@ public class AuthorController {
     @GetMapping("/{id}")
     public String showAuthorPage(@PathVariable String id, Model model) {
 
-        int idInt;
+        // call help method to check if path param can be converted to number
+        int idInt = convertStringIdToInt(id);
 
-        try {
-            idInt = Integer.parseInt(id);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        // help method returns 0 if conversion to nr. didn't work
+        if (idInt == 0) {
             String noNumber = id + " is not a numeric format";
             model.addAttribute("error", noNumber);
             return "error-page";
         }
 
-        Author author;
-        try {
-            author = authorService.getAuthorById(idInt);
-        } catch (NoSuchElementException e) {
-            e.printStackTrace();
+        // call help method to check if there is an author for provided id
+        Author authorDB = checkAuthorIdExists(idInt);
+
+        // help method returns null if authorId can not be found
+        if (authorDB == null) {
             String idNotExist = "no author with id: " + idInt;
             model.addAttribute("error", idNotExist);
             return "error-page";
         }
 
-        List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(author);
+        // collect blogposts for author
+        List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(authorDB);
 
-        model.addAttribute(author);
+        model.addAttribute(authorDB);
         model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
 
         return "home-author";
@@ -150,28 +150,27 @@ public class AuthorController {
     @GetMapping("/update/{id}")
     public String showAuthorProfileForm(@PathVariable String id, Model model) {
 
-        int idInt;
+        // call help method to check if path param can be converted to number
+        int idInt = convertStringIdToInt(id);
 
-        try {
-            idInt = Integer.parseInt(id);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        // help method returns 0 if conversion to nr. didn't work
+        if (idInt == 0) {
             String noNumber = id + " is not a numeric format";
             model.addAttribute("error", noNumber);
             return "error-page";
         }
 
-        Author author;
-        try {
-            author = authorService.getAuthorById(idInt);
-        } catch (NoSuchElementException e) {
-            e.printStackTrace();
+        // call help method to check if there is an author for provided id
+        Author authorDB = checkAuthorIdExists(idInt);
+
+        // help method returns null if authorId can not be found
+        if (authorDB == null) {
             String idNotExist = "no author with id: " + idInt;
             model.addAttribute("error", idNotExist);
             return "error-page";
         }
 
-        model.addAttribute("author", author);
+        model.addAttribute("author", authorDB);
         return "update-author";
     }
 
@@ -185,16 +184,29 @@ public class AuthorController {
     }
 
     // help methods exception handling
-//    private String convertStringIdToInt(String id, Model model) {
-//        Integer idInt;
-//
-//        try {
-//            idInt = Integer.parseInt(id);
-//        } catch (NumberFormatException e) {
-//            e.printStackTrace();
-//            String noNumber = id + " is not in numeric format";
-//            model.addAttribute("error", noNumber);
-//            return "error-page";
-//        }
-//    }
+    private int convertStringIdToInt(String id) {
+        int idInt;
+
+        try {
+            idInt = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+        return idInt;
+    }
+
+    private Author checkAuthorIdExists(int id) {
+        Author authorDB;
+
+        try {
+            authorDB = authorService.getAuthorById(id);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return authorDB;
+    }
 }
