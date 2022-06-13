@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+    <h1 style="text-decoration: underline; color: blueviolet">Blogposts</h1>
     <div th:each="blogpost:${postResult}">
         <h1 style="display: inline-block" th:text="${blogpost.title}"></h1>
         <p style="display: inline-block; float: right">Author: </p>
@@ -14,15 +15,23 @@
         <hr>
     </div>
 
+    <h1 style="text-decoration: underline; color: blueviolet">Authors</h1>
     <div th:each="author:${authorResult}">
         <h1 style="display: inline-block" th:text="${author.userName}"></h1>
         <p th:text="${author.firstName}"></p>
         <hr>
     </div>
 
-    <div th:each="tag:${tagResult}">
-        <h1 style="display: inline-block" th:text="${tag.tagName}"></h1>
-<!--        <p th:text="${author.firstName}"></p>-->
+    <h1 style="text-decoration: underline; color: blueviolet">Tags</h1>
+    <div th:each="blogpost:${postResult}">
+        <h1 style="display: inline-block" th:text="${blogpost.title}"></h1>
+        <p style="display: inline-block; float: right">Author: </p>
+        <b><p style="display: inline-block; float: right" th:text="${blogpost.author.userName}"></p></b> <br/>
+        <p th:text="${blogpost.body}"></p>
+        <p th:text="${blogpost.timestampCreatedDisplay}"></p>
+<!--        <div th:each="tag:${blogpost.tags}">-->
+<!--            <p th:text="${tag.tagName}"></p>-->
+<!--        </div>-->
         <hr>
     </div>
 
