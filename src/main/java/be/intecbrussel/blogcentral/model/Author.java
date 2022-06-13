@@ -3,15 +3,13 @@ package be.intecbrussel.blogcentral.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-//@Getter
-//@Setter
-//@NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 //@AllArgsConstructor
-//@ToString
-@Data
+@ToString
 public class Author {
 
     @Id
@@ -24,8 +22,8 @@ public class Author {
     @Column(name="last_name")
     private String lastName;
 
-    @Column(name="user_name", unique = true)
-    private String userName;
+    @Column(name="user_name")
+    private String username;
 
     private String password;
 

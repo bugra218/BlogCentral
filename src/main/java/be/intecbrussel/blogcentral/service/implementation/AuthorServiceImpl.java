@@ -41,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+        return (List<Author>) authorRepository.findAll();
     }
 
     // added to enable find by id in Controller

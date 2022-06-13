@@ -1,35 +1,41 @@
 package be.intecbrussel.blogcentral.controller;
 
-import be.intecbrussel.blogcentral.Exceptions.EmailFormatException;
-import be.intecbrussel.blogcentral.Exceptions.RequiredFieldsException;
-import be.intecbrussel.blogcentral.Exceptions.UsernameNotAvailableException;
-import be.intecbrussel.blogcentral.Exceptions.ZipcodeException;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
 // TODO: test
 
 @Controller
-@RequestMapping("/authors")
 public class AuthorController {
     private AuthorService authorService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
+    }
+    @GetMapping("/index")
+    public String index() {
+
+        return "index.html";
     }
 
     // get all Authors
@@ -39,6 +45,18 @@ public class AuthorController {
         model.addAttribute("authors", authorsFromDb);
         return "all-authors"; // placeholder
     }
+    @GetMapping("/login")
+    public String login(HttpServletRequest request, HttpSession session) {
+        session.setAttribute(
+                "error", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION")
+        );
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "login";
+        }
+        return "login";
+    }
+
 
     // get register-form new Author
     @GetMapping("/register")
@@ -47,56 +65,24 @@ public class AuthorController {
     }
 
     // save new Author
-    @PostMapping("/save")
-    public String saveAuthor(@ModelAttribute("author") Author author, BindingResult result, RedirectAttributes attributes) {
-        try {
-            // check if all required fields are filled
-            List<String> requiredFields = new ArrayList<>();
-            String authorEmail = author.getEmail();
-            requiredFields.add(author.getUserName());
-            requiredFields.add(author.getPassword());
-            requiredFields.add(author.getFirstName());
-            requiredFields.add(authorEmail);
-            if (requiredFields.contains("")) {
-                throw new RequiredFieldsException();
-            }
+    @PostMapping(
+            value = "/register",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = {
+            MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
+    )
+    public void addUser(@RequestParam Map<String, String> body) {
+        Author author = new Author();
+        author.setUsername(body.get("userName"));
+        author.setPassword(bCryptPasswordEncoder.encode(body.get("password")));
+        author.setFirstName(body.get("firstName"));
+        author.setLastName(body.get("lastName"));
+        author.setEmail(body.get("email"));
+        author.setStreet(body.get("street"));
+        author.setHouseNr(body.get("houseNr"));
+        author.setCity(body.get("city"));
+        author.setZip(Integer.parseInt(body.get("zip")));
+        authorService.createAuthor(author);
 
-            // check if email format is correct
-            String[] splitedEmail;
-            if (authorEmail.contains("@")) {
-                splitedEmail = authorEmail.split("@");
-                if (!splitedEmail[1].contains(".")) {
-                    throw new EmailFormatException();
-                }
-            } else {
-                throw new EmailFormatException();
-            }
-
-            // check if zipcode is an actual number (value will default to 0 if a string was inputted instead)
-            if (Objects.equals(result.getRawFieldValue("zip"), 0)) {
-                throw new ZipcodeException();
-            }
-
-            // checks if inputted username is still available
-            List<Author> takenUsernames = authorService.getAllAuthors();
-            for (Author username : takenUsernames) {
-                if (username.getUserName().equals(author.getUserName())) {
-                    throw new UsernameNotAvailableException();
-                }
-            }
-
-            authorService.createAuthor(author);
-            return "redirect:/authors/"; // placeholder
-        } catch (RequiredFieldsException | UsernameNotAvailableException | ZipcodeException | EmailFormatException e) {
-            e.printStackTrace();
-            attributes.addFlashAttribute( "errorMessage", e.getMessage());
-            return "redirect:register";
-        } catch (Exception e) {
-            e.printStackTrace();
-            attributes.addFlashAttribute( "errorMessage", "An unknown error occurred.");
-            return "redirect:register";
-        }
-        // TODO: redirect to page where 'create Author' was initiated
     }
 
     // get an Author based on id - return Author home page
@@ -112,7 +98,8 @@ public class AuthorController {
 
     // update Author - get author based on id - return author profile form
     @GetMapping("/update")
-    public String showAuthorProfileForm(@RequestParam int id, Model model) {
+    public String showAuthorProfileForm(@RequestParam int id,
+                                              Model model) {
 //        Integer idInt = Integer.parseInt(id);
         Author author = authorService.getAuthorById(id);
         System.out.println(author);
@@ -127,4 +114,17 @@ public class AuthorController {
         this.authorService.deleteAuthorById(idInt);
         return "redirect:/authors/"; // placeholder
     }
+    private String getErrorMessage(HttpServletRequest request, String key) {
+        Exception exception = (Exception) request.getSession().getAttribute(key);
+        String error = "";
+        if (exception instanceof BadCredentialsException) {
+            error = "Invalid username!";
+        } else if (exception instanceof LockedException) {
+            error = exception.getMessage();
+        } else {
+            error = "Invalid username and password!";
+        }
+        return error;
+    }
+
 }
