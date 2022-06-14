@@ -3,21 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Author Profile Form</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          crossorigin="anonymous"/>
 </head>
 <body>
 
-<form th:action="@{register}" method="post">
-    First name: <input type="text" name="firstName"><br><br>
-    Last name: <input type="text" name="lastName"><br><br>
-    Email: <input type="text" name="email"> <br><br>
-    Street: <input type="text" name="street"><br><br>
-    House number: <input type="text" name="houseNr"> <br><br>
-    City: <input type="text" name="city"> <br><br>
-    Zipcode: <input type="text" name="zip"> <br><br>
-    Username: <input type="text" name="userName"><br><br>
-    Password: <input type="text" name="password"><br><br>
-    <input type="submit" value="Save profile"> <br><br>
-</form>
+
+<div class="container">
+    <form th:action="@{save}" th:object="${author}" method="post">
+        <div class="form-group">
+            <label for="firstnameForm">First name</label>
+            <input type="text" th:field="*{firstName}"  class="form-control" name="firstName" id="firstnameForm" aria-describedby="emailHelp" placeholder="Enter first name" required>
+            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></p>
+
+        </div>
+        <div class="form-group">
+            <label for="lastnameForm">Last name</label>
+            <input type="text" th:field="*{lastName}" class="form-control" name="lastName" id="lastnameForm" aria-describedby="emailHelp" placeholder="Enter last name" required>
+            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></p>
+        </div>
+        <div class="form-group">
+            <label for="emailForm">email</label>
+            <input type="text" th:field="*{email}" class="form-control" name="email" id="emailForm" aria-describedby="emailHelp" placeholder="Enter email" required>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>
+        </div>
+        <div class="form-group">
+            <label for="streetForm">Street</label>
+            <input type="text" th:field="*{street}" class="form-control" name="street" id="streetForm" aria-describedby="emailHelp" placeholder="Enter street" required>
+            <p th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-danger"></p>
+        </div>
+        <div class="form-group">
+            <label for="houseNrForm">House number</label>
+            <input type="text" th:field="*{houseNr}" class="form-control" name="houseNr" id="houseNrForm" aria-describedby="emailHelp" placeholder="Enter house Nr" required>
+            <p th:if="${#fields.hasErrors('houseNr')}" th:errors="*{houseNr}" class="text-danger"></p>
+        </div>
+        <div class="form-group">
+            <label for="cityForm">City</label>
+            <input type="text" th:field="*{city}" class="form-control" name="city" id="cityForm" aria-describedby="emailHelp" placeholder="Enter City" required>
+            <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></p>
+        </div>
+        <div class="form-group">
+            <label for="zipForm">Zip Code</label>
+            <input type="text" th:field="*{zip}" class="form-control" name="zip" id="zipForm" aria-describedby="emailHelp" placeholder="Enter Zip code" required>
+            <p th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}" class="text-danger"></p>
+        </div>
+        <div class="form-group">
+            <label for="usernameForm">User name</label>
+            <input type="text" th:field="*{userName}" class="form-control" name="userName" id="usernameForm" aria-describedby="emailHelp" placeholder="Enter username" required>
+            <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="text-danger"></p>
+        </div>
+        <div class="form-group">
+            <label for="passwordForm">Password</label>
+            <input type="password" th:field="*{password}" class="form-control" name="password" id="passwordForm" placeholder="Password" required>
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
 
 </body>
 </html>
