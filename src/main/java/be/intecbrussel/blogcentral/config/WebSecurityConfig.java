@@ -1,6 +1,7 @@
 package be.intecbrussel.blogcentral.config;
 
 import be.intecbrussel.blogcentral.security.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -11,9 +12,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    final private String whiteList="";
+    final private String blackList="";
+    @Autowired
+
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
@@ -41,16 +49,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").authenticated()
-                .antMatchers("/register").authenticated()
-                .anyRequest().authenticated()
+                .antMatchers("/")
+
+                .permitAll()
+                .antMatchers("/resources/**","/css/**").permitAll()
+                .antMatchers("/authors/")
+                .authenticated()
+                .anyRequest()
+                .permitAll()
                 .and()
-                .formLogin().permitAll()
+                .formLogin()
+                .usernameParameter("userName")
+                .defaultSuccessUrl("/", true)
+                .permitAll()
                 .and()
-                .logout().permitAll()
-                .and()
-                .exceptionHandling().accessDeniedPage("/403")
-        ;
+                .logout()
+                .logoutSuccessUrl("/authors")
+                .permitAll();
     }
 }
 

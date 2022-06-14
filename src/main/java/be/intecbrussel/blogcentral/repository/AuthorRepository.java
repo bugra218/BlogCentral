@@ -10,5 +10,5 @@ import java.util.List;
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
     Boolean existsAuthorByUserName(String username);
     List<Author> findAllByUserNameContaining(String username);
-    Author getUserByUserName(String username);
+    Author findByUserName(String username);
 }

@@ -5,6 +5,7 @@ import be.intecbrussel.blogcentral.repository.AuthorRepository;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,19 +14,24 @@ import java.util.List;
 @Service
 public class AuthorServiceImpl implements AuthorService {
     private AuthorRepository authorRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthorServiceImpl(AuthorRepository authorRepository) {
+    public AuthorServiceImpl(AuthorRepository authorRepository,
+                             BCryptPasswordEncoder passwordEncoder) {
         this.authorRepository = authorRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void createAuthor(Author author) throws DataIntegrityViolationException {
+        author.setPassword(passwordEncoder.encode(author.getPassword()));
         authorRepository.save(author);
     }
 
     @Override
     public void updateAuthor(Author author) {
+        author.setPassword(passwordEncoder.encode(author.getPassword()));
         authorRepository.save(author);
     }
 
