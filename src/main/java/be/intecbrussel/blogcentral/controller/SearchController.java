@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,21 +33,19 @@ public class SearchController {
     }
 
     @GetMapping("{searchTerm}")
-    public String searchItem(@PathVariable String searchTerm,
-                             RedirectAttributes redirect) {
+    public String searchItem(@PathVariable String searchTerm, RedirectAttributes redirect) {
+        List<BlogPost> postResult = blogpostService.getAllBlogpostsByTitleContaining(searchTerm);
+        List<Author> authorResult = authorService.getAllAuthorsByUsernameContaining(searchTerm);
 
-        System.out.println(searchTerm);
-
-        List<BlogPost> postResult =
-                blogpostService.getAllBlogpostsByTitleContaining(searchTerm);
-        List<Author> authorResult =
-                authorService.getAllAuthorsByUsernameContaining(searchTerm);
-        List<Tag> tagResult =
-                tagService.getAllTagsByTagNameContaining(searchTerm);
+        List<Tag> matchingTags = tagService.getAllTagsByTagNameContaining(searchTerm);
+        List<BlogPost> blogPostsContainingTagResult = new ArrayList<>();
+        for (Tag tag : matchingTags) {
+            blogPostsContainingTagResult.addAll(blogpostService.getAllBlogpostsByTagContaining(tag));
+        }
 
         redirect.addFlashAttribute("postResult", postResult);
         redirect.addFlashAttribute("authorResult", authorResult);
-        redirect.addFlashAttribute("tagResult", tagResult);
+        redirect.addFlashAttribute("tagResult", blogPostsContainingTagResult);
         return "redirect:result";
     }
 
@@ -54,7 +53,4 @@ public class SearchController {
     public String showSearch() {
         return "search-result";
     }
-
-
-
 }

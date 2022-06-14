@@ -2,6 +2,7 @@ package be.intecbrussel.blogcentral.service.implementation;
 
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
+import be.intecbrussel.blogcentral.model.Tag;
 import be.intecbrussel.blogcentral.repository.BlogpostRepository;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,11 @@ public class BlogpostServiceImpl implements BlogpostService {
     @Override
     public List<BlogPost> getAllBlogpostsByTitleContaining(String title) {
         return blogpostRepository.findAllByTitleContaining(title);
+    }
+
+    @Override
+    public List<BlogPost> getAllBlogpostsByTagContaining(Tag tagName) {
+        return blogpostRepository.getAllByTagsContaining(tagName);
     }
 
 //    private BlogPost timestampConverter(BlogPost blogPost) {
