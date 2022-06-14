@@ -2,6 +2,7 @@ package be.intecbrussel.blogcentral.service;
 
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
+import be.intecbrussel.blogcentral.model.Tag;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface BlogpostService {
     List<BlogPost> getAllBlogPostsDescending(String field);
     List<BlogPost> getAllBlogPostFromAuthor(Author author);
     List<BlogPost> getAllBlogpostsByTitleContaining(String title);
+    List<BlogPost> getAllBlogpostsByTagContaining(Tag tagName);
 }

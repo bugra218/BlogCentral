@@ -8,10 +8,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@ToString
+@Data
 public class Comment {
 
     @Id

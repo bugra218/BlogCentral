@@ -23,7 +23,7 @@
     </div>
 
     <h1 style="text-decoration: underline; color: blueviolet">Tags</h1>
-    <div th:each="blogpost:${postResult}">
+    <div th:each="blogpost:${tagResult}">
         <h1 style="display: inline-block" th:text="${blogpost.title}"></h1>
         <p style="display: inline-block; float: right">Author: </p>
         <b><p style="display: inline-block; float: right" th:text="${blogpost.author.userName}"></p></b> <br/>
@@ -34,6 +34,12 @@
 <!--        </div>-->
         <hr>
     </div>
+
+<!--    <div th:each="tag:${tagResult}">-->
+<!--        <p th:text="${tag.tagName}"></p>-->
+<!--        &lt;!&ndash;            <input id="selectedTags" type="hidden" name="activeTags" th:value="${tagStatus[index]}">&ndash;&gt;-->
+<!--    </div>-->
+    <br/>
 
 </body>
 </html>
