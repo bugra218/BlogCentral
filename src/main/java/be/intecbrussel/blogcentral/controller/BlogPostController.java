@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// added RequestMapping back in
 @Controller
+@RequestMapping("blogpost")
 public class BlogPostController {
     private BlogpostService blogpostService;
     private AuthorService authorService;
@@ -68,8 +70,11 @@ public class BlogPostController {
 
     @PostMapping("/createPost")
     public String saveBlogPost(@ModelAttribute("blogpost") BlogPost blogPost) {
+        // added authorId to be able to add it in redirect
+        int authorId = blogPost.getAuthor().getId();
         blogpostService.createBlogPost(blogPost);
-        return "redirect:";
+        // changed redirect for testing purposes
+        return "redirect:/authors/" + authorId;
     }
 
     @GetMapping("/{postId}/editPost")

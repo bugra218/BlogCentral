@@ -31,22 +31,22 @@
         </div>
         <div class="form-group">
             <label for="streetForm">Street</label>
-            <input type="text" th:field="*{street}" class="form-control" name="street" id="streetForm" aria-describedby="emailHelp" placeholder="Enter street" required>
+            <input type="text" th:field="*{street}" class="form-control" name="street" id="streetForm" aria-describedby="emailHelp" placeholder="Enter street">
             <p th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-danger"></p>
         </div>
         <div class="form-group">
             <label for="houseNrForm">House number</label>
-            <input type="text" th:field="*{houseNr}" class="form-control" name="houseNr" id="houseNrForm" aria-describedby="emailHelp" placeholder="Enter house Nr" required>
+            <input type="text" th:field="*{houseNr}" class="form-control" name="houseNr" id="houseNrForm" aria-describedby="emailHelp" placeholder="Enter house Nr">
             <p th:if="${#fields.hasErrors('houseNr')}" th:errors="*{houseNr}" class="text-danger"></p>
         </div>
         <div class="form-group">
             <label for="cityForm">City</label>
-            <input type="text" th:field="*{city}" class="form-control" name="city" id="cityForm" aria-describedby="emailHelp" placeholder="Enter City" required>
+            <input type="text" th:field="*{city}" class="form-control" name="city" id="cityForm" aria-describedby="emailHelp" placeholder="Enter City">
             <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></p>
         </div>
         <div class="form-group">
             <label for="zipForm">Zip Code</label>
-            <input type="text" th:field="*{zip}" class="form-control" name="zip" id="zipForm" aria-describedby="emailHelp" placeholder="Enter Zip code" required>
+            <input type="text" th:field="*{zip}" class="form-control" name="zip" id="zipForm" aria-describedby="emailHelp" placeholder="Enter Zip code">
             <p th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}" class="text-danger"></p>
         </div>
         <div class="form-group">

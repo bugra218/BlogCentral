@@ -35,30 +35,31 @@ public class Author {
     private String password;
 
     @NotBlank(message = "Email is required")
-    @Size(min = 5, max = 45, message = "Your email can not be less than 3 " +
-            "character or greater than 45")
-    @Email(message = "Invalid Email format")
+//    @Size(min = 5, max = 45, message = "Your email can not be less than 3 " +
+//            "character or greater than 45")
+//    @Email(message = "Invalid Email format")
+    @Pattern(regexp = "^(.+)@(\\S+)$", message="Invalid email format")
     private String email;
 
 
 //    @NotBlank(message = "Please enter your street using letters")
-    @Size(min = 1, max = 45, message = "Street can not be less than 1 " +
-            "or greater than 45 characters")
+    @Size(max = 45, message = "Street can not be more 45 characters")
     private String street;
 
 //    @NotBlank(message = "Please enter your house nr using letters")
     @Column(name = "house_number")
-    @Size(min = 1, max = 9, message = "House number can not be less than 1 " +
-            "or greater than 9 characters")
+    @Size(max = 9, message = "House number can not be more than 9 characters")
     private String houseNr;
 
 //    @NotBlank(message = "Please enter your city using letters")
-    @Size(min = 1, max = 45, message = "City can not be less than 1 " +
-            " or greater than 45 characters")
+    @Size(max = 45, message = "City can not be more than 45 characters")
     private String city;
 
-    @Digits(integer = 9, fraction = 0, message = "zip code can not be more than 9 digit")
-    @Positive(message = "zip code can not be a negative number")
+    // TODO
+//    @Digits(integer = 9, fraction = 0, message = "zip code can not be more than 9 digit")
+//    @Positive(message = "zip code can not be a negative number")
+//    @Min(1000)
+//    @Max(999999)
     private int zip;
 
     @Column(name = "avatar_path")
