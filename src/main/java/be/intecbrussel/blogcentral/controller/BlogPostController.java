@@ -45,7 +45,7 @@ public class BlogPostController {
             allBlogPosts.addAll(blogpostService.getAllBlogPosts(orderBy));
         }
         model.addAttribute("blogPosts", allBlogPosts);
-        return "index";
+        return "navbar";
     }
 
     @GetMapping("/{postId}")
@@ -90,6 +90,6 @@ public class BlogPostController {
     public String deleteBlogPost(@PathVariable int postId) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         blogpostService.deleteBlogPost(blogPost);
-        return "redirect:../"; //
+        return "redirect:../";
     }
 }
