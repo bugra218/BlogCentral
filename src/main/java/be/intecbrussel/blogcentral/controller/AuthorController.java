@@ -96,7 +96,7 @@ public class AuthorController {
         model.addAttribute(authorDB);
         model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
 
-        return "home-author";
+        return "authors";
     }
 
     // update Author - get author based on id - return author profile form

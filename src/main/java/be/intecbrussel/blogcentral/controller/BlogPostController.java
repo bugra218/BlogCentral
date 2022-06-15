@@ -15,9 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// added RequestMapping back in
 @Controller
-@RequestMapping("blogpost")
 public class BlogPostController {
     private BlogpostService blogpostService;
     private AuthorService authorService;
