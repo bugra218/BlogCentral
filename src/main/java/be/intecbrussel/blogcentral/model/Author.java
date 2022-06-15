@@ -1,16 +1,13 @@
 package be.intecbrussel.blogcentral.model;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-//@AllArgsConstructor
-@ToString
+@Data
 public class Author {
 
     @Id
@@ -59,7 +56,7 @@ public class Author {
     private int zip;
 
     @Column(name = "avatar_path")
-    private String avatarPath;
+    private String avatarPath = "/images/default.png";
 
 //    @Column(name="blog_posts")
 //    private List<BlogPost> blogPosts;
