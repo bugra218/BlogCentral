@@ -25,7 +25,13 @@ main {
     padding: 16px;
     height: 100vh;
 }
+.container {
+    width: 75%;
+    margin-left: 15%;
+}
 
 .space-50-px {
     margin: 50px 0;
+
+
 }
