@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
 @Entity
@@ -26,7 +27,8 @@ public class Comment {
     @JoinColumn(name="author_id")
     private Author author;
 
-    @Column(name="body")
+    @Column(columnDefinition = "TEXT")
+    @NotBlank(message = "Please enter your content using letters")
     private String body;
 
     @CreationTimestamp

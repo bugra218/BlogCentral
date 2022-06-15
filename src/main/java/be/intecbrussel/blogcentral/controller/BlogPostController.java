@@ -90,10 +90,11 @@ public class BlogPostController {
         return "redirect:./";
     }
 
+    // TODO: throws error, redirect broken due to add of sort to homepage post?
     @PostMapping("/{postId}/delete")
     public String deleteBlogPost(@PathVariable int postId) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         blogpostService.deleteBlogPost(blogPost);
-        return "redirect:../";
+        return "redirect:../"; //
     }
 }

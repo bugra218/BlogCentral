@@ -6,6 +6,10 @@
 </head>
 <body>
 
+<a th:href="@{/authors/register}">Register</a>
+
+<hr>
+
 <h1 style="display: inline-block" th:text="${blogPost.title}"></h1>
 <p style="display: inline-block; float: right">Author: </p>
 <b><p style="display: inline-block; float: right" th:text="${blogPost.author.userName}"></p></b> <br/>
