@@ -11,19 +11,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
-@RequestMapping("blogpost")
 public class BlogPostController {
     private BlogpostService blogpostService;
     private AuthorService authorService;
     private CommentService commentService;
 
     @Autowired
-    public BlogPostController(BlogpostService blogpostService,
-                              AuthorService authorService,
-                              CommentService commentService) {
+    public BlogPostController(BlogpostService blogpostService, AuthorService authorService, CommentService commentService) {
         this.blogpostService = blogpostService;
         this.authorService = authorService;
         this.commentService = commentService;
@@ -31,26 +30,22 @@ public class BlogPostController {
 
     // this sorts ascending by date by providing a '?field=timestampCreated'
     // parameter in the url (any property can be given as param)
-    @GetMapping("")
-    public String getAllBlogPosts(@RequestParam (name="field",
-            required = false, defaultValue = "timestampCreated")String field,
-                                  Model model) {
-        System.out.println(field);
-        model.addAttribute("blogPosts",
-                           blogpostService.getAllBlogPosts(field));
-        return "home-blogcentral";
-    }
+    @GetMapping("/home")
+    public String getAllBlogPosts(@RequestParam Map<String,String> requestParams, Model model) {
+        String orderBy = requestParams.get("orderBy");
+        String alphabetical = requestParams.get("order");
+        List<BlogPost> allBlogPosts = new ArrayList<>();
 
-    // this sorts descending by date by providing a '?field=timestampCreated'
-    // parameter in the url (any property can be given as param)
-    @GetMapping("/descending")
-    public String getAllBlogPostsSorted(@RequestParam String field,
-                                        Model model) {
-
-        model.addAttribute("blogPosts",
-                           blogpostService.getAllBlogPostsDescending(field));
-
-        return "home-blogcentral";
+        if (orderBy == null) {
+            orderBy = "timestampCreated";
+        }
+        if (alphabetical == null) {
+            allBlogPosts.addAll(blogpostService.getAllBlogPostsDescending(orderBy));
+        } else {
+            allBlogPosts.addAll(blogpostService.getAllBlogPosts(orderBy));
+        }
+        model.addAttribute("blogPosts", allBlogPosts);
+        return "index";
     }
 
     @GetMapping("/{postId}")
@@ -91,7 +86,7 @@ public class BlogPostController {
     }
 
     // TODO: throws error, redirect broken due to add of sort to homepage post?
-    @PostMapping("/{postId}/delete")
+    @GetMapping("/{postId}/delete")
     public String deleteBlogPost(@PathVariable int postId) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         blogpostService.deleteBlogPost(blogPost);
