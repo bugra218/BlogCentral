@@ -27,6 +27,7 @@ public class BlogPost {
 
     @Column(columnDefinition = "TEXT")
     @NotBlank(message = "Please enter your content using letters")
+    @Size(max = 4000)
     private String body;
 
     @CreationTimestamp

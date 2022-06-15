@@ -3,8 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <title>BlogCentral</title>
-</head>
-<body>
 
+    <link rel="stylesheet" href="/css/master.css">
+    <script src="/js/script.js"></script>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="/css/uikit.min.css" />
+    <!-- UIkit JS -->
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+</head>
+<!--<body onload="setActiveFilter([[${activeFilter}]])">-->
+<!--<body onload="'javascript:setActiveFilter(\'' + [[${activeFilter}]] + '\');'">-->
+<body>
+    <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
+        <div class="uk-navbar-left">
+            <ul class="uk-navbar-nav">
+                <li class="uk-active"><a href="#">Active</a></li>
+                <li>
+                    <a href="#">Parent</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class="uk-active"><a href="#">Active</a></li>
+                            <li><a href="#">Item</a></li>
+                            <li><a href="#">Item</a></li>
+                            <li><a href="#">Item</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="#">Item</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="sideNav">
+            <h1>Active users</h1>
+            <h1 th:text="${activeFilter}"></h1>
+        </div>
+        <div class="content">
+
+            <div class="uk-grid-small uk-grid-divider uk-child-width-auto" uk-grid>
+                <div>
+                    <ul class="uk-subnav uk-subnav-pill" uk-margin>
+                        <b><li>Filter by:</li></b>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="uk-subnav uk-subnav-pill" uk-margin>
+                        <li id="timestampCreated"><a th:href="@{/home}">Time</a></li>
+                        <li id="author"><a th:href="@{?orderBy=author}">Author</a></li>
+                        <li id="title"><a th:href="@{?orderBy=title}">Title</a></li>
+                        <li id="body"><a th:href="@{?orderBy=body}">Body</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div th:each="post:${blogPosts}" class="uk-card uk-card-default space-50-px">
+                <div class="uk-card-header">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-auto">
+                            <img class="uk-border-circle" width="40" height="40" th:src="${post.author.avatarPath}">
+                        </div>
+                        <div class="uk-width-expand">
+                            <h3 class="uk-card-title uk-margin-remove-bottom" th:text="${post.title}"></h3>
+                            <p class="uk-text-meta uk-margin-remove-top">Posted by <b>[[${post.author.userName}]]</b> on [[${post.timestampCreatedDisplay}]]</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-card-body">
+                    <p th:text="${#strings.abbreviate(post.body,1000)}"></p>
+                </div>
+                <div class="uk-card-footer">
+                    <a th:href="@{/blogpost/{postId}(postId = ${post.id})}" class="uk-button uk-button-text">Read more</a>
+                </div>
+            </div>
+
+            <ul class="uk-pagination uk-flex-center" uk-margin>
+                <li><a onclick="previousPage()"><span uk-pagination-previous></span></a></li>
+                <li th:each="i: ${#numbers.sequence(1, totalPages)}"><a th:href="@{'/home/page/' + ${i}}">[[${i}]]</a></li>
+                <input type="hidden" id="amountOfPages" th:value="${totalPages}"/>
+                <li><a onclick="nextPage()"><span uk-pagination-next></span></a></li>
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        // below code waits for page to get loaded. gets element that needs to be active. gets its id (in plain text). uses this value as parameter
+        document.addEventListener('readystatechange', event => {
+            if (document.readyState === "complete") {
+                let filterToActivate = [[${activeFilter}]].id;
+                setActiveFilter(filterToActivate);
+            }
+        });
+    </script>
 </body>
 </html>
