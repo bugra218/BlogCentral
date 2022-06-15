@@ -45,7 +45,7 @@ public class BlogPostController {
             allBlogPosts.addAll(blogpostService.getAllBlogPosts(orderBy));
         }
         model.addAttribute("blogPosts", allBlogPosts);
-        return "index";
+        return "navbar";
     }
 
     @GetMapping("/{postId}")

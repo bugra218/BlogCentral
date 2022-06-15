@@ -2,3 +2,27 @@ body {
     margin: 0;
     box-sizing: border-box;
 }
+
+main {
+    width: 100%;
+    height: 100%;
+    top: 80px;
+}
+
+.sideNav {
+    margin: 0;
+    padding: 0;
+    width: 25%;
+    max-width: 200px;
+    background-color: #333333;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.content {
+    margin-left: 200px;
+    padding: 16px;
+    height: 100vh;
+    max-width: 800px;
+}
