@@ -56,7 +56,7 @@ public class BlogPostController {
                 commentService.getAllCommentsForBlogPost(blogPost);
         model.addAttribute("blogPost", blogPost);
         model.addAttribute("commentsBlogPost", commentsBlogPost);
-        return "home-blogpost";
+        return "blogpost";
     }
 
     @GetMapping("/writePost")
