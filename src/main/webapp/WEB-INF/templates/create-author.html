@@ -52,7 +52,7 @@
         <div class="form-group">
             <label for="usernameForm">User name</label>
             <input type="text" th:field="*{userName}" class="form-control" name="userName" id="usernameForm" aria-describedby="emailHelp" placeholder="Enter username" required>
-            <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="text-danger"></p>
+            <p th:text="${errorMessage}" class="text-danger"></p>
         </div>
         <div class="form-group">
             <label for="passwordForm">Password</label>
