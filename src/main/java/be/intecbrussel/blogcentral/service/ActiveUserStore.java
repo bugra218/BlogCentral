@@ -10,9 +10,10 @@ import java.util.List;
 @Component
 public class ActiveUserStore {
 
-    public ActiveUserStore activeUserStore(){
+    public ActiveUserStore activeUserStore() {
         return new ActiveUserStore();
     }
+
     public List<String> users;
 
     public ActiveUserStore() {

@@ -15,50 +15,55 @@ public class Author {
     private int id;
 
     @Column(name = "first_name")
-    @NotBlank(message = "Please enter your first name using letters")
-    @Size(min = 3, max = 20, message = "Your First name can not be less than 3 character or greater than 20")
+    @NotBlank(message = "First name is required")
+    @Size(min = 1, max = 20, message = "First name can not be less than " +
+            "1 or greater than 20 characters")
     private String firstName;
 
     @Column(name = "last_name")
-    @NotBlank(message = "Please enter your last name using letters")
-    @Size(min = 3, max = 20, message = "Your last name can not be less than 3 character or greater than 20")
+    @NotBlank(message = "Last name is required")
+    @Size(min = 1, max = 45, message = "Last name can not be less than " +
+            "1 or greater than 45 characters")
     private String lastName;
 
     @Column(name = "user_name", unique = true)
-    @NotBlank(message = "Please enter your user name using letters")
-    @Size(min = 3, max = 20, message = "Your user name can not be less than 3 character or greater than 20")
+    @NotBlank(message = "User name is required")
+    @Size(min = 1, max = 20, message = "Username can not be less than 1 " +
+            "or greater than 45 characters")
     private String userName;
 
-    @NotBlank(message = "Please enter your password using letters")
+    @NotBlank(message = "Please enter a password")
     private String password;
 
-    @NotBlank(message = "Please enter your email using letters")
-    @Size(min = 3, max = 20, message = "Your email can not be less than 3 character or greater than 20")
-    @Email(message = "Invalid Email. please enter the correct email")
+    @NotBlank(message = "Email is required")
+//    @Size(min = 5, max = 45, message = "Your email can not be less than 3 " +
+//            "character or greater than 45")
+//    @Email(message = "Invalid Email format")
+    @Pattern(regexp = "^(.+)@(\\S+)$", message="Invalid email format")
     private String email;
 
 
-    @NotBlank(message = "Please enter your street using letters")
-    @Size(min = 3, max = 20, message = "Your street can not be less than 3 character or greater than 20")
+//    @NotBlank(message = "Please enter your street using letters")
+    @Size(max = 45, message = "Street can not be more 45 characters")
     private String street;
 
+//    @NotBlank(message = "Please enter your house nr using letters")
     @Column(name = "house_number")
-    @NotBlank(message = "Please enter your user name using letters")
-    @Size(min = 3, max = 20, message = "Your user name can not be less than 3 character or greater than 20")
+    @Size(max = 9, message = "House number can not be more than 9 characters")
     private String houseNr;
 
-    @NotBlank(message = "Please enter your user name using letters")
-    @Size(min = 3, max = 20, message = "Your user name can not be less than 3 character or greater than 20")
+//    @NotBlank(message = "Please enter your city using letters")
+    @Size(max = 45, message = "City can not be more than 45 characters")
     private String city;
 
-    @Digits(integer = 9, fraction = 0, message = "zip code can not be more than 9 digit")
-    @Positive(message = "zip code can not be a negative number")
+    // TODO
+//    @Digits(integer = 9, fraction = 0, message = "zip code can not be more than 9 digit")
+//    @Positive(message = "zip code can not be a negative number")
+//    @Min(1000)
+//    @Max(999999)
     private int zip;
 
     @Column(name = "avatar_path")
     private String avatarPath = "/images/default.png";
-
-//    @Column(name="blog_posts")
-//    private List<BlogPost> blogPosts;
 
 }

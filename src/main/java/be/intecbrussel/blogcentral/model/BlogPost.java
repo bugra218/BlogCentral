@@ -22,7 +22,8 @@ public class BlogPost {
     private Author author;
 
     @NotBlank(message = "Please give your post a title")
-    @Size(min = 3, max = 40, message = "The title should be at least 3 character and at last 40.")
+    @Size(min = 3, max = 100, message = "The title should be at least 3 " +
+            "character and at last 100.")
     private String title;
 
     @Column(columnDefinition = "TEXT")
@@ -44,7 +45,7 @@ public class BlogPost {
     @Column(name ="timestamp_updated_display")
     private String timestampUpdatedDisplay;
 
-    @ManyToMany()
+    @ManyToMany
     @JoinColumn(name="tag_id")
     private List<Tag> tags;
 }

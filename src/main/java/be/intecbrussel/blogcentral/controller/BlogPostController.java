@@ -61,7 +61,7 @@ public class BlogPostController {
                 commentService.getAllCommentsForBlogPost(blogPost);
         model.addAttribute("blogPost", blogPost);
         model.addAttribute("commentsBlogPost", commentsBlogPost);
-        return "home-blogpost";
+        return "blogpost";
     }
 
     @GetMapping("/writePost")
@@ -73,8 +73,11 @@ public class BlogPostController {
 
     @PostMapping("/createPost")
     public String saveBlogPost(@ModelAttribute("blogpost") BlogPost blogPost) {
+        // added authorId to be able to add it in redirect
+        int authorId = blogPost.getAuthor().getId();
         blogpostService.createBlogPost(blogPost);
-        return "redirect:";
+        // changed redirect for testing purposes
+        return "redirect:/authors/" + authorId;
     }
 
     @GetMapping("/{postId}/editPost")
@@ -90,11 +93,17 @@ public class BlogPostController {
         return "redirect:./";
     }
 
-    // TODO: throws error, redirect broken due to add of sort to homepage post?
     @GetMapping("/{postId}/delete")
     public String deleteBlogPost(@PathVariable int postId) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
+        List<Comment> commentsBlogPost =
+                commentService.getAllCommentsForBlogPost(blogPost);
+
+        for (Comment comment : commentsBlogPost) {
+            commentService.deleteComment(comment);
+        }
+
         blogpostService.deleteBlogPost(blogPost);
-        return "redirect:../";
+        return "redirect:/blogpost/";
     }
 }

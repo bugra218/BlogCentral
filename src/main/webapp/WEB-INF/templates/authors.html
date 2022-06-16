@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Author page</title>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <!-- removed 'rel="stylesheet" to work around a strange MIME type error -->
+    <!-- UIkit JS -->
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+
+</head>
+<body>
+
+<div class="uk-container uk-container-center uk-margin-top">
+    <!--header-->
+    <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
+        <!--navbar menu-->
+        <div class="uk-navbar-left">
+
+            <ul class="uk-navbar-nav">
+                <li>&nbsp;&nbsp;</li>
+                <li><a class="uk-link-text" href="/login">Login</a></li>
+                <li><a class="uk-link-text" href="/authors/register">Sign up</a>
+                </li>
+                <!-- TODO: redirect to logged user-->
+                <li><a class="uk-link-text" href="/authors/update/1">Update
+                    profile</a></li>
+                <!--<li><a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a></li>-->
+            </ul>
+        </div>
+        <!--        navbar menu sort-->
+        <div class="uk-navbar-center">
+            <ul class="uk-navbar-nav">
+                <li>
+                    <a href="#">Sort posts</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+<!--                            TODO: link to proper sort methods. HOW?-->
+                            <li class="uk-active"><a href="#">Most recent
+                                first</a></li>
+                            <li><a href="#">Oldest first</a></li>
+                            <li><a href="#">Most popular first</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--        navbar menu search-->
+        <div class="uk-navbar-right">
+            <div>
+                <a class="uk-navbar-toggle" uk-search-icon
+                   href="/search/choco"></a>
+                <!--                TODO-->
+                <!--                <a class="uk-navbar-toggle" uk-search-icon href="/search/choco"></a>-->
+                <div class="uk-drop"
+                     uk-drop="mode: click; pos: left-center; offset: 0">
+                    <form class="uk-search uk-search-navbar uk-width-1-1">
+                        <input class="uk-search-input" type="search"
+                               placeholder="Search" autofocus>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<!--    main-->
+    <div class="uk-grid" data-uk-grid-margin="">
+
+<!--    sidebar?-->
+        <!--    TODO: avatar + usernames all logged on, count online, count total visits-->
+        <div class="uk-width-1-4">
+            <div class="uk-placeholder">PLACEHOLDER SIDEBAR</div>
+            <div class="uk-placeholder">P1: LOGGED ON USERS</div>
+            <div class="uk-placeholder">P2: TOTAL ONLINE</div>
+            <div class="uk-placeholder">P3: TOTAL VISITS</div>
+        </div>
+<!--    articles + pagination -->
+        <div class="uk-width-1-2">
+
+            <article class="uk-article" th:each="post:${postsFromAuthor}">
+                <h3>
+                    <a th:text="${post.title}"
+                       th:href="@{/{postId}(postId = ${post.id})}"></a>
+                </h3>
+
+                <p class="uk-article-meta"
+                   th:text="${'Written by ' + post.author.userName + ' on ' + post.timestampCreatedDisplay}"></p>
+
+                <p th:text="${post.body}"></p>
+
+                <!--TODO comment count + redirect, like count + redirect-->
+                <p>
+                    <a class="uk-button uk-button-primary"
+                       th:href="@{/{postId}(postId = ${post.id})}">Read more</a>
+                    <a class="uk-button" href="#">4 Comments</a>
+                    <a href="" uk-icon="icon: heart"></a>
+                </p>
+
+            </article>
+
+            <ul class="uk-pagination">
+                <li class="uk-disabled"><span><i
+                        class="uk-icon-angle-double-left"></i></span></li>
+                <li class="uk-active"><span>1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><span>...</span></li>
+                <li><a href="#">20</a></li>
+                <li><a href="#"><i class="uk-icon-angle-double-right"></i></a>
+                </li>
+            </ul>
+        </div>
+<!--    profile mini-->
+        <div class="uk-width-1-4">
+
+            <div class="uk-panel uk-panel-box uk-text-center">
+                <img class="uk-border-circle" src="/img/default-avatar.png"
+                     alt="avatar"
+                     width="120" height="120">
+                <h3>Andre Hazes</h3>
+                <!--        TODO: how to get the username here from url?-->
+                <!--        <h3 th:text="@{/authors/{authorId}(authorId=${author.id})}"></h3>-->
+                <p>Ik ben Andre uit Amsterdam en ik drink graag kattenpis</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--<main>-->
+
+
+<!--    <div class="content">-->
+
+<!--        <p th:text="${author.firstName}"></p>-->
+<!--        <p th:text="${author.userName}"></p>-->
+
+<!--        <div th:each="post:${postsFromAuthor}">-->
+<!--            <a style="display: inline-block" th:text="${post.title}" th:href="@{/blogpost/{postId}(postId = ${post.id})}"></a> <br/>-->
+<!--            <p style="display: inline-block" th:text="${post.body}"></p><br/>-->
+<!--            <p th:text="${post.timestampCreatedDisplay}"></p>-->
+<!--            <hr>-->
+<!--        </div>-->
+
+<!--        <a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a>-->
+
+<!--    </div>-->
+<!--</main>-->
+
+
+</body>
+</html>
