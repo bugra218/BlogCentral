@@ -12,4 +12,5 @@ public interface CommentService {
     List<Comment> getAllCommentsForBlogPost(BlogPost blogPost);
 
     Comment getCommentById(int commentId);
+    int countCommentsForBlogPostWithId(int blogPostId);
 }

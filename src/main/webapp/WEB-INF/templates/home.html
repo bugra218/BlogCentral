@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <ul class="uk-pagination uk-flex-center" uk-margin>
+            <ul onclick="appendParams()" class="uk-pagination uk-flex-center" uk-margin>
                 <li><a onclick="previousPage()"><span uk-pagination-previous></span></a></li>
                 <li th:each="i: ${#numbers.sequence(1, totalPages)}"><a th:href="@{'/home/page/' + ${i}}">[[${i}]]</a></li>
                 <input type="hidden" id="amountOfPages" th:value="${totalPages}"/>
