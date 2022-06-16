@@ -82,6 +82,7 @@ public class BlogpostServiceImpl implements BlogpostService {
     @Override
     public Page<BlogPost> findPage(int pageNumber, String field){
         Pageable pageable = PageRequest.of(pageNumber - 1,6, Sort.by(Sort.Direction.ASC, field));
+
         Page<BlogPost> allBlogPosts = blogpostRepository.findAll(pageable);
         return blogpostRepository.findAll(pageable);
     }

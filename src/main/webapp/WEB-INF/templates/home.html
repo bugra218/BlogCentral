@@ -18,28 +18,44 @@
     <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
         <div class="uk-navbar-left">
             <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="#">Active</a></li>
-                <li>
-                    <a href="#">Parent</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">Active</a></li>
-                            <li><a href="#">Item</a></li>
-                            <li><a href="#">Item</a></li>
-                            <li><a href="#">Item</a></li>
-                        </ul>
-                    </div>
+                <li>&nbsp;&nbsp;</li>
+                <li><a class="uk-link-text" href="/login">Login</a></li>
+                <li><a class="uk-link-text" href="/authors/register">Sign up</a>
                 </li>
-                <li><a href="#">Item</a></li>
+                <!-- TODO: redirect to logged user-->
+                <li><a class="uk-link-text" href="/authors/update/1">Update
+                    profile</a></li>
+                <!--<li><a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a></li>-->
             </ul>
+        </div>
+
+        <!--        navbar menu search-->
+        <div class="uk-navbar-right">
+            <div>
+                <a class="uk-navbar-toggle" uk-search-icon
+                   href="/search/choco"></a>
+                <!--                TODO-->
+                <!--                <a class="uk-navbar-toggle" uk-search-icon href="/search/choco"></a>-->
+                <div class="uk-drop"
+                     uk-drop="mode: click; pos: left-center; offset: 0">
+                    <form class="uk-search uk-search-navbar uk-width-1-1">
+                        <input class="uk-search-input" type="search"
+                               placeholder="Search" autofocus>
+                    </form>
+                </div>
+            </div>
         </div>
     </nav>
 
     <main>
         <div class="sideNav">
-            <h1>Active users</h1>
-            <h1 th:text="${activeFilter}"></h1>
+            <div class="uk-placeholder">PLACEHOLDER SIDEBAR</div>
+            <div class="uk-placeholder">P1: LOGGED ON USERS</div>
+            <div class="uk-placeholder">P2: TOTAL ONLINE</div>
+            <div class="uk-placeholder">P3: TOTAL VISITS</div>
+
         </div>
+
         <div class="content">
 
             <div class="uk-grid-small uk-grid-divider uk-child-width-auto" uk-grid>
