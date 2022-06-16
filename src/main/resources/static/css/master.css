@@ -28,7 +28,11 @@ main {
 }
 
 .space-50-px {
-    margin: 50px 0;
+    margin: 50px 0px;
+}
+
+.space-comment {
+    margin: 0px 25px;
 }
 
 /* below, needed to add few classes to get commercial next to articles */
@@ -51,4 +55,8 @@ main {
 
 .pagination {
     height: 10vh;
+}
+
+.comment {
+
 }

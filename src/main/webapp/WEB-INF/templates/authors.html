@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Author</title>
     <link rel="stylesheet" href="/css/master.css"/>
+    <script src="/js/script.js"></script>
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="/css/uikit.min.css"/>
     <!-- UIkit JS -->
@@ -17,30 +18,24 @@
 <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
     <!--login, sign up, update profile -->
     <div class="uk-navbar-left">
-
         <ul class="uk-navbar-nav">
             <li>&nbsp;&nbsp;</li>
             <li><a class="uk-link-text" href="/login">Login</a></li>
             <li><a class="uk-link-text" href="/authors/register">Sign up</a>
             </li>
             <!-- TODO: redirect to logged user-->
-            <li><a class="uk-link-text" href="/authors/update/1">Update
-                profile</a></li>
+            <li><a class="uk-link-text" href="/authors/update/1">Update profile</a></li>
             <!--<li><a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a></li>-->
         </ul>
     </div>
     <!-- search-->
     <div class="uk-navbar-right">
         <div>
-            <a class="uk-navbar-toggle" uk-search-icon
-               href="/search/choco"></a>
-            <!--                TODO-->
-            <!--                <a class="uk-navbar-toggle" uk-search-icon href="/search/choco"></a>-->
-            <div class="uk-drop"
-                 uk-drop="mode: click; pos: left-center; offset: 0">
+            <!--TODO-->
+            <a class="uk-navbar-toggle" uk-search-icon href="/search/choco"></a>
+            <div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
                 <form class="uk-search uk-search-navbar uk-width-1-1">
-                    <input class="uk-search-input" type="search"
-                           placeholder="Search" autofocus>
+                    <input class="uk-search-input" type="search" placeholder="Search" autofocus>
                 </form>
             </div>
         </div>
@@ -48,7 +43,7 @@
 </nav>
 
 <main>
-    <!--    TODO: avatar + usernames all logged on, count online, count total visits-->
+    <!--    TODO: fill sidenav -->
     <div class="sideNav">
         <div class="uk-placeholder">PLACEHOLDER SIDEBAR</div>
         <div class="uk-placeholder">P1: LOGGED ON USERS</div>
@@ -65,6 +60,7 @@
                     </ul>
                 </div>
                 <div>
+<!--                    TODO: sort posts for Author-->
                     <ul class="uk-subnav uk-subnav-pill" uk-margin>
                         <li id="recent"><a th:href="@{/home}">Most recent</a></li>
                         <li id="oldest"><a th:href="@{?orderBy=oldest}">Oldest</a></li>
@@ -78,19 +74,18 @@
 
             <div class="articles uk-width-expand">
 
-                <div class="uk-article"  th:each="post:${postsFromAuthor}">
+                <div class="uk-card uk-card-default space-50-px"  th:each="post:${postsFromAuthor}">
                     <div class="uk-card-header">
                         <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <div class="uk-width-auto">
-                                <img class="uk-border-circle" width="40" height="40" th:src="${post.author.avatarPath}">
-                            </div>
                             <div class="uk-width-expand">
                                 <h3 class="uk-card-title uk-margin-remove-bottom" th:text="${post.title}"></h3>
                                 <p class="uk-text-meta uk-margin-remove-top">Posted by <b>[[${post.author.userName}]]</b> on [[${post.timestampCreatedDisplay}]]</p>
                             </div>
                         </div>
                     </div>
-                    <p th:text="${#strings.abbreviate(post.body,500)}"></p>
+                    <div class="uk-card-body">
+                        <p th:text="${#strings.abbreviate(post.body,500)}"></p>
+                    </div>
                     <div class="uk-card-footer">
                         <p><a class="uk-button uk-button-primary" th:href="@{/blogpost/{postId}(postId = ${post.id})}">Read more</a>
                             <a class="uk-button" href="#">4 Comments</a>
@@ -103,10 +98,8 @@
             <div class="miniprofile uk-width-1-4">
                 <div class="uk-panel uk-panel-box uk-text-center">
                     <img class="uk-border-circle" src="/img/default-avatar.png" alt="avatar" width="120" height="120">
-                    <h3>Andre Hazes</h3>
-                    <!--        TODO: how to get the username here from url?-->
-                    <!--        <h3 th:text="@{/authors/{authorId}(authorId=${author.id})}"></h3>-->
-                    <p>Ik ben Andre uit Amsterdam en ik drink graag kattenpis</p>
+                    <h3 th:text="${author.userName}"></h3> <!-- TODO CHECK -->
+                    <a class="uk-button uk-button-primary" th:href="@{/writePost}">New post</a>
                 </div>
             </div>
         </div>

@@ -3,145 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <title>Blogpost</title>
+    <link rel="stylesheet" href="/css/master.css"/>
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="/css/uikit.min.css"/>
-    <!-- removed 'rel="stylesheet" to work around a strange MIME type error -->
     <!-- UIkit JS -->
     <script src="/js/uikit.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
 </head>
 <body>
 
-<div class="uk-container uk-container-center uk-margin-top">
+<!--<div class="uk-container uk-container-center uk-margin-top">-->
 
-    <!--header-->
-    <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
-        <!--navbar menu-->
-        <div class="uk-navbar-left">
+<!-- navbar / header-->
+<nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
+    <!--login, sign up, update profile -->
+    <div class="uk-navbar-left">
 
-            <ul class="uk-navbar-nav">
-                <li>&nbsp;&nbsp;</li>
-                <li><a class="uk-link-text" href="/login">Login</a></li>
-                <li><a class="uk-link-text" href="/authors/register">Sign up</a></li>
-                <!-- TODO: redirect to logged user-->
-                <li><a class="uk-link-text" href="/authors/update/1">Update
-                    profile</a></li>
-                <!--<li><a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a></li>-->
-            </ul>
+        <ul class="uk-navbar-nav">
+            <li>&nbsp;&nbsp;</li>
+            <li><a class="uk-link-text" href="/login">Login</a></li>
+            <li><a class="uk-link-text" href="/authors/register">Sign up</a>
+            </li>
+            <!-- TODO: redirect to logged user-->
+            <li><a class="uk-link-text" href="/authors/update/1">Update profile</a></li>
+            <!--<li><a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a></li>-->
+        </ul>
+    </div>
+
+    <!-- search-->
+    <div class="uk-navbar-right">
+        <div>
+            <!--TODO-->
+            <a class="uk-navbar-toggle" uk-search-icon href="/search/choco"></a>
+            <div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
+                <form class="uk-search uk-search-navbar uk-width-1-1">
+                    <input class="uk-search-input" type="search" placeholder="Search" autofocus>
+                </form>
+            </div>
         </div>
-        <!--        navbar menu sort-->
-        <div class="uk-navbar-center">
-            <ul class="uk-navbar-nav">
-                <li>
-                    <a href="#">Sort posts</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <!--                            TODO: link to proper sort methods. HOW?-->
-                            <li class="uk-active"><a href="#">Most recent
-                                first</a></li>
-                            <li><a href="#">Oldest first</a></li>
-                            <li><a href="#">Most popular first</a></li>
-                        </ul>
+    </div>
+</nav>
+
+<main>
+    <!--    TODO: fill sidenav -->
+    <div class="sideNav">
+        <div class="uk-placeholder">PLACEHOLDER SIDEBAR</div>
+        <div class="uk-placeholder">P1: LOGGED ON USERS</div>
+        <div class="uk-placeholder">P2: TOTAL ONLINE</div>
+        <div class="uk-placeholder">P3: TOTAL VISITS</div>
+    </div>
+
+    <div class="content">
+
+        <div class="flex-surround">
+
+            <div class="space-comment">
+
+                <div class="uk-card uk-card-default">
+
+                    <div class="uk-card-header">
+                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                            <div class="uk-width-expand">
+                                <h3 class="uk-card-title uk-margin-remove-bottom" th:text="${blogPost.title}"></h3>
+                                <p class="uk-text-meta uk-margin-remove-top">Posted by <b>[[${blogPost.author.userName}]]</b> on [[${blogPost.timestampCreatedDisplay}]]</p>
+                            </div>
+                        </div>
                     </div>
-                </li>
-            </ul>
-        </div>
-        <!--        navbar menu search-->
-        <div class="uk-navbar-right">
-            <div>
-                <a class="uk-navbar-toggle" uk-search-icon
-                   href="/search/choco"></a>
-                <!--                TODO-->
-                <!--                <a class="uk-navbar-toggle" uk-search-icon href="/search/choco"></a>-->
-                <div class="uk-drop"
-                     uk-drop="mode: click; pos: left-center; offset: 0">
-                    <form class="uk-search uk-search-navbar uk-width-1-1">
-                        <input class="uk-search-input" type="search"
-                               placeholder="Search" autofocus>
-                    </form>
+
+                    <div class="uk-card-body">
+                        <p th:text="${blogPost.body}"></p>
+                    </div>
+
+                    <div class="uk-card-footer">
+                        <p>
+                            <a class="uk-button uk-button-primary" th:href="${'/blogpost/' + blogPost.id + '/writeComment'}">Add comment</a>
+                            <a class="uk-button" th:href="${'/' + blogPost.id + '/editPost'}">Update post</a>
+                            <a class="uk-button" th:href="${'/' + blogPost.id + '/delete'}">Delete post</a>
+                            <a th:href="${'/like/' + blogPost.id + '/likePost'}" uk-icon="icon: heart"></a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </nav>
 
-    <!--    main-->
-    <div class="uk-grid" data-uk-grid-margin="">
+                <br>
 
-        <!--    TODO: avatar + usernames all logged on, count online, count total visits-->
-        <div class="uk-width-1-4">
-            <div class="uk-placeholder">PLACEHOLDER SIDEBAR</div>
-            <div class="uk-placeholder">P1: LOGGED ON USERS</div>
-            <div class="uk-placeholder">P2: TOTAL ONLINE</div>
-            <div class="uk-placeholder">P3: TOTAL VISITS</div>
-        </div>
-
-        <!--    articles + pagination -->
-        <div class="uk-width-1-2">
-
-            <article class="uk-article">
-                <h3 th:text="${blogPost.title}"></h3>
-
-                <p class="uk-article-meta"
-                   th:text="${'Written by ' + blogPost.author.userName + ' on ' + blogPost.timestampCreatedDisplay}"></p>
-
-                <p th:text="${blogPost.body}"></p>
-
-                <hr>
-
-                <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
-                    <!-- sub navbar blogpost like -->
-                    <div class="uk-navbar-left">
-                        <li>&nbsp;&nbsp;</li>
-                        <a href="" uk-icon="icon: heart"></a>
+                <article class="uk-comment space-comment"
+                         th:each="comment:${commentsBlogPost}">
+                    <header class="uk-comment-header">
+                        <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                            <div class="uk-width-auto">
+                                <img class="uk-comment-avatar"
+                                     src="/img/default-avatar.png" width="50"
+                                     height="50" alt="">
+                            </div>
+                            <div class="uk-width-expand">
+                                <h4 class="uk-comment-title uk-margin-remove"
+                                    th:text="${comment.author.userName}"></h4>
+                                <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                                    <li th:text="${'Wrote on ' + comment.timestampCreatedDisplay + ':'}"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="uk-comment-body">
+                        <p th:text="${comment.body}"></p>
                     </div>
-                    <!-- sub navbar edit update blogpost-->
-                    <div class="uk-navbar-right">
-                        <ul class="uk-navbar-nav">
-                            <li><a class="uk-link-text" href="/update/1">Update post</a></li>
-                            <li><a class="uk-link-text" href="/delete/1">Delete post</a></li>
-                            <li>&nbsp;&nbsp;</li>
-                        </ul>
-                    </div>
-                </nav>
-
-                <!--TODO comment count + redirect, like count + redirect-->
-            </article>
-
-            <div class="uk-comment-list">
-                <li>
-                    <article class="uk-comment" th:each="comment:${commentsBlogPost}">
-                        <header class="uk-comment-header">
-                            <p class="uk-comment-meta"
-                               th:text="${'Commented by ' + comment.author.userName + ' on ' + comment.timestampCreatedDisplay}"></p>
-                        </header>
-                        <div class="uk-comment-body" th:text="${comment.body}"></div>
-                    </article>
-                </li>
+                    <hr>
+                </article>
 
             </div>
 
 
-        </div>
 
-
-        <!--    profile mini-->
-        <div class="uk-width-1-4">
-
-            <div class="uk-panel uk-panel-box uk-text-center">
-                <img class="uk-border-circle" src="/img/default-avatar.png"
-                     alt="avatar"
-                     width="120" height="120">
-                <h3>Andre Hazes</h3>
-                <!--        TODO: how to get the username here from url?-->
-                <!--        <h3 th:text="@{/authors/{authorId}(authorId=${author.id})}"></h3>-->
-                <p>Ik ben Andre uit Amsterdam en ik drink graag kattenpis</p>
+            <div class="miniprofile uk-width-1-4 space-50-px">
+                <div class="uk-panel uk-panel-box uk-text-center">
+                    <a th:href="${'/authors/' + blogPost.author.id}"><img class="uk-border-circle" src="/img/default-avatar.png" alt="avatar" width="120" height="120"></a>
+                    <h3 th:text="${blogPost.author.userName}"></h3>
+                </div>
             </div>
 
         </div>
 
     </div>
 
-</div>
-
+</main>
 </body>
 </html>
