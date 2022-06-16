@@ -37,11 +37,12 @@ public class BlogPostController {
     }
 
     @GetMapping("/home/page/{pageNumber}")
-    public String getOnePage(@RequestParam(name = "orderBy", required = false, defaultValue = "timestampCreated") String orderBy, Model model, @PathVariable("pageNumber") int currentPage) {
+    public String getOnePage(@RequestParam(name = "orderBy", required = false, defaultValue = "recent") String orderBy, Model model, @PathVariable("pageNumber") int currentPage) {
         Page<BlogPost> page = blogpostService.findPage(currentPage, orderBy);
         int totalPages = page.getTotalPages();
         long totalItems = page.getTotalElements();
         List<BlogPost> BlogPosts = page.getContent();
+
 
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", totalPages);

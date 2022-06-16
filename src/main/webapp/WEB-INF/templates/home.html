@@ -12,8 +12,6 @@
     <script src="/js/uikit.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
 </head>
-<!--<body onload="setActiveFilter([[${activeFilter}]])">-->
-<!--<body onload="'javascript:setActiveFilter(\'' + [[${activeFilter}]] + '\');'">-->
 <body>
     <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
         <div class="uk-navbar-left">
@@ -38,7 +36,6 @@
     <main>
         <div class="sideNav">
             <h1>Active users</h1>
-            <h1 th:text="${activeFilter}"></h1>
         </div>
         <div class="content">
 
@@ -82,7 +79,7 @@
                 </div>
             </div>
 
-            <ul class="uk-pagination uk-flex-center" uk-margin>
+            <ul onclick="appendParams()" class="uk-pagination uk-flex-center" uk-margin>
                 <li><a onclick="previousPage()"><span uk-pagination-previous></span></a></li>
                 <li th:each="i: ${#numbers.sequence(1, totalPages)}"><a th:href="@{'/home/page/' + ${i}}">[[${i}]]</a></li>
                 <input type="hidden" id="amountOfPages" th:value="${totalPages}"/>
