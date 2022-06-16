@@ -22,9 +22,12 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
+
     private AuthorService authorService;
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private BlogpostService blogpostService;
     private String comingFrom = "";
 
@@ -99,7 +102,7 @@ public class AuthorController {
         model.addAttribute(authorDB);
         model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
 
-        return "home-author";
+        return "authors";
     }
 
     // update Author - get author based on id - return author profile form
@@ -132,9 +135,32 @@ public class AuthorController {
 
     // delete Author
     @GetMapping("/delete/{id}")
-    public String deleteAuthor(@PathVariable String id) {
+    public String deleteAuthor(@PathVariable String id, Model model) {
 
-        Integer idInt = Integer.parseInt(id);
+        int idInt = convertStringIdToInt(id);
+
+        // help method returns 0 if conversion to nr. didn't work
+        if (idInt == 0) {
+            String noNumber = id + " is not a numeric format";
+            model.addAttribute("error", noNumber);
+            return "error-page";
+        }
+
+        Author authorDB = checkAuthorIdExists(idInt);
+
+        // help method returns null if authorId can not be found
+        if (authorDB == null) {
+            String idNotExist = "no author with id: " + idInt;
+            model.addAttribute("error", idNotExist);
+            return "error-page";
+        }
+
+        List<BlogPost> blogPostsForAuthor =
+                blogpostService.getAllBlogPostFromAuthor(authorDB);
+        for (BlogPost blogPost : blogPostsForAuthor) {
+            blogpostService.deleteBlogPost(blogPost);
+        }
+
         this.authorService.deleteAuthorById(idInt);
         return "redirect:/authors/"; // placeholder
     }
