@@ -25,3 +25,7 @@ main {
     padding: 16px;
     height: 100vh;
 }
+
+.space-50-px {
+    margin: 50px 0;
+}

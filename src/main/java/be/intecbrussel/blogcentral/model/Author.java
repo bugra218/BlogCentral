@@ -1,6 +1,7 @@
 package be.intecbrussel.blogcentral.model;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -63,6 +64,6 @@ public class Author {
     private int zip;
 
     @Column(name = "avatar_path")
-    private String avatarPath;
+    private String avatarPath = "/images/default.png";
 
 }

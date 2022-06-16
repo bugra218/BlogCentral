@@ -7,6 +7,7 @@ import be.intecbrussel.blogcentral.service.AuthorService;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import be.intecbrussel.blogcentral.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,24 +32,27 @@ public class BlogPostController {
     // this sorts ascending by date by providing a '?field=timestampCreated'
     // parameter in the url (any property can be given as param)
     @GetMapping("/home")
-    public String getAllBlogPosts(@RequestParam Map<String,String> requestParams, Model model) {
-        String orderBy = requestParams.get("orderBy");
-        String alphabetical = requestParams.get("order");
-        List<BlogPost> allBlogPosts = new ArrayList<>();
-
-        if (orderBy == null) {
-            orderBy = "timestampCreated";
-        }
-        if (alphabetical == null) {
-            allBlogPosts.addAll(blogpostService.getAllBlogPostsDescending(orderBy));
-        } else {
-            allBlogPosts.addAll(blogpostService.getAllBlogPosts(orderBy));
-        }
-        model.addAttribute("blogPosts", allBlogPosts);
-        return "navbar";
+    public String getAllBlogPosts() {
+        return "redirect:/home/page/1";
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/home/page/{pageNumber}")
+    public String getOnePage(@RequestParam(name = "orderBy", required = false, defaultValue = "timestampCreated") String orderBy, Model model, @PathVariable("pageNumber") int currentPage) {
+        Page<BlogPost> page = blogpostService.findPage(currentPage, orderBy);
+        int totalPages = page.getTotalPages();
+        long totalItems = page.getTotalElements();
+        List<BlogPost> BlogPosts = page.getContent();
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("blogPosts", BlogPosts);
+        model.addAttribute("activeFilter", orderBy);
+
+        return "home";
+    }
+
+    @GetMapping("/blogpost/{postId}")
     public String getFullPost(@PathVariable int postId, Model model) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         // added list of comments

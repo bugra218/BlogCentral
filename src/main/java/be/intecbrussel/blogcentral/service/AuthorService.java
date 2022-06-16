@@ -16,4 +16,5 @@ public interface AuthorService {
     Author getAuthorById(Integer id);
     void deleteAuthorById(Integer id);
     Boolean usernameExists(String username);
+    Author getAuthorByUsername(String username);
 }

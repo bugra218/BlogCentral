@@ -6,6 +6,9 @@ import be.intecbrussel.blogcentral.model.Tag;
 import be.intecbrussel.blogcentral.repository.BlogpostRepository;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -74,5 +77,12 @@ public class BlogpostServiceImpl implements BlogpostService {
     @Override
     public List<BlogPost> getAllBlogpostsByTagContaining(Tag tagName) {
         return blogpostRepository.getAllByTagsContaining(tagName);
+    }
+
+    @Override
+    public Page<BlogPost> findPage(int pageNumber, String field){
+        Pageable pageable = PageRequest.of(pageNumber - 1,6, Sort.by(Sort.Direction.ASC, field));
+        Page<BlogPost> allBlogPosts = blogpostRepository.findAll(pageable);
+        return blogpostRepository.findAll(pageable);
     }
 }

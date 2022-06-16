@@ -6,6 +6,7 @@
 //import be.intecbrussel.blogcentral.service.BlogpostService;
 //import be.intecbrussel.blogcentral.service.LikeService;
 //import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,14 @@
 //        this.likeService = likeService;
 //        this.blogpostService = blogpostService;
 //        this.authorService = authorService;
-//        this.loggedUser = authorService.getAuthorById(1);
+//        setLoggedUser();
+//    }
+//
+//    public void setLoggedUser() {
+//        String currentUserName = SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getName();
+//        Author loggedUser = authorService.getAuthorByUsername(currentUserName);
 //    }
 //
 //    @GetMapping("")

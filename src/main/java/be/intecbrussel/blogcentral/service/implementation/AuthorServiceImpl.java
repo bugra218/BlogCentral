@@ -70,4 +70,8 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.findAllByUserNameContaining(username);
     }
 
+    @Override
+    public Author getAuthorByUsername(String username) {
+        return authorRepository.findByUserName(username);
+    }
 }
