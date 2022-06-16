@@ -1,69 +1,144 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Author Profile Form</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-          crossorigin="anonymous"/>
+    <title>BlogCentral</title>
+
+    <link rel="stylesheet" href="/css/master.css">
+    <script src="/js/script.js"></script>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <!-- UIkit JS -->
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
 </head>
 <body>
+<nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
+    <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+            <li class="uk-active"><a href="#">Active</a></li>
+            <li>
+                <a href="#">Parent</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <li class="uk-active"><a href="#">Active</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="#">Item</a></li>
+        </ul>
+    </div>
+</nav>
+<main>
+
+    <div class="sideNav">
+        <h1>Active users</h1>
+        <h1 th:text="${activeFilter}"></h1>
+    </div>
 
 
-<div class="container">
-    <form th:action="@{save}" th:object="${author}" method="post">
-        <div class="form-group">
-            <label for="firstnameForm">First name</label>
-            <input type="text" th:field="*{firstName}"  class="form-control" name="firstName" id="firstnameForm" aria-describedby="emailHelp" placeholder="Enter first name" required>
-            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></p>
+    <div class="container">
+        <form th:action="@{save}" th:object="${author}" method="post">
+            <h1>Register</h1>
+            <br>
+            <div>
+                <label for="firstnameForm" STYLE="color: black">First name*</label>
+                <div>
+                <input type="text" th:field="*{firstName}" style="border: 1px solid black" name="firstName" id="firstnameForm" aria-describedby="emailHelp" placeholder="Enter first name" required>
+                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></p>
+                </div>
 
-        </div>
-        <div class="form-group">
-            <label for="lastnameForm">Last name</label>
-            <input type="text" th:field="*{lastName}" class="form-control" name="lastName" id="lastnameForm" aria-describedby="emailHelp" placeholder="Enter last name" required>
-            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></p>
-        </div>
-        <div class="form-group">
-            <label for="emailForm">email</label>
-            <input type="text" th:field="*{email}" class="form-control" name="email" id="emailForm" aria-describedby="emailHelp" placeholder="Enter email" required>
-            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>
-        </div>
-        <div class="form-group">
-            <label for="streetForm">Street</label>
-            <input type="text" th:field="*{street}" class="form-control" name="street" id="streetForm" aria-describedby="emailHelp" placeholder="Enter street" required>
-            <p th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-danger"></p>
-        </div>
-        <div class="form-group">
-            <label for="houseNrForm">House number</label>
-            <input type="text" th:field="*{houseNr}" class="form-control" name="houseNr" id="houseNrForm" aria-describedby="emailHelp" placeholder="Enter house Nr" required>
-            <p th:if="${#fields.hasErrors('houseNr')}" th:errors="*{houseNr}" class="text-danger"></p>
-        </div>
-        <div class="form-group">
-            <label for="cityForm">City</label>
-            <input type="text" th:field="*{city}" class="form-control" name="city" id="cityForm" aria-describedby="emailHelp" placeholder="Enter City" required>
-            <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></p>
-        </div>
-        <div class="form-group">
-            <label for="zipForm">Zip Code</label>
-            <input type="text" th:field="*{zip}" class="form-control" name="zip" id="zipForm" aria-describedby="emailHelp" placeholder="Enter Zip code" required>
-            <p th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}" class="text-danger"></p>
-        </div>
-        <div class="form-group">
-            <label for="usernameForm">User name</label>
-            <input type="text" th:field="*{userName}" class="form-control" name="userName" id="usernameForm" aria-describedby="emailHelp" placeholder="Enter username" required>
-            <p th:text="${errorMessage}" class="text-danger"></p>
-        </div>
-        <div class="form-group">
-            <label for="passwordForm">Password</label>
-            <input type="password" th:field="*{password}" class="form-control" name="password" id="passwordForm" placeholder="Password" required>
-            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></p>
-        </div>
+            </div>
+            <br>
+            <div>
+                <label for="lastnameForm" STYLE="color: black">Last name*</label>
+                <div>
+            <div class="form-group">
+                <input type="text" th:field="*{lastName}" class="form-control" name="lastName" id="lastnameForm"
+                       aria-describedby="emailHelp" placeholder="Enter last name" required>
+                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></p>
+            </div>
+            <br>
+            <div class="form-group">
+                <div>
+                    <label for="emailForm" STYLE="color: black">E-mail*</label>
+                    <div>
+                        <div class="form-group">
+                <input type="text" th:field="*{email}" class="form-control" name="email" id="emailForm"
+                       aria-describedby="emailHelp" placeholder="Enter email" required>
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>
+            </div>
+            <br>
+            <div class="form-group">
+                <div>
+                    <label for="streetForm" STYLE="color: black">Street</label>
+                    <div>
+                <input type="text" th:field="*{street}" class="form-control" name="street" id="streetForm"
+                       aria-describedby="emailHelp" placeholder="Enter street">
+                <p th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-danger"></p>
+            </div>
+            <br>
+            <div class="form-group">
+                <div>
+                    <label for="houseNrForm" STYLE="color: black">House number</label>
+                    <div>
+                <input type="text" th:field="*{houseNr}" class="form-control" name="houseNr" id="houseNrForm"
+                       aria-describedby="emailHelp" placeholder="Enter house Nr" required>
+                <p th:if="${#fields.hasErrors('houseNr')}" th:errors="*{houseNr}" class="text-danger"></p>
+            </div>
+            <br>
+            <div class="form-group">
+                <div>
+                    <label for="cityForm" STYLE="color: black">City</label>
+                    <div>
+                <input type="text" th:field="*{city}" class="form-control" name="city" id="cityForm"
+                       aria-describedby="emailHelp" placeholder="Enter City" required>
+                <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></p>
+            </div>
+            <br>
+            <div class="form-group">
+                <div>
+                    <label for="zipForm" STYLE="color: black">Zip code</label>
+                    <div>
+                <input type="text" th:field="*{zip}" class="form-control" name="zip" id="zipForm"
+                       aria-describedby="emailHelp" placeholder="Enter Zip code" required>
+                <p th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}" class="text-danger"></p>
+            </div>
+            <br>
+            <div class="form-group">
+                <div>
+                    <label for="usernameForm" STYLE="color: black">Username*</label>
+                    <div>
+                <input type="text" th:field="*{userName}" class="form-control" name="userName" id="usernameForm"
+                       aria-describedby="emailHelp"  placeholder="Enter username" required>
+                <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="text-danger"></p>
+            </div>
+            <br>
+            <div class="form-group">
+                <div>
+                    <label for="passwordForm" STYLE="color: black">Password*</label>
+                    <div>
+                <input type="password" th:field="*{password}" class="form-control" name="password" id="passwordForm" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                       onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 8 characters and must contain (?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,} ' : '');if(this.checkValidity()) form.confirm_password.pattern = this.value;"
+                       placeholder="Password" required>
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></p>
+                        <br>
+                        <div>
+                            <label for="confirm_password" STYLE="color: black">Re-enter password*</label>
+                            <div>
+                <input type="password" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="Confirm Password" id="confirm_password" required>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
+            </div>
+            <br>
+
+            <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Register me</button>
+        </form>
+    </div>
 
 
-</body>
+   </body>
 </html>
