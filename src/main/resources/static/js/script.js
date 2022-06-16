@@ -1,4 +1,3 @@
-
 function setActiveFilter(filterName) {
     let filterElement = document.getElementById(filterName);
     filterElement.className = "uk-active";
@@ -21,5 +20,9 @@ function nextPage() {
     if (currentPageNumber < totalPages) {
         window.location.href = (currentPath).slice(0, splitPageNumber) + "/" + (currentPageNumber + 1);
     }
+}
 
+function executeSearch() {
+    let searchTerm = document.getElementById("searchField").value;
+    window.location.href = "http://localhost:7777/search?search=" + searchTerm;
 }
