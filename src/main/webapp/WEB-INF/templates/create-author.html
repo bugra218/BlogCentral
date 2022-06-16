@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:background-color="http://www.w3.org/1999/xhtml">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>BlogCentral</title>
@@ -47,7 +46,7 @@
             <h1>Register</h1>
             <br>
             <div>
-                <label for="firstnameForm" STYLE="color: black">First name</label>
+                <label for="firstnameForm" STYLE="color: black">First name*</label>
                 <div>
                 <input type="text" th:field="*{firstName}" style="border: 1px solid black" name="firstName" id="firstnameForm" aria-describedby="emailHelp" placeholder="Enter first name" required>
                 <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></p>
@@ -55,6 +54,9 @@
 
             </div>
             <br>
+            <div>
+                <label for="lastnameForm" STYLE="color: black">Last name*</label>
+                <div>
             <div class="form-group">
                 <input type="text" th:field="*{lastName}" class="form-control" name="lastName" id="lastnameForm"
                        aria-describedby="emailHelp" placeholder="Enter last name" required>
@@ -62,52 +64,81 @@
             </div>
             <br>
             <div class="form-group">
+                <div>
+                    <label for="emailForm" STYLE="color: black">E-mail*</label>
+                    <div>
+                        <div class="form-group">
                 <input type="text" th:field="*{email}" class="form-control" name="email" id="emailForm"
                        aria-describedby="emailHelp" placeholder="Enter email" required>
                 <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>
             </div>
             <br>
             <div class="form-group">
+                <div>
+                    <label for="streetForm" STYLE="color: black">Street</label>
+                    <div>
                 <input type="text" th:field="*{street}" class="form-control" name="street" id="streetForm"
                        aria-describedby="emailHelp" placeholder="Enter street">
                 <p th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="text-danger"></p>
             </div>
             <br>
             <div class="form-group">
+                <div>
+                    <label for="houseNrForm" STYLE="color: black">House number</label>
+                    <div>
                 <input type="text" th:field="*{houseNr}" class="form-control" name="houseNr" id="houseNrForm"
                        aria-describedby="emailHelp" placeholder="Enter house Nr" required>
                 <p th:if="${#fields.hasErrors('houseNr')}" th:errors="*{houseNr}" class="text-danger"></p>
             </div>
             <br>
             <div class="form-group">
+                <div>
+                    <label for="cityForm" STYLE="color: black">City</label>
+                    <div>
                 <input type="text" th:field="*{city}" class="form-control" name="city" id="cityForm"
                        aria-describedby="emailHelp" placeholder="Enter City" required>
                 <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></p>
             </div>
             <br>
             <div class="form-group">
+                <div>
+                    <label for="zipForm" STYLE="color: black">Zip code</label>
+                    <div>
                 <input type="text" th:field="*{zip}" class="form-control" name="zip" id="zipForm"
                        aria-describedby="emailHelp" placeholder="Enter Zip code" required>
                 <p th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}" class="text-danger"></p>
             </div>
             <br>
             <div class="form-group">
+                <div>
+                    <label for="usernameForm" STYLE="color: black">Username*</label>
+                    <div>
                 <input type="text" th:field="*{userName}" class="form-control" name="userName" id="usernameForm"
-                       aria-describedby="emailHelp" placeholder="Enter username" required>
+                       aria-describedby="emailHelp"  placeholder="Enter username" required>
                 <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="text-danger"></p>
             </div>
             <br>
             <div class="form-group">
-                <input type="password" th:field="*{password}" class="form-control" name="password" id="passwordForm"
+                <div>
+                    <label for="passwordForm" STYLE="color: black">Password*</label>
+                    <div>
+                <input type="password" th:field="*{password}" class="form-control" name="password" id="passwordForm" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                       onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 8 characters and must contain (?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,} ' : '');if(this.checkValidity()) form.confirm_password.pattern = this.value;"
                        placeholder="Password" required>
                 <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></p>
+                        <br>
+                        <div>
+                            <label for="confirm_password" STYLE="color: black">Re-enter password*</label>
+                            <div>
+                <input type="password" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="Confirm Password" id="confirm_password" required>
+
             </div>
             <br>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Register me</button>
         </form>
     </div>
 
 
-</body>
+   </body>
 </html>
