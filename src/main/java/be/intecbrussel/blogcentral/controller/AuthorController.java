@@ -12,9 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 // TODO: exception handling, avoid duplicate code with help methods
 @Controller
@@ -53,14 +55,18 @@ public class AuthorController {
     }
 
     @PostMapping("/save")
-    public String saveAuthor(@Valid @ModelAttribute("author") Author author, BindingResult result, Model model) {
+    public String saveAuthor(@Valid @ModelAttribute("author") Author author, BindingResult result, Model model, HttpServletRequest request) {
 
         if(result.hasErrors()) {
             model.addAttribute("author", author);
             return "create-author";
         }
         authorService.createAuthor(author);
-        return "redirect:/"; // placeholder
+        return getPreviousPageByRequest(request).orElse("/"); // placeholder
+    }
+    protected Optional<String> getPreviousPageByRequest(HttpServletRequest request)
+    {
+        return Optional.ofNullable(request.getHeader("Referer")).map(requestUrl -> "redirect:" + requestUrl);
     }
 
     // get an Author based on id - return Author home page
