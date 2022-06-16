@@ -21,6 +21,7 @@ main {
 }
 
 .content {
+    width: 75%;
     margin-left: 200px;
     padding: 16px;
     height: 100vh;
@@ -28,4 +29,26 @@ main {
 
 .space-50-px {
     margin: 50px 0;
+}
+
+/* below, needed to add few classes to get commercial next to articles */
+.filter {
+    height: 5vh;
+}
+
+.flex-surround {
+    display: flex;
+    width: 100%;
+}
+
+.articles {
+    float: left;
+}
+
+.miniprofile {
+    float: right;
+}
+
+.pagination {
+    height: 10vh;
 }

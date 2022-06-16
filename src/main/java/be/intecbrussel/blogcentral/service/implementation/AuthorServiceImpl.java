@@ -74,4 +74,5 @@ public class AuthorServiceImpl implements AuthorService {
     public Author getAuthorByUsername(String username) {
         return authorRepository.findByUserName(username);
     }
+
 }

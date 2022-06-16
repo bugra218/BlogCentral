@@ -6,10 +6,7 @@ import be.intecbrussel.blogcentral.model.Tag;
 import be.intecbrussel.blogcentral.repository.BlogpostRepository;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -67,6 +64,21 @@ public class BlogpostServiceImpl implements BlogpostService {
     @Override
     public List<BlogPost> getAllBlogPostFromAuthor(Author author) {
         return blogpostRepository.findByAuthor(author);
+    }
+
+    // TODO: TRYING OUT PAGINATION AUTHOR PAGE - NOT WORKING YET - PLEASE KEEP
+    @Override
+    public Page<BlogPost> findPageForAuthor(Author author, int pageNumber,
+                                         String field) {
+        List<BlogPost> postsForAuthor = getAllBlogPostFromAuthor(author);
+
+        Page<BlogPost> pageForAuthor = new PageImpl<>(postsForAuthor);
+
+        Pageable pageable = pageForAuthor.getPageable();
+
+        pageable = PageRequest.of(pageNumber - 1,6, Sort.by(Sort.Direction.ASC, field));
+
+        return blogpostRepository.findAll(pageable);
     }
 
     @Override

@@ -18,4 +18,5 @@ public interface BlogpostService {
     List<BlogPost> getAllBlogpostsByTitleContaining(String title);
     List<BlogPost> getAllBlogpostsByTagContaining(Tag tagName);
     Page<BlogPost> findPage(int pageNumber, String field);
+    Page<BlogPost> findPageForAuthor(Author author, int pageNumber, String field);
 }
