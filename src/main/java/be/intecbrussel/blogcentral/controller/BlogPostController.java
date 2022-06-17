@@ -107,13 +107,15 @@ public class BlogPostController {
 
     @PostMapping("/{postId}/saveChanges")
     public String saveBlogPostChanges(@ModelAttribute("blogpost") BlogPost blogPost) {
+        int postId = blogPost.getId();
         blogpostService.updateBlogPost(blogPost);
-        return "redirect:./";
+        return "redirect:/blogpost/" + postId;
     }
 
     @GetMapping("/{postId}/delete")
     public String deleteBlogPost(@PathVariable int postId) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
+        int authorId = blogPost.getAuthor().getId();
         List<Comment> commentsBlogPost =
                 commentService.getAllCommentsForBlogPost(blogPost);
 
@@ -122,6 +124,6 @@ public class BlogPostController {
         }
 
         blogpostService.deleteBlogPost(blogPost);
-        return "redirect:/blogpost/";
+        return "redirect:/authors/" + authorId;
     }
 }

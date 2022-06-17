@@ -79,12 +79,8 @@
 
                         <p>
                             <a class="uk-button uk-button-primary" th:href="${'/blogpost/' + blogPost.id + '/writeComment'}">Add comment</a>
-
-
                             <a class="uk-button" th:href="${'/' + blogPost.id + '/editPost'}">Update post</a>
                             <a class="uk-button" th:href="${'/' + blogPost.id + '/delete'}">Delete post</a>
-
-
                             <a th:href="${'/like/' + blogPost.id + '/likePost'}" uk-icon="icon: heart"></a>
 
                         </p>
@@ -98,22 +94,29 @@
                     <header class="uk-comment-header">
                         <div class="uk-grid-medium uk-flex-middle" uk-grid>
                             <div class="uk-width-auto">
-                                <img class="uk-comment-avatar"
-                                     src="/img/default-avatar.png" width="50"
-                                     height="50" alt="">
+                                <img class="uk-comment-avatar" src="/images/default.png" width="40" height="40" alt="">
                             </div>
                             <div class="uk-width-expand">
                                 <h4 class="uk-comment-title uk-margin-remove"
                                     th:text="${comment.author.userName}"></h4>
                                 <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
-                                    <li th:text="${'Wrote on ' + comment.timestampCreatedDisplay + ':'}"></li>
+                                    <li th:text="${'wrote on ' + comment.timestampCreatedDisplay + ':'}"></li>
+<!--                                    <form th:action="@{save}" th:object="${author}" method="post">-->
+<!--                                    "/blogpost/{postId}/updateComment/{commentId}"-->
+<!--                                    <a class="uk-button" th:href="${'/' + blogPost.id + '/delete'}">Delete post</a>-->
+                                    <li><a th:href="${'/blogpost/' + blogPost.id + '/updateComment/' + comment.id}" uk-icon="icon: pencil"></a></li>
+                                    <li><a th:href="${'/deleteComment/' + comment.id}" uk-icon="icon: trash"></a></li>
                                 </ul>
                             </div>
                         </div>
                     </header>
                     <div class="uk-comment-body">
                         <p th:text="${comment.body}"></p>
+<!--                        <div>-->
+<!--                            <a th:href="${'/like/' + blogPost.id + '/likePost'}" uk-icon="icon: heart"></a>-->
+<!--                        </div>-->
                     </div>
+
                     <hr>
                 </article>
 
@@ -123,7 +126,7 @@
 
             <div class="miniprofile uk-width-1-4 space-50-px">
                 <div class="uk-panel uk-panel-box uk-text-center">
-                    <a th:href="${'/authors/' + blogPost.author.id}"><img class="uk-border-circle" src="/img/default-avatar.png" alt="avatar" width="120" height="120"></a>
+                    <a th:href="${'/authors/' + blogPost.author.id}"><img class="uk-border-circle" src="/images/default.png" alt="avatar" width="120" height="120"></a>
                     <h3 th:text="${blogPost.author.userName}"></h3>
                 </div>
             </div>

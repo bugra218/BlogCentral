@@ -70,7 +70,7 @@
                 <div class="uk-card-header">
                     <div class="uk-grid-small uk-flex-middle" uk-grid>
                         <div class="uk-width-auto">
-                            <img class="uk-border-circle" width="40" height="40" th:src="${post.author.avatarPath}">
+                            <a th:href="${'/authors/' + post.author.id}"><img class="uk-border-circle" width="40" height="40" th:src="${post.author.avatarPath}"></a>
                         </div>
                         <div class="uk-width-expand">
                             <h3 class="uk-card-title uk-margin-remove-bottom" th:text="${post.title}"></h3>
@@ -86,7 +86,6 @@
                         <a class="uk-button uk-button-primary"
                            th:href="@{/blogpost/{postId}(postId = ${post.id})}">Read more</a>
                         <a class="uk-button" href="#">4 Comments</a>
-                        <a href="" uk-icon="icon: heart"></a>
                     </p>
                 </div>
             </div>
