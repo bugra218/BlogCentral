@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>Blogpost</title>
@@ -74,12 +74,19 @@
                         <p th:text="${blogPost.body}"></p>
                     </div>
 
+<!--                    sec:authorize="isAuthenticated()"-->
                     <div class="uk-card-footer">
+
                         <p>
                             <a class="uk-button uk-button-primary" th:href="${'/blogpost/' + blogPost.id + '/writeComment'}">Add comment</a>
+
+
                             <a class="uk-button" th:href="${'/' + blogPost.id + '/editPost'}">Update post</a>
                             <a class="uk-button" th:href="${'/' + blogPost.id + '/delete'}">Delete post</a>
+
+
                             <a th:href="${'/like/' + blogPost.id + '/likePost'}" uk-icon="icon: heart"></a>
+
                         </p>
                     </div>
                 </div>

@@ -29,13 +29,6 @@ public class LikeController {
         this.authorService = authorService;
     }
 
-    public void setLoggedUser() {
-        String currentUserName = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-        Author loggedUser = authorService.getAuthorByUsername(currentUserName);
-    }
-
     @GetMapping("")
     public String getPosts(@RequestParam(name = "field", required = false, defaultValue = "timestampCreated") String field, Model model) {
         List<BlogPost> allBlogPosts = blogpostService.getAllBlogPosts(field);

@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .permitAll()
                 .antMatchers("/resources/**","/css/**").permitAll()
-                .antMatchers("/authors/")
+                .antMatchers("/authors/", "/blogpost/**/writeComment")
                 .authenticated()
                 .anyRequest()
                 .permitAll()

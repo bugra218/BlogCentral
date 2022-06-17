@@ -8,6 +8,7 @@ import be.intecbrussel.blogcentral.service.BlogpostService;
 import be.intecbrussel.blogcentral.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -53,8 +54,25 @@ public class BlogPostController {
         return "home";
     }
 
+    // example for getting the author in case needed
+//    public String showAuthorProfileForm(Model model) {
+//        String currentUserName = SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getName();
+//        Author authorDB = authorService.getAuthorByUsername(currentUserName);
+//        model.addAttribute("author", authorDB);
+//        return "update-author";
+//    }
+
     @GetMapping("/blogpost/{postId}")
     public String getFullPost(@PathVariable int postId, Model model) {
+
+//        String currentUserName = SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getName();
+//        Author authorDB = authorService.getAuthorByUsername(currentUserName);
+//        model.addAttribute("author", authorDB);
+
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         // added list of comments
         List<Comment> commentsBlogPost =
