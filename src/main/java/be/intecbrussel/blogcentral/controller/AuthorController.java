@@ -217,7 +217,7 @@ public class AuthorController {
         }
 
         this.authorService.deleteAuthorById(idInt);
-        return "redirect:/authors/"; // placeholder
+        return "redirect:/home"; // updated
     }
 
     // help methods exception handling

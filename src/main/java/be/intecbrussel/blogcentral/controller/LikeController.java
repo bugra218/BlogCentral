@@ -61,6 +61,7 @@ public class LikeController {
         else if (Objects.equals(likeStatus, "true") && likedThisPost == null) {
             likeService.removeLike(blogPost, liker);
         }
-        return "redirect:";
+//        return "redirect:"; // updated
+        return "redirect:/blogpost/" + postId +"/";
     }
 }

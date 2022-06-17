@@ -109,7 +109,7 @@ public class BlogPostController {
     public String saveBlogPostChanges(@ModelAttribute("blogpost") BlogPost blogPost) {
         int postId = blogPost.getId();
         blogpostService.updateBlogPost(blogPost);
-        return "redirect:/blogpost/" + postId;
+        return "redirect:/blogpost/" + postId +"/"; // added "/"
     }
 
     @GetMapping("/{postId}/delete")

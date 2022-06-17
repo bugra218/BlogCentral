@@ -58,7 +58,7 @@ public class CommentController {
 
         commentService.createComment(comment);
 
-        return "redirect:/blogpost/" + postId;
+        return "redirect:/blogpost/" + postId + "/";
     }
 
     // method to collect an individual comment by id, to update / delete
@@ -86,7 +86,7 @@ public class CommentController {
 
         commentService.updateComment(comment);
 
-        return "redirect:/blogpost/" + postId;
+        return "redirect:/blogpost/" + postId + "/"; // added "/"
     }
 
     // method to delete a comment
