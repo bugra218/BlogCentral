@@ -35,20 +35,6 @@ public class LikeController {
         return "all-likes-blog-posts";
     }
 
-    @GetMapping("/{postId}")
-    public String getFullPost(@PathVariable int postId, Model model, HttpServletRequest httpServletRequest) {
-        Author author = authorService.getAuthorByUsername(httpServletRequest.getRemoteUser());
-        BlogPost blogPost = blogpostService.getBlogPostById(postId);
-        int likesReceived = likeService.countLikeByBlogPost_Id(postId);
-        Boolean likedPost = likeService.UserLikedPost(blogPost, author);
-
-        model.addAttribute(author);
-        model.addAttribute(blogPost);
-        model.addAttribute("likes", likesReceived);
-        model.addAttribute("userLikedThisPost", likedPost);
-        return "like-full-blog-post";
-    }
-
     @GetMapping("blogpost/{postId}/likePost")
     public String likePost(@PathVariable int postId) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);

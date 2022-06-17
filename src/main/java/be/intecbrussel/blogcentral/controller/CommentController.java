@@ -86,17 +86,29 @@ public class CommentController {
 
     // method to collect an individual comment by id, to update / delete
     @GetMapping(value = "/blogpost/{postId}/updateComment/{commentId}")
-    public String showComment(@PathVariable int commentId,
-                              Model model) {
+    public String showComment(@PathVariable int commentId, Model model) {
         Comment comment = commentService.getCommentById(commentId);
         int postId = comment.getBlogPost().getId();
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
+
+        boolean userIsLoggedIn = false;
+        try {
+            String currentUserName = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            Author author = authorService.getAuthorByUsername(currentUserName);
+            model.addAttribute(author);
+            userIsLoggedIn = true;
+        } catch (Exception e) {
+            System.out.println("User is not logged in.");
+        }
 
         // diagnostic println
         System.out.println(comment);
 
         model.addAttribute("comment", comment);
         model.addAttribute("blogPost", blogPost);
+        model.addAttribute("userLoggedIn", userIsLoggedIn);
 
         return "update-comment";
     }

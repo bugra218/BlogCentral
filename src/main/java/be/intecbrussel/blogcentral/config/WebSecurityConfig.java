@@ -61,9 +61,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/authors/register").anonymous()
+                .antMatchers("/authors/register", "/login").anonymous()
                 .antMatchers("/resources/**","/css/**").permitAll()
-                .antMatchers("/authors/","/authors/update")
+                .antMatchers("/authors/","/authors/update", "/authors/delete/**", "/blogpost/writePost/**",
+                        "/**/editPost",  "/**/saveChanges", "/**/delete", "/blogpost/**/writeComment", "/blogpost/**/saveComment"
+                        , "/blogpost/**/updateComment/**", "/deleteComment/**", "/blogpost/**/likePost", "/tag**")
                 .authenticated()
                 .anyRequest()
                 .permitAll()
@@ -74,8 +76,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/authors")
-                .permitAll();
+                .logoutSuccessUrl("/")
+                .permitAll()
+                .and()
+                .rememberMe().key("uniqueAndSecret");
         http.sessionManagement().maximumSessions(-1).sessionRegistry(sessionRegistry());
     }
 }

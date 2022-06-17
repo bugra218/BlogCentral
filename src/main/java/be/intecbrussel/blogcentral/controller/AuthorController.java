@@ -74,59 +74,6 @@ public class AuthorController {
         return Optional.ofNullable(request.getHeader("Referer")).map(requestUrl -> "redirect:" + requestUrl);
     }
 
-    // TODO: TRYING OUT PAGINATION AUTHOR PAGE - NOT WORKING YET - PLEASE KEEP
-//    @GetMapping("/{id}")
-//    public String getAllBlogPostsForAuthor(@PathVariable String id) {
-//        return "redirect:/authors/{id}/page/1";
-//    }
-
-//    @GetMapping("/home/page/{pageNumber}")
-//    @GetMapping("/{id}/page/{pageNumber}")
-//    public String getOnePage(@PathVariable String id,
-//                             @RequestParam(name = "orderBy", required = false, defaultValue = "timestampCreated") String orderBy,
-//                             Model model,
-//                             @PathVariable("pageNumber") int currentPage) {
-//
-//        System.out.println(id + "  " + currentPage);
-//        // call help method to check if path param can be converted to number
-//        int idInt = convertStringIdToInt(id);
-//
-//        // help method returns 0 if conversion to nr. didn't work
-//        if (idInt == 0) {
-//            String noNumber = id + " is not a numeric format";
-//            model.addAttribute("error", noNumber);
-//            return "error-page";
-//        }
-//
-//        // call help method to check if there is an author for provided id
-//        Author authorDB = checkAuthorIdExists(idInt);
-//
-//        // help method returns null if authorId can not be found
-//        if (authorDB == null) {
-//            String idNotExist = "no author with id: " + idInt;
-//            model.addAttribute("error", idNotExist);
-//            return "error-page";
-//        }
-//
-//        // collect blogposts for author
-//        Page<BlogPost> pageFromAuthor = blogpostService.findPageForAuthor(authorDB, currentPage, orderBy);
-//
-////        Page<BlogPost> page = blogpostService.findPage(currentPage, orderBy);
-//        int totalPages = pageFromAuthor.getTotalPages();
-//        long totalItems = pageFromAuthor.getTotalElements();
-//        List<BlogPost> blogPosts = pageFromAuthor.getContent();
-//
-//        System.out.println(blogPosts);
-//
-//        model.addAttribute("currentPage", currentPage);
-//        model.addAttribute("totalPages", totalPages);
-//        model.addAttribute("totalItems", totalItems);
-//        model.addAttribute("blogPosts", blogPosts);
-//        model.addAttribute("activeFilter", orderBy);
-//
-//        return "authors";
-//    }
-
 
     // get an Author based on id - return Author home page
     @GetMapping("/{id}")
