@@ -6,6 +6,7 @@ import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -161,29 +162,12 @@ public class AuthorController {
     }
 
     // update Author - get author based on id - return author profile form
-    @GetMapping("/update/{id}")
-    public String showAuthorProfileForm(@PathVariable String id, Model model) {
-
-        // call help method to check if path param can be converted to number
-        int idInt = convertStringIdToInt(id);
-
-        // help method returns 0 if conversion to nr. didn't work
-        if (idInt == 0) {
-            String noNumber = id + " is not a numeric format";
-            model.addAttribute("error", noNumber);
-            return "error-page";
-        }
-
-        // call help method to check if there is an author for provided id
-        Author authorDB = checkAuthorIdExists(idInt);
-
-        // help method returns null if authorId can not be found
-        if (authorDB == null) {
-            String idNotExist = "no author with id: " + idInt;
-            model.addAttribute("error", idNotExist);
-            return "error-page";
-        }
-
+    @GetMapping("/update")
+    public String showAuthorProfileForm(Model model) {
+        String currentUserName = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        Author authorDB = authorService.getAuthorByUsername(currentUserName);
         model.addAttribute("author", authorDB);
         return "update-author";
     }
