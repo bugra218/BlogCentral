@@ -113,8 +113,25 @@ public class BlogPostController {
 
     @GetMapping("blogpost/writePost")
     public String createBlogPost(Model model) {
-        List<Author> authors = authorService.getAllAuthors();
-        model.addAttribute("authors", authors);
+        String currentUserName = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        Author authorDB = authorService.getAuthorByUsername(currentUserName);
+        List<Tag> allTags = tagService.getAllTags();
+        System.out.println(allTags.size());
+        // checks what tags are selected on specific post for checking corresponding checkboxes
+        boolean userIsLoggedIn = false;
+        try {
+            Author author = authorService.getAuthorByUsername(currentUserName);
+            model.addAttribute("loggedUser", author);
+            userIsLoggedIn = true;
+        } catch (Exception e) {
+            System.out.println("User is not logged in.");
+        }
+
+        model.addAttribute("allTags", allTags);
+        model.addAttribute("author", authorDB);
+        model.addAttribute("userLoggedIn", userIsLoggedIn);
         return "create-blogpost";
     }
 
@@ -146,7 +163,7 @@ public class BlogPostController {
     @PostMapping("/{postId}/saveChanges")
     public String saveBlogPostChanges(@ModelAttribute("blogpost") BlogPost blogPost) {
         blogpostService.updateBlogPost(blogPost);
-        return "redirect:./";
+        return "redirect:/";
     }
 
     @GetMapping("/{postId}/delete")

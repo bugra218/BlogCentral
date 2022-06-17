@@ -109,7 +109,7 @@ public class CommentController {
 
         commentService.updateComment(comment);
 
-        return "redirect:/blogpost/" + postId;
+        return "redirect:blogpost/" + postId + "/";
     }
 
     // method to delete a comment
