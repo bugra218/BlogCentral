@@ -57,10 +57,7 @@ public class Author {
     private String city;
 
     // TODO
-//    @Digits(integer = 9, fraction = 0, message = "zip code can not be more than 9 digit")
-//    @Positive(message = "zip code can not be a negative number")
-//    @Min(1000)
-//    @Max(999999)
+    @Max(999999)
     private int zip;
 
     @Column(name = "avatar_path")
