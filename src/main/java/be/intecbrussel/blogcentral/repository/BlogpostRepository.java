@@ -14,4 +14,5 @@ public interface BlogpostRepository extends JpaRepository<BlogPost, Integer> {
     List<BlogPost> findAllByTitleContaining(String title);
 //    List<BlogPost> getAllByTagsContaining(String tagName);
     List<BlogPost> getAllByTagsContaining(Tag tagName);
+    BlogPost findBytitle(String title);
 }

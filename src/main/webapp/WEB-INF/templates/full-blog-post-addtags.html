@@ -1,26 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>BlogCentral</title>
+
+    <link rel="stylesheet" href="/css/master.css">
+    <script src="/js/script.js"></script>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <!-- UIkit JS -->
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
 </head>
 <body>
-    <div>
-        <h1 style="display: inline-block" th:text="${blogPost.title}"></h1>
-        <p style="display: inline-block; float: right">Author: </p>
-        <b><p style="display: inline-block; float: right" th:text="${blogPost.author.userName}"></p></b> <br/>
-        <p th:text="${blogPost.body}"></p>
+<nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
+    <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+            <li class="uk-active"><a href="#">Active</a></li>
+            <li>
+                <a href="#">Parent</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <li class="uk-active"><a href="#">Active</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="#">Item</a></li>
+        </ul>
     </div>
-    <hr>
-    <form th:action="@{{postId}/addTagsToPost(postId = ${blogPost.id})}" method="post">
-<!--        <div th:each="tag:${allTags}">-->
-        <div th:each="index : ${#numbers.sequence( 0, #arrays.length(allTags)-1)}">
-            <input type="checkbox" name="tags" th:text="${allTags[index].tagName}" th:value="${allTags[index].id}" th:checked="${tagStatus[index]}">
-<!--            <input id="selectedTags" type="hidden" name="activeTags" th:value="${tagStatus[index]}">-->
-        </div>
+</nav>
+<main>
+
+    <div class="sideNav">
+        <h1>Active users</h1>
+        <h1 th:text="${activeFilter}"></h1>
+    </div>
+<div class="container">
+    <form th:action="@{saveChanges}" method="post">
+    <div>
+        Title: <textarea class="uk-textarea" rows="1" th:text="${blogPost.title}" name="title"></textarea> <br><br>
+        Body: <textarea class="uk-textarea"  rows="10" th:text="${blogPost.body}" name="body"></textarea> <br><br>
+        <input type="hidden" th:value="${blogPost.author.id}" name="author">
+        <input type="hidden" th:value="${blogPost.id}" name="id">
+        <input type="hidden" th:value="${blogPost.timestampCreated}" name="timestampCreated">
+        <input type="hidden" th:value="${blogPost.timestampCreatedDisplay}" name="timestampCreatedDisplay">
+    </div>
         <br/>
-        <input type="submit" value="Add selected tags">
+        <input type="submit" value="Update">
     </form>
+</div>
 <!--    <a th:href="@{{postId}/addTagsToPost(postId = ${blogPost.id})}">ggggggggggggggggggggggg</a>-->
 </body>
 </html>

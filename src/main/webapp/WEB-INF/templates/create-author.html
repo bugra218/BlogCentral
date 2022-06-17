@@ -55,7 +55,7 @@
                 <label for="firstnameForm" STYLE="color: black">First name*</label>
                 <div>
                 <input type="text" th:field="*{firstName}" style="border: 1px solid black" name="firstName" id="firstnameForm" aria-describedby="emailHelp" placeholder="Enter first name" required>
-                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></p>
+                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger" ></p>
                 </div>
 
             </div>
@@ -93,7 +93,7 @@
                     <label for="houseNrForm" STYLE="color: black">House number</label>
                     <div>
                 <input type="text" th:field="*{houseNr}" class="form-control" name="houseNr" id="houseNrForm"
-                       aria-describedby="emailHelp" placeholder="Enter house Nr" required>
+                       aria-describedby="emailHelp" placeholder="Enter house Nr">
                 <p th:if="${#fields.hasErrors('houseNr')}" th:errors="*{houseNr}" class="text-danger"></p>
             </div>
             <br>
@@ -102,7 +102,7 @@
                     <label for="cityForm" STYLE="color: black">City</label>
                     <div>
                 <input type="text" th:field="*{city}" class="form-control" name="city" id="cityForm"
-                       aria-describedby="emailHelp" placeholder="Enter City" required>
+                       aria-describedby="emailHelp" placeholder="Enter City">
                 <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></p>
             </div>
             <br>
@@ -110,8 +110,8 @@
                 <div>
                     <label for="zipForm" STYLE="color: black">Zip code</label>
                     <div>
-                <input type="text" th:field="*{zip}" class="form-control" name="zip" id="zipForm"
-                       aria-describedby="emailHelp" placeholder="Enter Zip code" required>
+                <input type="number" min="1000" max="999999" th:field="*{zip}" class="form-control" name="zip" id="zipForm"
+                       aria-describedby="emailHelp" placeholder="Enter Zip code">
                 <p th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}" class="text-danger"></p>
             </div>
             <br>
@@ -142,9 +142,11 @@
             <br>
 
             <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Register me</button>
-        </form>
+            </form>
     </div>
 
 
-   </body>
+    </body>
+
+</main>
 </html>

@@ -3,9 +3,11 @@ package be.intecbrussel.blogcentral.controller;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.model.Comment;
+import be.intecbrussel.blogcentral.model.Tag;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import be.intecbrussel.blogcentral.service.CommentService;
+import be.intecbrussel.blogcentral.service.TagService;
 import be.intecbrussel.blogcentral.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,23 +16,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 @Controller
 public class BlogPostController {
     private BlogpostService blogpostService;
     private AuthorService authorService;
     private CommentService commentService;
+    private TagService tagService;
     private LikeService likeService;
 
     @Autowired
-    public BlogPostController(BlogpostService blogpostService, AuthorService authorService, CommentService commentService, LikeService likeService) {
+    public BlogPostController(BlogpostService blogpostService, AuthorService authorService, CommentService commentService, LikeService likeService, TagService tagService) {
         this.blogpostService = blogpostService;
         this.authorService = authorService;
         this.commentService = commentService;
+        this.tagService = tagService;
         this.likeService = likeService;
     }
 
@@ -75,17 +80,7 @@ public class BlogPostController {
         return "home";
     }
 
-    // example for getting the author in case needed
-//    public String showAuthorProfileForm(Model model) {
-//        String currentUserName = SecurityContextHolder.getContext()
-//                .getAuthentication()
-//                .getName();
-//        Author authorDB = authorService.getAuthorByUsername(currentUserName);
-//        model.addAttribute("author", authorDB);
-//        return "update-author";
-//    }
-
-    @GetMapping("/blogpost/{postId}/")
+    @GetMapping("/blogpost/{postId}")
     public String getFullPost(@PathVariable int postId, Model model) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         List<Comment> commentsBlogPost = commentService.getAllCommentsForBlogPost(blogPost);
@@ -124,10 +119,19 @@ public class BlogPostController {
     }
 
     @PostMapping("/createPost")
-    public String saveBlogPost(@ModelAttribute("blogpost") BlogPost blogPost) {
+    public String saveBlogPost(@ModelAttribute("blogpost") BlogPost blogPost ,@RequestParam(name="tags", required = false) List<Tag> tags) {
         // added authorId to be able to add it in redirect
-        int authorId = blogPost.getAuthor().getId();
+        String currentUserName = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        Author authorDB = authorService.getAuthorByUsername(currentUserName);
+        int authorId = authorDB.getId();
+
         blogpostService.createBlogPost(blogPost);
+        int blogPostId = blogPost.getId();
+        BlogPost blogPostTags = blogpostService.getBlogPostById(blogPostId);
+        tagService.addTagsToPost(tags, blogPost);
+
         // changed redirect for testing purposes
         return "redirect:/authors/" + authorId;
     }
@@ -136,7 +140,7 @@ public class BlogPostController {
     public String editBlogPost(@PathVariable int postId, Model model) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         model.addAttribute(blogPost);
-        return "update-blogpost";
+        return "full-blog-post-addtags";
     }
 
     @PostMapping("/{postId}/saveChanges")

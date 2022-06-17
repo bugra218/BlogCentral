@@ -1,18 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>BlogCentral</title>
+
+    <link rel="stylesheet" href="/css/master.css">
+    <script src="/js/script.js"></script>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <!-- UIkit JS -->
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
 </head>
 <body>
+<nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
+    <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+            <li class="uk-active"><a href="#">Active</a></li>
+            <li>
+                <a href="#">Parent</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <li class="uk-active"><a href="#">Active</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="#">Item</a></li>
+        </ul>
+    </div>
+</nav>
+<main>
+
+    <div class="sideNav">
+        <h1>Active users</h1>
+        <h1 th:text="${activeFilter}"></h1>
+    </div>
+
+    <div class="container">
     <form th:action="@{createPost}" method="post">
-        Author:
-        <select name="author">
-            <option th:each="author:${authors}" th:value="${author.id}" th:text="${author.firstName}"></option>
-        </select> <br/>
-        Title: <input type="text" name="title"> <br><br>
-        Body: <input type="textarea" name="body"> <br><br>
+
+
+        <div sec:authorize="isAuthenticated()">
+            Author: <span size="20" sec:authentication="name"></span>
+        </div>
+        <br/>
+            <input type="hidden" th:value="${author.id}" name="author"/>
+        Title: <input type="text" name="title" placeholder="Title"> <br><br>
+        Body: <textarea class="uk-textarea"  rows="10" placeholder="Post" name="body"></textarea> <br><br>
+        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid" th:each="index : ${#numbers.sequence( 0, #arrays.length(allTags)-1)}">
+            <label><input class="uk-checkbox" type="checkbox" name="tags" th:text="${allTags[index].tagName}" th:value="${allTags[index].id}"checked> </label>
+            <!--            <input id="selectedTags" type="hidden" name="activeTags" th:value="${tagStatus[index]}">-->
+        </div>
+        <br/>
         <input type="submit" value="Save post"> <br><br>
     </form>
+</div>
 </body>
 </html>
