@@ -101,25 +101,17 @@ public class BlogPostController {
         return "redirect:/authors/" + authorId;
     }
 
-    @GetMapping("/blogpost/{postId}/editpost")
+    @GetMapping("/{postId}/editPost")
     public String editBlogPost(@PathVariable int postId, Model model) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
-        List<Tag> allTags = tagService.getAllTags();
-
-
-
         model.addAttribute(blogPost);
-        model.addAttribute("allTags", allTags);
         return "full-blog-post-addtags";
     }
 
-    @PostMapping("/savedchanges")
-    public String saveChanges(@ModelAttribute("blogpost") BlogPost blogPost, @RequestParam(name="tags", required = false) List<Tag> tags) {
+    @PostMapping("/{postId}/saveChanges")
+    public String saveBlogPostChanges(@ModelAttribute("blogpost") BlogPost blogPost) {
         blogpostService.updateBlogPost(blogPost);
-        BlogPost blogPostSave = blogpostService.getBlogPostById(blogPost.getId());
-        tagService.addTagsToPost(tags, blogPostSave);
-
-        return "redirect:/login";
+        return "redirect:./";
     }
 
     @GetMapping("/{postId}/delete")

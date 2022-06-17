@@ -49,13 +49,6 @@
         <input type="hidden" th:value="${blogPost.timestampCreated}" name="timestampCreated">
         <input type="hidden" th:value="${blogPost.timestampCreatedDisplay}" name="timestampCreatedDisplay">
     </div>
-    <hr>
-
-<!--        <div th:each="tag:${allTags}">-->
-        <div th:each="index : ${#numbers.sequence( 0, #arrays.length(allTags)-1)}">
-            <label><input class="uk-checkbox" type="checkbox" name="tags" th:text="${allTags[index].tagName}" th:value="${allTags[index].id}"></label>
-
-        </div>
         <br/>
         <input type="submit" value="Update">
     </form>
