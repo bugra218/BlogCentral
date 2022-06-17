@@ -44,12 +44,15 @@ public class BlogPostController {
     @GetMapping("/home/page/{pageNumber}")
     public String getOnePage(@RequestParam(name = "orderBy", required = false, defaultValue = "recent") String orderBy, Model model, @PathVariable("pageNumber") int currentPage) {
         boolean userIsLoggedIn = false;
-//        Author activeUser = null;
         try {
             String currentUserName = SecurityContextHolder.getContext()
                     .getAuthentication()
                     .getName();
             Author activeUser = authorService.getAuthorByUsername(currentUserName);
+
+            if (!currentUserName.equals("anonymousUser")) {
+                userIsLoggedIn = true;
+            }
             model.addAttribute("activeUser", activeUser);
         } catch (Exception e) {
             System.out.println("User not logged in.");
@@ -58,6 +61,8 @@ public class BlogPostController {
         int totalPages = page.getTotalPages();
         long totalItems = page.getTotalElements();
         List<BlogPost> BlogPosts = page.getContent();
+
+        System.out.println(userIsLoggedIn);
 
 
         model.addAttribute("currentPage", currentPage);
@@ -85,6 +90,7 @@ public class BlogPostController {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         List<Comment> commentsBlogPost = commentService.getAllCommentsForBlogPost(blogPost);
         boolean userIsLoggedIn = false;
+        boolean userIsOwner = false;
         try {
             String currentUserName = SecurityContextHolder.getContext()
                     .getAuthentication()
@@ -96,17 +102,21 @@ public class BlogPostController {
             model.addAttribute("likes", likesReceived);
             model.addAttribute("userLikedThisPost", likedPost);
             userIsLoggedIn = true;
+            if (author.getId() == blogPost.getAuthor().getId()) {
+                userIsOwner = true;
+            }
         } catch (Exception e) {
             System.out.println("User is not logged in.");
         }
 
         model.addAttribute("userLoggedIn", userIsLoggedIn);
+        model.addAttribute("owner", userIsOwner);
         model.addAttribute("blogPost", blogPost);
         model.addAttribute("commentsBlogPost", commentsBlogPost);
         return "blogpost";
     }
 
-    @GetMapping("/writePost")
+    @GetMapping("blogpost/writePost")
     public String createBlogPost(Model model) {
         List<Author> authors = authorService.getAllAuthors();
         model.addAttribute("authors", authors);
@@ -146,6 +156,6 @@ public class BlogPostController {
         }
 
         blogpostService.deleteBlogPost(blogPost);
-        return "redirect:/blogpost/";
+        return "redirect:/";
     }
 }

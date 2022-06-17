@@ -152,11 +152,25 @@ public class AuthorController {
             return "error-page";
         }
 
+        boolean userIsLoggedIn = false;
+        try {
+            String currentUserName = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            Author author = authorService.getAuthorByUsername(currentUserName);
+            model.addAttribute(author);
+            System.out.println(currentUserName);
+            userIsLoggedIn = true;
+        } catch (Exception e) {
+            System.out.println("User is not logged in.");
+        }
+
         // collect blogposts for author
         List<BlogPost> blogPostsFromAuthor = blogpostService.getAllBlogPostFromAuthor(authorDB);
 
         model.addAttribute(authorDB);
         model.addAttribute("postsFromAuthor", blogPostsFromAuthor);
+        model.addAttribute("userLoggedIn", userIsLoggedIn);
 
         return "authors";
     }
@@ -164,10 +178,25 @@ public class AuthorController {
     // update Author - get author based on id - return author profile form
     @GetMapping("/update")
     public String showAuthorProfileForm(Model model) {
+        boolean userIsLoggedIn = false;
+        try {
+            String currentUserName = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            Author author = authorService.getAuthorByUsername(currentUserName);
+            model.addAttribute(author);
+            System.out.println(currentUserName);
+            userIsLoggedIn = true;
+        } catch (Exception e) {
+            System.out.println("User is not logged in.");
+        }
+
         String currentUserName = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
         Author authorDB = authorService.getAuthorByUsername(currentUserName);
+
+        model.addAttribute("userLoggedIn", userIsLoggedIn);
         model.addAttribute("author", authorDB);
         return "update-author";
     }

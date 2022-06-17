@@ -16,32 +16,41 @@
 <body>
 <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
     <div class="uk-navbar-left">
-        <ul class="uk-navbar-nav">
-            <li class="uk-active"><a href="#">Active</a></li>
-            <li>
-                <a href="#">Parent</a>
-                <div class="uk-navbar-dropdown">
-                    <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <li class="uk-active"><a href="#">Active</a></li>
-                        <li><a href="#">Item</a></li>
-                        <li><a href="#">Item</a></li>
-                        <li><a href="#">Item</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li><a href="#">Item</a></li>
+        <ul th:with="LoggedIn=${userLoggedIn}" class="uk-navbar-nav">
+            <li>&nbsp;&nbsp;</li>
+            <li><a class="uk-link-text" href="/">Home</a></li>
+
+            <li th:unless="${LoggedIn}"><a class="uk-link-text" href="/login">Login</a></li>
+            <li th:unless="${LoggedIn}"><a class="uk-link-text" href="/authors/register">Sign up</a></li>
+            <!-- TODO: redirect to logged user-->
+            <li th:if="${LoggedIn}"><a class="uk-link-text" th:href="@{/authors/update}">Update profile</a></li>
+            <li th:if="${LoggedIn}"><a class="uk-link-text" th:href="@{/blogpost/writePost}">New post</a></li>
         </ul>
+    </div>
+    <!--        navbar menu search-->
+    <div class="uk-navbar-right">
+        <div>
+            <a class="uk-navbar-toggle" uk-search-icon></a>
+            <div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
+                <form class="uk-search uk-search-navbar uk-width-1-1" action="javascript:executeSearch()">
+                    <input id="searchField" class="uk-search-input" type="search" placeholder="Search" autofocus>
+                </form>
+            </div>
+        </div>
     </div>
 </nav>
 <main>
 
     <div class="sideNav">
-        <h1>Active users</h1>
-        <h1 th:text="${activeFilter}"></h1>
+        <div class="uk-placeholder">PLACEHOLDER SIDEBAR</div>
+        <div class="uk-placeholder">P1: LOGGED ON USERS</div>
+        <div class="uk-placeholder">P2: TOTAL ONLINE</div>
+        <div class="uk-placeholder">P3: TOTAL VISITS</div>
+        <button th:if="${userLoggedIn}" class="uk-button uk-button-danger" onclick="javascript:window.location.href = '/logout'">Logout</button>
     </div>
 
 
-    <div class="container">
+    <div class="content">
         <form th:action="@{/authors/save}" method="post">
             <title>Author Profile Form</title>
             <br>
@@ -99,7 +108,7 @@
                 <div>
                     <label for="zipForm" STYLE="color: black">Zip code</label>
                     <div>
-                <input type="number" min="1000" max="999999" ${author.zip} class="form-control" name="zip" id="zipForm"
+                <input type="number" min="1000" max="999999" th:value="${author.zip}" class="form-control" name="zip" id="zipForm"
                        aria-describedby="emailHelp" placeholder="Enter Zip code">
             </div>
             <br>

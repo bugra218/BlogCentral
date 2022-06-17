@@ -7,6 +7,7 @@ import be.intecbrussel.blogcentral.service.AuthorService;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import be.intecbrussel.blogcentral.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,10 +42,24 @@ public class SearchController {
             blogPostsContainingTagResult.addAll(blogpostService.getAllBlogpostsByTagContaining(tag));
         }
 
+        boolean userIsLoggedIn = false;
+        try {
+            String currentUserName = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            Author author = authorService.getAuthorByUsername(currentUserName);
+            model.addAttribute(author);
+            System.out.println(currentUserName);
+            userIsLoggedIn = true;
+        } catch (Exception e) {
+            System.out.println("User is not logged in.");
+        }
+
         model.addAttribute("postResult", postResult);
         model.addAttribute("authorResult", authorResult);
         model.addAttribute("tagResult", blogPostsContainingTagResult);
         model.addAttribute("searchTerm", search);
+        model.addAttribute("userLoggedIn", userIsLoggedIn);
         return "search-result";
     }
 }

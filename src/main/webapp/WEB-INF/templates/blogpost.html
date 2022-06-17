@@ -18,15 +18,15 @@
 <!-- navbar / header-->
 <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
     <div class="uk-navbar-left">
-        <ul class="uk-navbar-nav">
+        <ul th:with="LoggedIn=${userLoggedIn}" class="uk-navbar-nav">
             <li>&nbsp;&nbsp;</li>
-            <li><a class="uk-link-text" href="/login">Login</a></li>
-            <li><a class="uk-link-text" href="/authors/register">Sign up</a>
-            </li>
+            <li><a class="uk-link-text" href="/">Home</a></li>
+
+            <li th:unless="${LoggedIn}"><a class="uk-link-text" href="/login">Login</a></li>
+            <li th:unless="${LoggedIn}"><a class="uk-link-text" href="/authors/register">Sign up</a></li>
             <!-- TODO: redirect to logged user-->
-            <li><a class="uk-link-text" href="/authors/update/1">Update
-                profile</a></li>
-            <!--<li><a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a></li>-->
+            <li th:if="${LoggedIn}"><a class="uk-link-text" th:href="@{/authors/update}">Update profile</a></li>
+            <li th:if="${LoggedIn}"><a class="uk-link-text" th:href="@{/blogpost/writePost}">New post</a></li>
         </ul>
     </div>
     <!--        navbar menu search-->
@@ -49,6 +49,7 @@
         <div class="uk-placeholder">P1: LOGGED ON USERS</div>
         <div class="uk-placeholder">P2: TOTAL ONLINE</div>
         <div class="uk-placeholder">P3: TOTAL VISITS</div>
+        <button th:if="${userLoggedIn}" class="uk-button uk-button-danger" onclick="javascript:window.location.href = '/logout'">Logout</button>
     </div>
 
     <div class="content">
@@ -78,8 +79,8 @@
                             <a class="uk-button uk-button-primary" th:href="${'/blogpost/' + blogPost.id + '/writeComment'}">Add comment</a>
 
 
-                            <a class="uk-button" th:href="${'/' + blogPost.id + '/editPost'}">Update post</a>
-                            <a class="uk-button" th:href="${'/' + blogPost.id + '/delete'}">Delete post</a>
+                            <a th:if="${owner}" class="uk-button" th:href="${'/' + blogPost.id + '/editPost'}">Update post</a>
+                            <a th:if="${owner}" class="uk-button" th:href="${'/' + blogPost.id + '/delete'}">Delete post</a>
 
 
                             <span th:text="${likes}"></span>
