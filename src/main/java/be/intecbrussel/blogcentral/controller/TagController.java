@@ -31,16 +31,15 @@ public class TagController {
         return "all-tags";
     }
 
-    @GetMapping("/create/")
+    @GetMapping("/create")
     public String createNewTag() {
         return "create-tag";
     }
 
     @PostMapping("/save")
     public String saveNewTag(@ModelAttribute("tag") Tag tag) {
-        System.out.println(tag);
         tagService.createTag(tag);
-        return "redirect:./";
+        return "redirect:/";
     }
 
     @GetMapping("/{tagId}")
