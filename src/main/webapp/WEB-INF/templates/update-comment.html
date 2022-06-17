@@ -1,31 +1,69 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Update comment</title>
+    <title>BlogCentral</title>
+
+    <link rel="stylesheet" href="/css/master.css">
+    <script src="/js/script.js"></script>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="/css/uikit.min.css"/>
+    <!-- UIkit JS -->
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
 </head>
+<!--<body onload="setActiveFilter([[${activeFilter}]])">-->
+<!--<body onload="'javascript:setActiveFilter(\'' + [[${activeFilter}]] + '\');'">-->
 <body>
+<nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
+    <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+            <li class="uk-active"><a href="#">Active</a></li>
+            <li>
+                <a href="#">Parent</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <li class="uk-active"><a href="#">Active</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                        <li><a href="#">Item</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="#">Item</a></li>
+        </ul>
+    </div>
+</nav>
 
-<h3 style="display: inline-block" th:text="${blogPost.title}"></h3><br>
-<p style="display: inline-block" th:text="${blogPost.body}"></p><br>
-<p style="display: inline-block;font-size: 0.8em"
-   th:text="${blogPost.author.userName}">&emsp</p>
-<p style="display: inline-block;font-size: 0.8em"
-   th:text="${blogPost.timestampCreatedDisplay}"></p>
+<main>
+    <div class="sideNav">
+        <h1>Active users</h1>
+        <h1 th:text="${activeFilter}"></h1>
+    </div>
+    <div class="container">
 
-<hr>
+        <h3 style="display: inline-block" th:text="${blogPost.title}"></h3><br>
+        <p style="display: inline-block" th:text="${blogPost.body}"></p><br>
+        <p style="display: inline-block;font-size: 0.8em"
+           th:text="${blogPost.author.userName}">&emsp</p>
+        <p style="display: inline-block;font-size: 0.8em"
+           th:text="${blogPost.timestampCreatedDisplay}"></p>
 
-<p style="display: inline-block">Update your comment</p><br>
+        <hr>
 
-<form th:action="@{/saveUpdatedComment}" method="post">
-    Comment: <input th:value="${comment.body}" type="text" name="body"><br><br>
-    <input type="hidden" th:field="${comment.id}"/>
-    <input type="hidden" th:field="${comment.blogPost}"/>
-    <input type="hidden" th:field="${comment.author}"/>
-    <input type="hidden" th:field="${comment.timestampCreated}"/>
-    <input type="hidden" th:field="${comment.timestampCreatedDisplay}"/>
-    <input type="submit" value="Update"> <br><br>
-</form>
+        <p style="display: inline-block">Update your comment</p><br>
+
+        <form th:action="@{/saveUpdatedComment}" method="post">
+            Comment: <input th:value="${comment.body}" type="text" name="body"><br><br>
+            <input type="hidden" th:field="${comment.id}"/>
+            <input type="hidden" th:field="${comment.blogPost}"/>
+            <input type="hidden" th:field="${comment.author}"/>
+            <input type="hidden" th:field="${comment.timestampCreated}"/>
+            <input type="hidden" th:field="${comment.timestampCreatedDisplay}"/>
+            <input type="submit" value="Update"> <br><br>
+        </form>
+    </div>
 
 </body>
 </html>
