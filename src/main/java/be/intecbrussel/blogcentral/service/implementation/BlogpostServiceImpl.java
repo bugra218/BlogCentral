@@ -32,6 +32,7 @@ public class BlogpostServiceImpl implements BlogpostService {
         blogPost.setTimestampCreatedDisplay(ts_created);
         blogPost.setTimestampUpdatedDisplay(ts_created);
         blogpostRepository.save(blogPost);
+
     }
 
     @Override
@@ -52,6 +53,11 @@ public class BlogpostServiceImpl implements BlogpostService {
     public BlogPost getBlogPostById(int id) {
         BlogPost blogPost = blogpostRepository.findById(id).get();
         return blogpostRepository.findById(id).get();
+    }
+    @Override
+    public BlogPost getBlogPostByTitle(String title) {
+
+        return blogpostRepository.findBytitle(title);
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("tag/")
+@RequestMapping("/tag")
 public class TagController {
     private TagService tagService;
     private BlogpostService blogpostService;
@@ -63,27 +63,17 @@ public class TagController {
         return "all-blog-posts-addtags";
     }
 
-    @GetMapping("/allPosts/{postId}")
-    public String getFullPost(@PathVariable int postId, Model model) {
-        BlogPost blogPost = blogpostService.getBlogPostById(postId);
-        List<Tag> selectedTags = tagService.getAllTagsFromPost(blogPost);
-        List<Tag> allTags = tagService.getAllTags();
-        List<Boolean> tagStatus = new ArrayList<>();
-
-        // checks what tags are selected on specific post for checking corresponding checkboxes
-        for (Tag tag : allTags) {
-            if (selectedTags.contains(tag)) {
-                tagStatus.add(true);
-            } else {
-                tagStatus.add(false);
-            }
-        }
-
-        model.addAttribute(blogPost);
-        model.addAttribute("allTags", allTags);
-        model.addAttribute("tagStatus", tagStatus);
-        return "full-blog-post-addtags";
-    }
+//    @GetMapping("/allPosts/{postId}")
+//    public String getFullPost(@PathVariable int postId, Model model) {
+//        BlogPost blogPost = blogpostService.getBlogPostById(postId);
+//        List<Tag> allTags = tagService.getAllTags();
+//
+//
+//
+//        model.addAttribute(blogPost);
+//        model.addAttribute("allTags", allTags);
+//        return "full-blog-post-addtags";
+//    }
 
     @PostMapping("/allPosts/{postId}/addTagsToPost")
     public String addTagsToPost(@PathVariable int postId, @RequestParam(name="tags", required = false) List<Tag> tags) {
