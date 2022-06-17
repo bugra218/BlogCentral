@@ -6,6 +6,7 @@ import be.intecbrussel.blogcentral.model.Comment;
 import be.intecbrussel.blogcentral.service.AuthorService;
 import be.intecbrussel.blogcentral.service.BlogpostService;
 import be.intecbrussel.blogcentral.service.CommentService;
+import be.intecbrussel.blogcentral.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,23 +24,36 @@ public class BlogPostController {
     private BlogpostService blogpostService;
     private AuthorService authorService;
     private CommentService commentService;
+    private LikeService likeService;
 
     @Autowired
-    public BlogPostController(BlogpostService blogpostService, AuthorService authorService, CommentService commentService) {
+    public BlogPostController(BlogpostService blogpostService, AuthorService authorService, CommentService commentService, LikeService likeService) {
         this.blogpostService = blogpostService;
         this.authorService = authorService;
         this.commentService = commentService;
+        this.likeService = likeService;
     }
 
     // this sorts ascending by date by providing a '?field=timestampCreated'
     // parameter in the url (any property can be given as param)
-    @GetMapping("/home")
+    @GetMapping("/")
     public String getAllBlogPosts() {
         return "redirect:/home/page/1";
     }
 
     @GetMapping("/home/page/{pageNumber}")
     public String getOnePage(@RequestParam(name = "orderBy", required = false, defaultValue = "recent") String orderBy, Model model, @PathVariable("pageNumber") int currentPage) {
+        boolean userIsLoggedIn = false;
+//        Author activeUser = null;
+        try {
+            String currentUserName = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            Author activeUser = authorService.getAuthorByUsername(currentUserName);
+            model.addAttribute("activeUser", activeUser);
+        } catch (Exception e) {
+            System.out.println("User not logged in.");
+        }
         Page<BlogPost> page = blogpostService.findPage(currentPage, orderBy);
         int totalPages = page.getTotalPages();
         long totalItems = page.getTotalElements();
@@ -50,6 +65,7 @@ public class BlogPostController {
         model.addAttribute("totalItems", totalItems);
         model.addAttribute("blogPosts", BlogPosts);
         model.addAttribute("activeFilter", orderBy);
+        model.addAttribute("userLoggedIn", userIsLoggedIn);
 
         return "home";
     }
@@ -64,19 +80,27 @@ public class BlogPostController {
 //        return "update-author";
 //    }
 
-    @GetMapping("/blogpost/{postId}")
+    @GetMapping("/blogpost/{postId}/")
     public String getFullPost(@PathVariable int postId, Model model) {
-
-//        String currentUserName = SecurityContextHolder.getContext()
-//                .getAuthentication()
-//                .getName();
-//        Author authorDB = authorService.getAuthorByUsername(currentUserName);
-//        model.addAttribute("author", authorDB);
-
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
-        // added list of comments
-        List<Comment> commentsBlogPost =
-                commentService.getAllCommentsForBlogPost(blogPost);
+        List<Comment> commentsBlogPost = commentService.getAllCommentsForBlogPost(blogPost);
+        boolean userIsLoggedIn = false;
+        try {
+            String currentUserName = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getName();
+            Author author = authorService.getAuthorByUsername(currentUserName);
+            int likesReceived = likeService.countLikeByBlogPost_Id(postId);
+            Boolean likedPost = likeService.UserLikedPost(blogPost, author);
+            model.addAttribute(author);
+            model.addAttribute("likes", likesReceived);
+            model.addAttribute("userLikedThisPost", likedPost);
+            userIsLoggedIn = true;
+        } catch (Exception e) {
+            System.out.println("User is not logged in.");
+        }
+
+        model.addAttribute("userLoggedIn", userIsLoggedIn);
         model.addAttribute("blogPost", blogPost);
         model.addAttribute("commentsBlogPost", commentsBlogPost);
         return "blogpost";

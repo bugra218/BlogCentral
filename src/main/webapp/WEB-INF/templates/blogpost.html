@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Blogpost</title>
     <link rel="stylesheet" href="/css/master.css"/>
+    <script src="/js/script.js"></script>
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="/css/uikit.min.css"/>
     <!-- UIkit JS -->
@@ -16,28 +17,25 @@
 
 <!-- navbar / header-->
 <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
-    <!--login, sign up, update profile -->
     <div class="uk-navbar-left">
-
         <ul class="uk-navbar-nav">
             <li>&nbsp;&nbsp;</li>
             <li><a class="uk-link-text" href="/login">Login</a></li>
             <li><a class="uk-link-text" href="/authors/register">Sign up</a>
             </li>
             <!-- TODO: redirect to logged user-->
-            <li><a class="uk-link-text" href="/authors/update/1">Update profile</a></li>
+            <li><a class="uk-link-text" href="/authors/update/1">Update
+                profile</a></li>
             <!--<li><a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a></li>-->
         </ul>
     </div>
-
-    <!-- search-->
+    <!--        navbar menu search-->
     <div class="uk-navbar-right">
         <div>
-            <!--TODO-->
-            <a class="uk-navbar-toggle" uk-search-icon href="/search/choco"></a>
+            <a class="uk-navbar-toggle" uk-search-icon></a>
             <div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
-                <form class="uk-search uk-search-navbar uk-width-1-1">
-                    <input class="uk-search-input" type="search" placeholder="Search" autofocus>
+                <form class="uk-search uk-search-navbar uk-width-1-1" action="javascript:executeSearch()">
+                    <input id="searchField" class="uk-search-input" type="search" placeholder="Search" autofocus>
                 </form>
             </div>
         </div>
@@ -75,9 +73,8 @@
                     </div>
 
 <!--                    sec:authorize="isAuthenticated()"-->
-                    <div class="uk-card-footer">
-
-                        <p>
+                    <div th:if="${userLoggedIn}" class="uk-card-footer">
+                        <p th:with="likeCondition=${userLikedThisPost}">
                             <a class="uk-button uk-button-primary" th:href="${'/blogpost/' + blogPost.id + '/writeComment'}">Add comment</a>
 
 
@@ -85,8 +82,15 @@
                             <a class="uk-button" th:href="${'/' + blogPost.id + '/delete'}">Delete post</a>
 
 
-                            <a th:href="${'/like/' + blogPost.id + '/likePost'}" uk-icon="icon: heart"></a>
-
+                            <span th:text="${likes}"></span>
+                            <a th:if="${likeCondition}" th:href="@{./likePost}" uk-icon="heart" style="color: red"></a>
+                            <a th:unless="${likeCondition}" th:href="@{./likePost}" uk-icon="heart"></a>
+                        </p>
+                    </div>
+                    <div th:unless="${userLoggedIn}" class="uk-card-footer">
+                        <p th:with="likeCondition=${userLikedThisPost}">
+                            <span>You need to be logged in in order to like/comment on this post.</span>
+                            <b><a class="uk-button uk-button-primary" href="/login">Login</a></b>
                         </p>
                     </div>
                 </div>
@@ -98,9 +102,7 @@
                     <header class="uk-comment-header">
                         <div class="uk-grid-medium uk-flex-middle" uk-grid>
                             <div class="uk-width-auto">
-                                <img class="uk-comment-avatar"
-                                     src="/img/default-avatar.png" width="50"
-                                     height="50" alt="">
+                                <img class="uk-comment-avatar uk-border-circle" th:src="${comment.author.avatarPath}" width="50" height="50" alt="">
                             </div>
                             <div class="uk-width-expand">
                                 <h4 class="uk-comment-title uk-margin-remove"
@@ -123,7 +125,7 @@
 
             <div class="miniprofile uk-width-1-4 space-50-px">
                 <div class="uk-panel uk-panel-box uk-text-center">
-                    <a th:href="${'/authors/' + blogPost.author.id}"><img class="uk-border-circle" src="/img/default-avatar.png" alt="avatar" width="120" height="120"></a>
+                    <a th:href="${'/authors/' + blogPost.author.id}"><img class="uk-border-circle" th:src="${blogPost.author.avatarPath}" alt="avatar" width="120" height="120"></a>
                     <h3 th:text="${blogPost.author.userName}"></h3>
                 </div>
             </div>

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/like")
 public class LikeController {
     private LikeService likeService;
     private BlogpostService blogpostService;
@@ -42,6 +41,7 @@ public class LikeController {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
         int likesReceived = likeService.countLikeByBlogPost_Id(postId);
         Boolean likedPost = likeService.UserLikedPost(blogPost, author);
+
         model.addAttribute(author);
         model.addAttribute(blogPost);
         model.addAttribute("likes", likesReceived);
@@ -49,18 +49,18 @@ public class LikeController {
         return "like-full-blog-post";
     }
 
-    @PostMapping("{postId}/likePost")
-    public String likePost(@PathVariable int postId, @RequestParam(value = "likeButton", required = false) String likedThisPost, @RequestParam(value = "likeButtonStatus", required = false) String likeStatus, HttpServletRequest httpServletRequest) {
+    @GetMapping("blogpost/{postId}/likePost")
+    public String likePost(@PathVariable int postId) {
         BlogPost blogPost = blogpostService.getBlogPostById(postId);
-        Author liker = authorService.getAuthorByUsername(httpServletRequest.getRemoteUser());
-        // likes post if detecting changes from "noLike" to "Like"
-        if (Objects.equals(likeStatus, "false") && Objects.equals(likedThisPost, "on")) {
+        String currentUserName = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        Author liker = authorService.getAuthorByUsername(currentUserName);
+        if (!likeService.UserLikedPost(blogPost, liker)) {
             likeService.likePost(blogPost, liker);
-        }
-        // unlikes post if detecting changes from "Like" to "noLike"
-        else if (Objects.equals(likeStatus, "true") && likedThisPost == null) {
+        } else {
             likeService.removeLike(blogPost, liker);
         }
-        return "redirect:";
+        return "redirect:./";
     }
 }

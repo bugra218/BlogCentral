@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" href="/css/master.css">
+    <script src="/js/script.js"></script>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="/css/uikit.min.css" />
+    <!-- UIkit JS -->
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
 </head>
 <body>
-    <form th:action="@{{postId}/likePost(postId = ${blogPost.id})}" th:object="${likeForm}" method="post">
+<!--    <form th:action="@{{postId}/likePost(postId = ${blogPost.id})}" th:object="${likeForm}" method="post">-->
         Liker: <p th:name="liker" th:value="${author.id}" th:text="${author.firstName}"></p>
         <h1 style="display: inline-block" th:text="${blogPost.title}"></h1>
         <p style="display: inline-block; float: right">Author: </p>
@@ -13,10 +21,14 @@
         <p th:text="${blogPost.body}"></p>
         <p style="display: inline-block">Like button: </p>
         <p th:text="${likes}"></p>
-        <input id="likedThisPost" type="checkbox" name="likeButton" th:checked="${userLikedThisPost}">
-        <input id="likeStatus" type="hidden" name="likeButtonStatus" th:value="${userLikedThisPost}">
+<!--        <input id="likedThisPost" type="checkbox" name="likeButton" th:checked="${userLikedThisPost}">-->
+<!--        <input id="likeStatus" type="hidden" name="likeButtonStatus" th:value="${userLikedThisPost}">-->
         <p th:text="${likedPost}"></p>
-        <input type="submit">
-    </form>
+        <div th:with="condition=${userLikedThisPost}">
+            <a th:if="${condition}" th:href="@{{postId}/likePost(postId = ${blogPost.id})}" uk-icon="heart" style="color: red"></a>
+            <a th:unless="${condition}" th:href="@{{postId}/likePost(postId = ${blogPost.id})}" uk-icon="heart"></a>
+        </div>
+<!--        <input type="submit">-->
+<!--    </form>-->
 </body>
 </html>
