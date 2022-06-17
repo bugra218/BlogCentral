@@ -21,3 +21,8 @@ function nextPage() {
         window.location.href = (currentPath).slice(0, splitPageNumber) + "/" + (currentPageNumber + 1);
     }
 }
+
+function executeSearch() {
+    let searchTerm = document.getElementById("searchField").value;
+    window.location.href = "http://localhost:7777/search?search=" + searchTerm;
+}

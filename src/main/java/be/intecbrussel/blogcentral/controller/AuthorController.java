@@ -1,7 +1,6 @@
 package be.intecbrussel.blogcentral.controller;
 
 
-import be.intecbrussel.blogcentral.Exceptions.UsernameNotAvailableException;
 import be.intecbrussel.blogcentral.model.Author;
 import be.intecbrussel.blogcentral.model.BlogPost;
 import be.intecbrussel.blogcentral.service.AuthorService;
@@ -13,12 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 // TODO: exception handling, avoid duplicate code with help methods
 @Controller
@@ -60,24 +59,18 @@ public class AuthorController {
     }
 
     @PostMapping("/save")
-    public String saveAuthor(@Valid @ModelAttribute("author") Author author, BindingResult result, Model model, RedirectAttributes attributes, HttpServletRequest request) {
-
-        try {
-            if (authorService.usernameExists(author.getUserName())) {
-                throw new UsernameNotAvailableException();
-            }
-        } catch (UsernameNotAvailableException e) {
-            e.printStackTrace();
-            attributes.addFlashAttribute( "errorMessage", e.getMessage());
-            return "redirect:" + request.getHeader("Referer");
-        }
+    public String saveAuthor(@Valid @ModelAttribute("author") Author author, BindingResult result, Model model, HttpServletRequest request) {
 
         if(result.hasErrors()) {
             model.addAttribute("author", author);
             return "create-author";
         }
         authorService.createAuthor(author);
-        return "redirect:/"; // placeholder
+        return getPreviousPageByRequest(request).orElse("/"); // placeholder
+    }
+    protected Optional<String> getPreviousPageByRequest(HttpServletRequest request)
+    {
+        return Optional.ofNullable(request.getHeader("Referer")).map(requestUrl -> "redirect:" + requestUrl);
     }
 
     // TODO: TRYING OUT PAGINATION AUTHOR PAGE - NOT WORKING YET - PLEASE KEEP

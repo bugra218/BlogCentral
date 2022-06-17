@@ -12,8 +12,6 @@
     <script src="/js/uikit.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
 </head>
-<!--<body onload="setActiveFilter([[${activeFilter}]])">-->
-<!--<body onload="'javascript:setActiveFilter(\'' + [[${activeFilter}]] + '\');'">-->
 <body>
     <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click">
         <div class="uk-navbar-left">
@@ -23,19 +21,18 @@
                 <li><a class="uk-link-text" href="/authors/register">Sign up</a>
                 </li>
                 <!-- TODO: redirect to logged user-->
-                <li><a class="uk-link-text" href="/authors/update/1">Update profile</a></li>
+                <li><a class="uk-link-text" href="/authors/update/1">Update
+                    profile</a></li>
                 <!--<li><a th:href="@{/authors/update/{authorId}(authorId=${author.id})}">Update profile</a></li>-->
             </ul>
         </div>
-
         <!--        navbar menu search-->
         <div class="uk-navbar-right">
             <div>
-                <!--TODO-->
-                <a class="uk-navbar-toggle" uk-search-icon href="/search/choco"></a>
+                <a class="uk-navbar-toggle" uk-search-icon></a>
                 <div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
-                    <form class="uk-search uk-search-navbar uk-width-1-1">
-                        <input class="uk-search-input" type="search" placeholder="Search" autofocus>
+                    <form class="uk-search uk-search-navbar uk-width-1-1" action="javascript:executeSearch()">
+                        <input id="searchField" class="uk-search-input" type="search" placeholder="Search" autofocus>
                     </form>
                 </div>
             </div>
